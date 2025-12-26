@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import torch
 from torch import nn
+import torch.nn.functional as F
 
 from ...config import DecompositionConfig
 
@@ -27,6 +28,10 @@ class WaveletDecomposition(nn.Module):
             kernel_size = 2 ** (level + 1)
             pool = nn.AvgPool1d(kernel_size=kernel_size, stride=1, padding=kernel_size // 2)
             pooled = pool(signal)
+            if pooled.size(-1) < seq_len:
+                pad = seq_len - pooled.size(-1)
+                pooled = F.pad(pooled, (0, pad))
+            pooled = pooled[..., :seq_len]
             pooled_features.append(pooled.transpose(1, 2))
 
         stacked = torch.stack(pooled_features, dim=-2).mean(dim=-2)

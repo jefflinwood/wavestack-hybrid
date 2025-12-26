@@ -2,8 +2,9 @@
 
 from __future__ import annotations
 
+from contextlib import nullcontext
 from pathlib import Path
-from typing import Iterable, Mapping, Optional
+from typing import Iterable, Mapping
 
 import torch
 from torch import nn, optim
@@ -26,7 +27,10 @@ class Trainer:
             lr=experiment.training.learning_rate,
             weight_decay=experiment.training.weight_decay,
         )
-        self.grad_scaler = torch.cuda.amp.GradScaler(enabled=experiment.training.mixed_precision)
+        self.use_amp = experiment.training.mixed_precision and self.device.type == "cuda"
+        self.grad_scaler = (
+            torch.amp.GradScaler(device_type="cuda", enabled=True) if self.use_amp else None
+        )
         self.metric_tracker = MetricTracker()
 
     def train(self, dataloader: Iterable[Mapping[str, torch.Tensor]]):
@@ -52,15 +56,25 @@ class Trainer:
         input_ids = batch["input_ids"].to(self.device)
         labels = batch["labels"].to(self.device)
 
-        with torch.cuda.amp.autocast(enabled=self.experiment.training.mixed_precision):
+        autocast_ctx = (
+            torch.amp.autocast(device_type="cuda", enabled=True) if self.use_amp else nullcontext()
+        )
+        with autocast_ctx:
             logits = self.model(input_ids)
             loss = compute_multi_objective_loss(logits, labels, None, None, self.experiment.training)
 
         self.optimizer.zero_grad()
-        self.grad_scaler.scale(loss).backward()
-        torch.nn.utils.clip_grad_norm_(self.model.parameters(), self.experiment.training.max_grad_norm)
-        self.grad_scaler.step(self.optimizer)
-        self.grad_scaler.update()
+        if self.grad_scaler is not None:
+            self.grad_scaler.scale(loss).backward()
+            self.grad_scaler.unscale_(self.optimizer)
+            torch.nn.utils.clip_grad_norm_(self.model.parameters(), self.experiment.training.max_grad_norm)
+            self.grad_scaler.step(self.optimizer)
+            self.grad_scaler.update()
+        else:
+            loss.backward()
+            torch.nn.utils.clip_grad_norm_(self.model.parameters(), self.experiment.training.max_grad_norm)
+            self.optimizer.step()
+
         return loss.detach()
 
     def save_checkpoint(self, step: int):

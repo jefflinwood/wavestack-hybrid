@@ -15,6 +15,14 @@ WaveStack Hybrid explores a multi-lane large language model architecture where a
    ```bash
    uv run python scripts/download_data.py --dataset tinystories
    ```
+4. Run a synthetic smoke test to ensure the model and trainer wire up:
+   ```bash
+    uv run python scripts/run_smoke.py --steps 3
+   ```
+5. Run a TinyStories-backed smoke test (downloads a small subset on first run):
+   ```bash
+   uv run python scripts/run_tinystories_smoke.py --steps 3 --examples 64
+   ```
 
 ## Repository Layout
 - `src/wavestack_hybrid/`: Python package with model components, training utilities, and analysis helpers.
