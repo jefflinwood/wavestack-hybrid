@@ -15,16 +15,26 @@ class LaneMixer(nn.Module):
         self.num_lanes = num_lanes
 
         if mixing_type == "gated":
-            self.gates = nn.Parameter(torch.zeros(num_lanes, hidden_dim))
+            self.gating = nn.Sequential(
+                nn.Linear(hidden_dim * num_lanes, hidden_dim),
+                nn.GELU(),
+                nn.Linear(hidden_dim, num_lanes),
+            )
         elif mixing_type == "attention":
             self.query = nn.Linear(hidden_dim, hidden_dim, bias=False)
             self.key = nn.Linear(hidden_dim, hidden_dim, bias=False)
             self.value = nn.Linear(hidden_dim, hidden_dim, bias=False)
-        else:  # mlp
+        else:  # mlp mixing
             self.mlp = nn.Sequential(
                 nn.Linear(hidden_dim * num_lanes, hidden_dim),
                 nn.GELU(),
                 nn.Linear(hidden_dim, hidden_dim),
+            )
+
+    def _check_inputs(self, lane_outputs: torch.Tensor):
+        if lane_outputs.size(0) != self.num_lanes:
+            raise ValueError(
+                f"Lane mixer expected {self.num_lanes} lanes, received {lane_outputs.size(0)}"
             )
 
     def forward(self, lane_outputs: torch.Tensor) -> torch.Tensor:
@@ -33,18 +43,27 @@ class LaneMixer(nn.Module):
             lane_outputs: tensor of shape (num_lanes, batch, seq, dim)
         """
 
+        self._check_inputs(lane_outputs)
+
         if self.mixing_type == "gated":
-            gates = torch.softmax(self.gates, dim=0).view(self.num_lanes, 1, 1, -1)
-            return (lane_outputs * gates).sum(dim=0)
+            batch, seq, dim = lane_outputs.size(1), lane_outputs.size(2), lane_outputs.size(3)
+            flattened = lane_outputs.permute(1, 2, 0, 3).reshape(batch, seq, self.num_lanes * dim)
+            gate_logits = self.gating(flattened)
+            weights = torch.softmax(gate_logits, dim=-1).permute(2, 0, 1).unsqueeze(-1)
+            return (lane_outputs * weights).sum(dim=0)
 
         if self.mixing_type == "attention":
-            combined = lane_outputs.mean(dim=0)
-            attn_scores = torch.matmul(self.query(combined), self.key(combined).transpose(-1, -2))
-            attn_scores = attn_scores / combined.size(-1) ** 0.5
-            attn = torch.softmax(attn_scores, dim=-1)
-            return torch.matmul(attn, self.value(combined))
+            # Treat lanes as tokens and let them attend to each other per position.
+            lane_tokens = lane_outputs.permute(1, 2, 0, 3)  # (batch, seq, lanes, dim)
+            q = self.query(lane_tokens)
+            k = self.key(lane_tokens)
+            v = self.value(lane_tokens)
+            scores = torch.matmul(q, k.transpose(-1, -2)) / (lane_tokens.size(-1) ** 0.5)
+            attn = torch.softmax(scores, dim=-1)
+            attended = torch.matmul(attn, v).mean(dim=2)
+            return attended
 
-        # mlp
+        # mlp mixing
         batch, seq, dim = lane_outputs.size(1), lane_outputs.size(2), lane_outputs.size(3)
         flattened = lane_outputs.permute(1, 2, 0, 3).reshape(batch, seq, self.num_lanes * dim)
         return self.mlp(flattened)

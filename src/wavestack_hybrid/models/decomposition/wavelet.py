@@ -10,29 +10,31 @@ from ...config import DecompositionConfig
 
 
 class WaveletDecomposition(nn.Module):
-    """Approximates multi-scale wavelet coefficients via pooled averages."""
+    """Multi-scale smoothing + detail extraction inspired by Haar wavelets."""
 
     def __init__(self, hidden_dim: int, config: DecompositionConfig):
         super().__init__()
-        self.wavelet_levels = config.wavelet_levels
-        self.project = nn.Linear(hidden_dim, hidden_dim)
+        self.wavelet_levels = max(1, config.wavelet_levels)
+        self.output_projection = nn.Linear(hidden_dim * 2 * self.wavelet_levels, hidden_dim)
 
     def forward(self, hidden_states: torch.Tensor) -> torch.Tensor:
-        """Return concatenated multi-scale pooled features."""
+        """Return concatenated low/high responses for each level."""
 
-        b, seq_len, dim = hidden_states.shape
-        pooled_features = []
+        _, seq_len, _ = hidden_states.shape
         signal = hidden_states.transpose(1, 2)  # (B, H, S)
+        features = []
 
-        for level in range(self.wavelet_levels):
-            kernel_size = 2 ** (level + 1)
-            pool = nn.AvgPool1d(kernel_size=kernel_size, stride=1, padding=kernel_size // 2)
-            pooled = pool(signal)
-            if pooled.size(-1) < seq_len:
-                pad = seq_len - pooled.size(-1)
-                pooled = F.pad(pooled, (0, pad))
-            pooled = pooled[..., :seq_len]
-            pooled_features.append(pooled.transpose(1, 2))
+        for level in range(1, self.wavelet_levels + 1):
+            kernel_size = 2 ** level
+            padding = kernel_size // 2
+            low = F.avg_pool1d(signal, kernel_size=kernel_size, stride=1, padding=padding)
+            if low.size(-1) < seq_len:
+                low = F.pad(low, (0, seq_len - low.size(-1)))
+            low = low[..., :seq_len]
+            detail = signal - low
 
-        stacked = torch.stack(pooled_features, dim=-2).mean(dim=-2)
-        return self.project(stacked)
+            features.append(low.transpose(1, 2))
+            features.append(detail.transpose(1, 2))
+
+        concatenated = torch.cat(features, dim=-1)
+        return self.output_projection(concatenated)

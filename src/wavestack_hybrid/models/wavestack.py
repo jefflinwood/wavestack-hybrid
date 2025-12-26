@@ -36,7 +36,11 @@ class HybridWaveStack(nn.Module):
 
         self.recomposition = RecompositionBundle(config.hidden_dim, config.recomposition)
         self.lane_names = list(self.recomposition.lanes.keys())
-        self.mixer = LaneMixer(config.hidden_dim, config.num_lanes, config.mixing_type)
+        if config.num_lanes != len(self.lane_names):
+            raise ValueError(
+                f"config.num_lanes={config.num_lanes} does not match available lanes {self.lane_names}"
+            )
+        self.mixer = LaneMixer(config.hidden_dim, len(self.lane_names), config.mixing_type)
         self.ln = nn.LayerNorm(config.hidden_dim)
         self.lm_head = nn.Linear(config.hidden_dim, config.vocab_size, bias=False)
 
