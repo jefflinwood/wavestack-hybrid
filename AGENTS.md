@@ -8,8 +8,8 @@ The Python package lives under `src/wavestack_hybrid`; embed layers, decompositi
 - `uv run python scripts/download_data.py --dataset tinystories` — fetches datasets referenced by the training configs; use explicit flags per corpus.
 - `uv run python experiments/exp1_expressivity/run_experiment.py --config experiments/exp1_expressivity/config_C_hybrid_50m.yaml` — launches a tracked experiment using the selected configuration.
 - `uv run pytest tests/` — run the full test suite; add `-k test_recomposition` to scope to a single component.
-- `uv run python scripts/run_smoke.py --steps 3` — synthetic sanity check that exercises model wiring without external data.
-- `uv run python scripts/run_tinystories_smoke.py --steps 3 --examples 64` — miniature TinyStories pass to confirm dataset/tokenizer/trainer integration.
+- `uv run python scripts/run_smoke.py --steps 3 --device auto` — synthetic sanity check; `--device` accepts `auto/cpu/cuda/mps`.
+- `uv run python scripts/run_tinystories_smoke.py --steps 3 --examples 64 --device auto` — miniature TinyStories pass using the same device selection.
 
 ## Coding Style & Naming Conventions
 Use Python 3.10+, 4-space indentation, and type annotations for every public function. Favor dataclasses (see `src/config.py`) for structured configs, and keep module-level constants in `UPPER_SNAKE_CASE`. File names are lowercase_with_underscores; class names follow PascalCase (e.g., `HybridWaveStack`). Follow Torch semantics for tensor naming (`embeddings`, `poly_lane`, etc.) and document non-obvious math with short docstrings.

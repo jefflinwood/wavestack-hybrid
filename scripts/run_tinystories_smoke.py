@@ -24,9 +24,8 @@ def main():
     parser.add_argument("--hidden-dim", type=int, default=128, help="Model hidden dimension.")
     parser.add_argument("--examples", type=int, default=64, help="Number of TinyStories samples to use.")
     parser.add_argument("--split", default="train", help="Dataset split to sample from.")
+    parser.add_argument("--device", default="auto", help="Device to run on: auto/cpu/cuda/mps.")
     args = parser.parse_args()
-
-    device = "mps" if torch.backends.mps.is_available() else "cpu"
 
     training = TrainingConfig(
         max_steps=args.steps,
@@ -34,7 +33,7 @@ def main():
         log_interval=1,
         save_interval=args.steps + 1,
         use_wandb=False,
-        device=device,
+        device=args.device,
         mixed_precision=False,
     )
     model_config = ModelConfig(

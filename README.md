@@ -15,14 +15,16 @@ WaveStack Hybrid explores a multi-lane large language model architecture where a
    ```bash
    uv run python scripts/download_data.py --dataset tinystories
    ```
-4. Run a synthetic smoke test to ensure the model and trainer wire up:
+4. Run a synthetic smoke test to ensure the model and trainer wire up (pick a device with `--device` or rely on auto-detection):
    ```bash
     uv run python scripts/run_smoke.py --steps 3
    ```
-5. Run a TinyStories-backed smoke test (downloads a small subset on first run):
+5. Run a TinyStories-backed smoke test (same `--device` flag applies and defaults to auto-detection):
    ```bash
    uv run python scripts/run_tinystories_smoke.py --steps 3 --examples 64
    ```
+
+Device selection defaults to `auto`, which prefers CUDA, then Apple Silicon MPS, then CPU. Override this behavior by setting `--device` on scripts or `TrainingConfig.device` in experiment configs.
 
 ## Repository Layout
 - `src/wavestack_hybrid/`: Python package with model components, training utilities, and analysis helpers.

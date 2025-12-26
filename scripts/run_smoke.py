@@ -34,6 +34,7 @@ def main():
     parser.add_argument("--seq-len", type=int, default=32, help="Sequence length for synthetic tokens.")
     parser.add_argument("--hidden-dim", type=int, default=64, help="Hidden dimension for the model.")
     parser.add_argument("--vocab-size", type=int, default=256, help="Synthetic vocabulary size.")
+    parser.add_argument("--device", default="auto", help="Device to run on: auto/cpu/cuda/mps.")
     args = parser.parse_args()
 
     training = TrainingConfig(
@@ -42,7 +43,7 @@ def main():
         log_interval=1,
         save_interval=args.steps + 1,  # skip checkpoints
         use_wandb=False,
-        device="cpu",
+        device=args.device,
         mixed_precision=False,
     )
     model_config = ModelConfig(

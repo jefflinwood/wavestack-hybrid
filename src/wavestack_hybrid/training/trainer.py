@@ -14,13 +14,35 @@ from .loss import compute_multi_objective_loss
 from .metrics import MetricTracker
 
 
+def _resolve_device(preference: str) -> torch.device:
+    """Select an available device given user preference."""
+
+    if preference == "auto":
+        if torch.cuda.is_available():
+            return torch.device("cuda")
+        if getattr(torch.backends, "mps", None) and torch.backends.mps.is_available():
+            return torch.device("mps")
+        return torch.device("cpu")
+
+    device = torch.device(preference)
+
+    if device.type == "cuda" and not torch.cuda.is_available():
+        raise ValueError("CUDA selected but torch.cuda.is_available() is False.")
+
+    if device.type == "mps":
+        if not getattr(torch.backends, "mps", None) or not torch.backends.mps.is_available():
+            raise ValueError("MPS selected but torch.backends.mps.is_available() is False.")
+
+    return device
+
+
 class Trainer:
     """Minimal trainer supporting gradient accumulation and checkpointing."""
 
     def __init__(self, model: nn.Module, experiment: ExperimentConfig):
         self.model = model
         self.experiment = experiment
-        self.device = torch.device(experiment.training.device)
+        self.device = _resolve_device(experiment.training.device)
         self.model.to(self.device)
         self.optimizer = optim.AdamW(
             model.parameters(),

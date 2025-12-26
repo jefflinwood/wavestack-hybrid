@@ -125,7 +125,7 @@ class TrainingConfig:
     use_wandb: bool = True
     project_name: str = "wavestack_hybrid"
 
-    device: str = "cpu"
+    device: str = "auto"
     mixed_precision: bool = False
 
 
