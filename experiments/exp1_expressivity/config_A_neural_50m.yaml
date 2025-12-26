@@ -1,0 +1,11 @@
+name: neural_50m
+model:
+  use_analytical_decomp: false
+  hidden_dim: 768
+  vocab_size: 50257
+  neural_decomp_layers: 6
+training:
+  learning_rate: 0.0002
+  batch_size: 32
+  max_steps: 10000
+dataset_name: roneneldan/TinyStories

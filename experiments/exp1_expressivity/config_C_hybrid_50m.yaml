@@ -1,0 +1,11 @@
+name: hybrid_50m
+model:
+  use_analytical_decomp: true
+  hidden_dim: 768
+  recomposition:
+    depth: deep
+training:
+  learning_rate: 0.00015
+  batch_size: 16
+  max_steps: 12000
+dataset_name: roneneldan/TinyStories

@@ -1,0 +1,9 @@
+name: adaptation_finetune
+model:
+  use_analytical_decomp: true
+  hidden_dim: 512
+training:
+  learning_rate: 5.0e-05
+  batch_size: 16
+  max_steps: 4000
+dataset_name: mbpp

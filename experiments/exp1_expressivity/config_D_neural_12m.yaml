@@ -1,0 +1,9 @@
+name: neural_12m
+model:
+  use_analytical_decomp: false
+  hidden_dim: 384
+training:
+  learning_rate: 0.0004
+  batch_size: 32
+  max_steps: 8000
+dataset_name: roneneldan/TinyStories

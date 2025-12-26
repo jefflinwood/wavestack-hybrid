@@ -1,0 +1,9 @@
+name: adaptation_pretrain
+model:
+  use_analytical_decomp: true
+  hidden_dim: 512
+training:
+  learning_rate: 0.00025
+  batch_size: 32
+  max_steps: 6000
+dataset_name: roneneldan/TinyStories

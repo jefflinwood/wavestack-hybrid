@@ -1,7 +1,7 @@
 # Repository Guidelines
 
 ## Project Structure & Module Organization
-The Python package lives under `src/wavestack_hybrid`; embed layers, decomposition lanes, recomposition networks, and the trainer/data utilities mirror the breakdown shown in `PLAN.md`. Experiments are grouped by study in `experiments/exp*/`, each with YAML configs and a `run_experiment.py`. Shared integration tests live in `tests/`, while automation helpers such as dataset downloaders sit in `scripts/`. Root-level `requirements.txt`, `setup.py`, and `README.md` control packaging, dependencies, and onboarding context.
+The Python package lives under `src/wavestack_hybrid`; embed layers, decomposition lanes, recomposition networks, and the trainer/data utilities mirror the breakdown shown in `PLAN.md`. Experiments are grouped by study in `experiments/exp*/`, each with YAML configs and a `run_experiment.py`. Shared integration tests live in `tests/`, while automation helpers such as dataset downloaders sit in `scripts/`. Root-level `pyproject.toml` and `README.md` control packaging, dependencies, and onboarding context.
 
 ## Build, Test, and Development Commands
 - `uv pip install -e .` — install the package in editable mode so local module changes are immediately importable (uv manages the venv and dependency resolver).

@@ -1,0 +1,9 @@
+name: gradient_probe
+model:
+  use_analytical_decomp: true
+  hidden_dim: 256
+training:
+  learning_rate: 0.0005
+  batch_size: 16
+  max_steps: 2000
+dataset_name: roneneldan/TinyStories
