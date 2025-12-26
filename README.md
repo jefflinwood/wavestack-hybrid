@@ -33,5 +33,26 @@ Device selection defaults to `auto`, which prefers CUDA, then Apple Silicon MPS,
 - `scripts/`: Operational helpers for bootstrapping data or checking dependencies.
 - `pyproject.toml`: Project metadata, build backend configuration, and dependency list.
 
+## Running Experiments
+- Expressivity study:
+  ```bash
+  uv run python experiments/exp1_expressivity/run_experiment.py \
+    --config experiments/exp1_expressivity/config_C_hybrid_50m.yaml \
+    --device auto --max-steps 1000 --samples 2048
+  ```
+- Adaptation study (pretrain + finetune):
+  ```bash
+  uv run python experiments/exp2_adaptation/run_experiment.py \
+    --pretrain-config experiments/exp2_adaptation/pretrain_config.yaml \
+    --finetune-config experiments/exp2_adaptation/finetune_config.yaml \
+    --device auto --pretrain-max-steps 1000 --finetune-max-steps 500
+  ```
+- Gradient study:
+  ```bash
+  uv run python experiments/exp3_gradients/run_experiment.py \
+    --config experiments/exp3_gradients/config.yaml --device auto --samples 1024
+  ```
+All runners accept `--device` and optional step/sample limits to keep local iterations lightweight.
+
 ## Status
 This project is under active construction following the execution plan in `PLAN.md`. Refer to `AGENTS.md` for contributor guidelines. Issues and PRs are welcome once core infrastructure is stabilized.

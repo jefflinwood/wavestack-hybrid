@@ -2,9 +2,9 @@
 
 from __future__ import annotations
 
-from dataclasses import asdict, dataclass, field
+from dataclasses import asdict, dataclass, field, fields, is_dataclass
 from pathlib import Path
-from typing import Dict, Literal
+from typing import Dict, Literal, get_type_hints
 
 
 @dataclass
@@ -153,22 +153,23 @@ class ExperimentConfig:
         with open(path, "r", encoding="utf-8") as fp:
             data = yaml.safe_load(fp)
 
-        def _recurse(target_cls, value):
-            if isinstance(value, dict):
-                field_values: Dict[str, object] = {}
-                for key, sub_value in value.items():
-                    attr = getattr(target_cls, "__annotations__", {}).get(key)
-                    if attr in (ModelConfig, TrainingConfig, DecompositionConfig, RecompositionConfig):
-                        field_values[key] = _recurse(attr, sub_value)
-                    else:
-                        field_values[key] = sub_value
-                return target_cls(**field_values)
-            return value
+        def _build_dataclass(target_cls, values):
+            if not isinstance(values, dict):
+                return values
+            hints = get_type_hints(target_cls)
+            kwargs: Dict[str, object] = {}
+            for key, field_value in values.items():
+                hint = hints.get(key)
+                if hint and is_dataclass(hint) and isinstance(field_value, dict):
+                    kwargs[key] = _build_dataclass(hint, field_value)
+                else:
+                    kwargs[key] = field_value
+            return target_cls(**kwargs)
 
         return cls(
             name=data.get("name", "unnamed-experiment"),
-            model=_recurse(ModelConfig, data.get("model", {})),
-            training=_recurse(TrainingConfig, data.get("training", {})),
+            model=_build_dataclass(ModelConfig, data.get("model", {})),
+            training=_build_dataclass(TrainingConfig, data.get("training", {})),
             dataset_name=data.get("dataset_name", "roneneldan/TinyStories"),
             train_split=data.get("train_split", "train"),
             val_split=data.get("val_split", "validation"),
