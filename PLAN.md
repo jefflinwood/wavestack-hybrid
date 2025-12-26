@@ -1687,3 +1687,16 @@ Task 9.1: experiments/exp1_expressivity/run_experiment.py Task 9.2: experiments/
 
 Phase 10: Analysis Tools (Day 14)
 Task 10.1: src/analysis/interpretability.py - Lane attribution Task 10.2: src/analysis/visualization.py - Plotting utilities
+
+Phase 11: Analytical Lane Experiments (Days 15-17)
+Task 11.1: Introduce optional lightweight convolutional or residual MLP blocks before/after the lane mixer to evaluate non-attention context sharing.
+Task 11.2: Add lane diversity regularizers (e.g., cosine similarity penalties) and optional per-lane energy tracking to quantify specialization.
+Task 11.3: Implement frequency/scale scheduling knobs so Chebyshev order, Fourier bins, and wavelet levels can be ramped up over training.
+
+Phase 12: Lane Variants & Ablations (Days 18-19)
+Task 12.1: Add configuration switches to disable individual lanes or plug in additional analytical transforms (e.g., spline or FIR bases) to map parameter/quality trade-offs.
+Task 12.2: Expose parameter/FLOP accounting utilities to compare WaveStack variants against attention baselines.
+
+Phase 13: Evaluation Harness (Day 20)
+Task 13.1: Build scripts/notebooks to run matched-parameter experiments versus a reference Transformer, capturing metrics like loss/accuracy vs. runtime.
+Task 13.2: Document findings emphasizing where WaveStack needs more parameters, where it excels (latency, stability), and where it lags attention models.
