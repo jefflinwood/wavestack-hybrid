@@ -4,6 +4,7 @@
 from __future__ import annotations
 
 import argparse
+import random
 from datetime import datetime
 from pathlib import Path
 from typing import Mapping
@@ -24,21 +25,24 @@ def _apply_overrides(experiment: ExperimentConfig, device: str | None, max_steps
         experiment.training.max_steps = max_steps
 
 
-def _build_loader(experiment: ExperimentConfig, tokenizer: TokenizerWrapper, samples: int | None):
-    dataset = WaveStackTextDataset(
+def _build_train_loader(
+    experiment: ExperimentConfig, tokenizer: TokenizerWrapper, samples: int | None
+):
+    base_dataset = WaveStackTextDataset(
         experiment.dataset_name,
         experiment.train_split,
         tokenizer,
         experiment.model.max_seq_len,
     )
+    dataset = base_dataset
     if samples:
-        dataset = Subset(dataset, list(range(min(samples, len(dataset)))))
+        dataset = Subset(base_dataset, list(range(min(samples, len(base_dataset)))))
     dataloader = DataLoader(dataset, batch_size=experiment.training.batch_size, shuffle=True)
     print(
         f"[Adaptation] Stage={experiment.name} samples={len(dataloader.dataset)} "
         f"device={experiment.training.device} max_steps={experiment.training.max_steps}"
     )
-    return dataloader
+    return dataloader, base_dataset, dataset
 
 
 def _build_eval_loader(experiment: ExperimentConfig, tokenizer: TokenizerWrapper):
@@ -55,12 +59,47 @@ def _build_eval_loader(experiment: ExperimentConfig, tokenizer: TokenizerWrapper
     return DataLoader(dataset, batch_size=experiment.training.batch_size, shuffle=False)
 
 
+def _build_holdout_loss(
+    trainer: Trainer,
+    experiment: ExperimentConfig,
+    base_dataset: WaveStackTextDataset,
+    train_dataset: Subset | WaveStackTextDataset,
+    samples: int | None,
+) -> float | None:
+    holdout_size = experiment.training.eval_batches * experiment.training.batch_size
+    if holdout_size <= 0 or len(base_dataset) == 0:
+        return None
+    if samples:
+        remaining_indices = list(range(len(base_dataset)))[len(train_dataset) :]
+        if remaining_indices:
+            candidates = remaining_indices
+            use_base_indices = True
+        else:
+            candidates = list(range(len(train_dataset)))
+            use_base_indices = False
+    else:
+        candidates = list(range(len(base_dataset)))
+        use_base_indices = True
+    rng = random.Random(42)
+    sample_size = min(holdout_size, len(candidates))
+    holdout_indices = rng.sample(candidates, sample_size)
+    if not holdout_indices:
+        return None
+    holdout_base = base_dataset if use_base_indices else train_dataset
+    holdout_dataset = Subset(holdout_base, holdout_indices)
+    holdout_loader = DataLoader(
+        holdout_dataset, batch_size=experiment.training.batch_size, shuffle=False
+    )
+    return trainer.evaluate(holdout_loader)
+
+
 def _append_experiment_log(
     experiment: ExperimentConfig,
     config_path: str,
     stage: str,
     samples: int | None,
     summary: Mapping[str, float | int | None],
+    holdout_loss: float | None,
 ):
     timestamp = datetime.now().strftime("%Y-%m-%d %H:%M")
     train_loss = summary.get("train_loss")
@@ -78,6 +117,7 @@ def _append_experiment_log(
         f"- Samples: {samples if samples is not None else 'all'}",
         f"- Train loss: {train_loss:.4f}" if train_loss is not None else "- Train loss: n/a",
         f"- Eval loss: {eval_loss:.4f}" if eval_loss is not None else "- Eval loss: n/a",
+        f"- Holdout loss: {holdout_loss:.4f}" if holdout_loss is not None else "- Holdout loss: n/a",
     ]
     log_path = Path("EXPERIMENT_LOG.md")
     with log_path.open("a", encoding="utf-8") as fp:
@@ -105,18 +145,41 @@ def main():
 
     model = HybridWaveStack(pretrain.model)
 
-    pretrain_loader = _build_loader(pretrain, tokenizer, args.pretrain_samples)
+    pretrain_loader, pretrain_base, pretrain_dataset = _build_train_loader(
+        pretrain, tokenizer, args.pretrain_samples
+    )
     pretrain_eval_loader = _build_eval_loader(pretrain, tokenizer)
-    pretrain_summary = Trainer(model, pretrain).train(pretrain_loader, pretrain_eval_loader)
+    pretrain_trainer = Trainer(model, pretrain)
+    pretrain_summary = pretrain_trainer.train(pretrain_loader, pretrain_eval_loader)
+
+    pretrain_holdout = _build_holdout_loss(
+        pretrain_trainer, pretrain, pretrain_base, pretrain_dataset, args.pretrain_samples
+    )
     _append_experiment_log(
-        pretrain, args.pretrain_config, "pretrain", args.pretrain_samples, pretrain_summary
+        pretrain,
+        args.pretrain_config,
+        "pretrain",
+        args.pretrain_samples,
+        pretrain_summary,
+        pretrain_holdout,
     )
 
-    finetune_loader = _build_loader(finetune, tokenizer, args.finetune_samples)
+    finetune_loader, finetune_base, finetune_dataset = _build_train_loader(
+        finetune, tokenizer, args.finetune_samples
+    )
     finetune_eval_loader = _build_eval_loader(finetune, tokenizer)
-    finetune_summary = Trainer(model, finetune).train(finetune_loader, finetune_eval_loader)
+    finetune_trainer = Trainer(model, finetune)
+    finetune_summary = finetune_trainer.train(finetune_loader, finetune_eval_loader)
+    finetune_holdout = _build_holdout_loss(
+        finetune_trainer, finetune, finetune_base, finetune_dataset, args.finetune_samples
+    )
     _append_experiment_log(
-        finetune, args.finetune_config, "finetune", args.finetune_samples, finetune_summary
+        finetune,
+        args.finetune_config,
+        "finetune",
+        args.finetune_samples,
+        finetune_summary,
+        finetune_holdout,
     )
 
 

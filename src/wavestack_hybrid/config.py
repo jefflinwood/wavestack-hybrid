@@ -11,6 +11,8 @@ from typing import Dict, Literal, get_type_hints
 class DecompositionConfig:
     """Analytical decomposition lane configuration."""
 
+    causal: bool = False
+
     # Chebyshev (polynomial) settings
     poly_order: int = 32
     poly_normalization: Literal["unit", "standard"] = "unit"

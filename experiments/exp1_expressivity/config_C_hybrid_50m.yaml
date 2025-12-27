@@ -2,6 +2,8 @@ name: hybrid_50m
 model:
   use_analytical_decomp: true
   hidden_dim: 768
+  decomposition:
+    causal: true
   recomposition:
     depth: deep
 training:

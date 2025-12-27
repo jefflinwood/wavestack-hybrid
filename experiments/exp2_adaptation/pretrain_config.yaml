@@ -2,6 +2,8 @@ name: adaptation_pretrain
 model:
   use_analytical_decomp: true
   hidden_dim: 512
+  decomposition:
+    causal: true
 training:
   learning_rate: 0.00025
   batch_size: 32

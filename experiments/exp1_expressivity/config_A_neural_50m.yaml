@@ -4,6 +4,8 @@ model:
   hidden_dim: 768
   vocab_size: 50257
   neural_decomp_layers: 6
+  decomposition:
+    causal: true
 training:
   learning_rate: 0.0002
   batch_size: 32
