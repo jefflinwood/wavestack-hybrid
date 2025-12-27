@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 from contextlib import nullcontext
+import json
 from pathlib import Path
 from typing import Iterable, Mapping
 
@@ -54,25 +55,104 @@ class Trainer:
             torch.amp.GradScaler(device_type="cuda", enabled=True) if self.use_amp else None
         )
         self.metric_tracker = MetricTracker()
+        self.output_dir = Path(self.experiment.output_dir)
+        self.output_dir.mkdir(parents=True, exist_ok=True)
+        self.metrics_path = self.output_dir / f"{self.experiment.name}_metrics.jsonl"
+        self.last_train_loss: float | None = None
+        self.last_eval_loss: float | None = None
 
-    def train(self, dataloader: Iterable[Mapping[str, torch.Tensor]]):
+    def train(
+        self,
+        dataloader: Iterable[Mapping[str, torch.Tensor]],
+        eval_dataloader: Iterable[Mapping[str, torch.Tensor]] | None = None,
+    ) -> Mapping[str, float | int | None]:
         step = 0
         self.model.train()
-        for batch in dataloader:
-            loss = self._training_step(batch)
-            loss_value = loss.item()
-            self.metric_tracker.update("loss", loss_value)
+        if hasattr(dataloader, "__len__") and len(dataloader) == 0:
+            raise ValueError("Dataloader is empty; no training steps to run.")
 
-            if (step + 1) % self.experiment.training.log_interval == 0:
-                print(f"[step={step+1}] loss={self.metric_tracker.compute()['loss']:.4f}")
-                self.metric_tracker.reset()
+        while step < self.experiment.training.max_steps:
+            for batch in dataloader:
+                loss = self._training_step(batch)
+                loss_value = loss.item()
+                self.metric_tracker.update("loss", loss_value)
 
-            if (step + 1) % self.experiment.training.save_interval == 0:
-                self.save_checkpoint(step + 1)
+                train_loss_avg = None
+                eval_loss = None
 
-            step += 1
-            if step >= self.experiment.training.max_steps:
-                break
+                if (
+                    eval_dataloader is not None
+                    and (step + 1) % self.experiment.training.eval_interval == 0
+                ):
+                    eval_loss = self.evaluate(eval_dataloader)
+                    self.last_eval_loss = eval_loss
+                    print(f"[step={step+1}] eval_loss={eval_loss:.4f}")
+
+                if (step + 1) % self.experiment.training.log_interval == 0:
+                    train_loss_avg = self.metric_tracker.compute()["loss"]
+                    self.last_train_loss = train_loss_avg
+                    print(f"[step={step+1}] loss={train_loss_avg:.4f}")
+                    self.metric_tracker.reset()
+
+                if train_loss_avg is not None or eval_loss is not None:
+                    payload: dict[str, float | int] = {"step": step + 1}
+                    if train_loss_avg is not None:
+                        payload["train_loss"] = train_loss_avg
+                    if eval_loss is not None:
+                        payload["eval_loss"] = eval_loss
+                    self._append_log(payload)
+
+                if (step + 1) % self.experiment.training.save_interval == 0:
+                    self.save_checkpoint(step + 1)
+
+                step += 1
+                if step >= self.experiment.training.max_steps:
+                    break
+
+        if self.metric_tracker.storage:
+            final_train_loss = self.metric_tracker.compute().get("loss")
+            if final_train_loss is not None:
+                self.last_train_loss = final_train_loss
+                self._append_log({"step": step, "train_loss": final_train_loss})
+            self.metric_tracker.reset()
+
+        return {
+            "steps": step,
+            "train_loss": self.last_train_loss,
+            "eval_loss": self.last_eval_loss,
+        }
+
+    def evaluate(self, dataloader: Iterable[Mapping[str, torch.Tensor]]) -> float:
+        max_batches = self.experiment.training.eval_batches
+        total_loss = 0.0
+        batches = 0
+        was_training = self.model.training
+        self.model.eval()
+        autocast_ctx = (
+            torch.amp.autocast(device_type="cuda", enabled=True) if self.use_amp else nullcontext()
+        )
+        with torch.no_grad():
+            for batch in dataloader:
+                input_ids = batch["input_ids"].to(self.device)
+                labels = batch["labels"].to(self.device)
+                with autocast_ctx:
+                    logits = self.model(input_ids)
+                    loss = compute_multi_objective_loss(
+                        logits, labels, None, None, self.experiment.training
+                    )
+                total_loss += float(loss.item())
+                batches += 1
+                if batches >= max_batches:
+                    break
+        if was_training:
+            self.model.train()
+        if batches == 0:
+            raise ValueError("Eval dataloader is empty; no evaluation steps to run.")
+        return total_loss / batches
+
+    def _append_log(self, payload: Mapping[str, float | int]):
+        with self.metrics_path.open("a", encoding="utf-8") as fp:
+            fp.write(json.dumps(payload) + "\n")
 
     def _training_step(self, batch: Mapping[str, torch.Tensor]) -> torch.Tensor:
         input_ids = batch["input_ids"].to(self.device)

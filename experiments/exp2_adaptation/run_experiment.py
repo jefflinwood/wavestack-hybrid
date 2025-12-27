@@ -4,6 +4,10 @@
 from __future__ import annotations
 
 import argparse
+from datetime import datetime
+from pathlib import Path
+from typing import Mapping
+
 from torch.utils.data import DataLoader, Subset
 
 from wavestack_hybrid.config import ExperimentConfig
@@ -37,6 +41,49 @@ def _build_loader(experiment: ExperimentConfig, tokenizer: TokenizerWrapper, sam
     return dataloader
 
 
+def _build_eval_loader(experiment: ExperimentConfig, tokenizer: TokenizerWrapper):
+    try:
+        dataset = WaveStackTextDataset(
+            experiment.dataset_name,
+            experiment.val_split,
+            tokenizer,
+            experiment.model.max_seq_len,
+        )
+    except Exception as exc:  # pragma: no cover - best-effort eval hook
+        print(f"[Adaptation] Eval loader unavailable for {experiment.name}: {exc}")
+        return None
+    return DataLoader(dataset, batch_size=experiment.training.batch_size, shuffle=False)
+
+
+def _append_experiment_log(
+    experiment: ExperimentConfig,
+    config_path: str,
+    stage: str,
+    samples: int | None,
+    summary: Mapping[str, float | int | None],
+):
+    timestamp = datetime.now().strftime("%Y-%m-%d %H:%M")
+    train_loss = summary.get("train_loss")
+    eval_loss = summary.get("eval_loss")
+    lines = [
+        "",
+        timestamp,
+        "- Study: exp2_adaptation",
+        f"- Stage: {stage}",
+        f"- Experiment: {experiment.name}",
+        f"- Config: {config_path}",
+        f"- Dataset: {experiment.dataset_name}",
+        f"- Device: {experiment.training.device}",
+        f"- Max steps: {experiment.training.max_steps}",
+        f"- Samples: {samples if samples is not None else 'all'}",
+        f"- Train loss: {train_loss:.4f}" if train_loss is not None else "- Train loss: n/a",
+        f"- Eval loss: {eval_loss:.4f}" if eval_loss is not None else "- Eval loss: n/a",
+    ]
+    log_path = Path("EXPERIMENT_LOG.md")
+    with log_path.open("a", encoding="utf-8") as fp:
+        fp.write("\n".join(lines) + "\n")
+
+
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--pretrain-config", required=True)
@@ -59,10 +106,18 @@ def main():
     model = HybridWaveStack(pretrain.model)
 
     pretrain_loader = _build_loader(pretrain, tokenizer, args.pretrain_samples)
-    Trainer(model, pretrain).train(pretrain_loader)
+    pretrain_eval_loader = _build_eval_loader(pretrain, tokenizer)
+    pretrain_summary = Trainer(model, pretrain).train(pretrain_loader, pretrain_eval_loader)
+    _append_experiment_log(
+        pretrain, args.pretrain_config, "pretrain", args.pretrain_samples, pretrain_summary
+    )
 
     finetune_loader = _build_loader(finetune, tokenizer, args.finetune_samples)
-    Trainer(model, finetune).train(finetune_loader)
+    finetune_eval_loader = _build_eval_loader(finetune, tokenizer)
+    finetune_summary = Trainer(model, finetune).train(finetune_loader, finetune_eval_loader)
+    _append_experiment_log(
+        finetune, args.finetune_config, "finetune", args.finetune_samples, finetune_summary
+    )
 
 
 if __name__ == "__main__":

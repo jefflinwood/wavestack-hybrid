@@ -119,6 +119,7 @@ class TrainingConfig:
     alpha_orthogonality: float = 0.1
 
     eval_interval: int = 1000
+    eval_batches: int = 8
     save_interval: int = 5000
     log_interval: int = 100
 
