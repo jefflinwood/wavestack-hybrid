@@ -23,6 +23,13 @@ class HybridWaveStack(nn.Module):
     def __init__(self, config: ModelConfig):
         super().__init__()
         self.config = config
+        enabled_lanes = list(config.enabled_lanes)
+        allowed_lanes = {"poly", "trig", "wavelet"}
+        if not enabled_lanes:
+            raise ValueError("At least one lane must be enabled.")
+        invalid = [lane for lane in enabled_lanes if lane not in allowed_lanes]
+        if invalid:
+            raise ValueError(f"Invalid lane names in enabled_lanes: {invalid}")
 
         self.embeddings = HybridEmbedding(config.vocab_size, config.hidden_dim, config.max_seq_len)
         self.chebyshev = ChebyshevDecomposition(config.hidden_dim, config.decomposition)
@@ -34,11 +41,11 @@ class HybridWaveStack(nn.Module):
             else None
         )
 
-        self.recomposition = RecompositionBundle(config.hidden_dim, config.recomposition)
-        self.lane_names = list(self.recomposition.lanes.keys())
+        self.lane_names = enabled_lanes
+        self.recomposition = RecompositionBundle(config.hidden_dim, config.recomposition, self.lane_names)
         if config.num_lanes != len(self.lane_names):
             raise ValueError(
-                f"config.num_lanes={config.num_lanes} does not match available lanes {self.lane_names}"
+                f"config.num_lanes={config.num_lanes} does not match enabled lanes {self.lane_names}"
             )
         self.mixer = LaneMixer(config.hidden_dim, len(self.lane_names), config.mixing_type)
         self.ln = nn.LayerNorm(config.hidden_dim)
@@ -51,18 +58,16 @@ class HybridWaveStack(nn.Module):
         lane_features: Dict[str, torch.Tensor]
 
         if self.config.use_analytical_decomp:
-            lane_features = {
-                "poly": self.chebyshev(hidden),
-                "trig": self.fourier(hidden),
-                "wavelet": self.wavelet(hidden),
-            }
+            lane_features = {}
+            if "poly" in self.lane_names:
+                lane_features["poly"] = self.chebyshev(hidden)
+            if "trig" in self.lane_names:
+                lane_features["trig"] = self.fourier(hidden)
+            if "wavelet" in self.lane_names:
+                lane_features["wavelet"] = self.wavelet(hidden)
         else:
             base = self.neural(hidden)
-            lane_features = {
-                "poly": base,
-                "trig": base,
-                "wavelet": base,
-            }
+            lane_features = {name: base for name in self.lane_names}
 
         recomposed = self.recomposition(lane_features)
         lane_outputs = torch.stack([recomposed[name] for name in self.lane_names], dim=0)

@@ -44,6 +44,7 @@ class ModelConfig:
     """Top-level model layout."""
 
     use_analytical_decomp: bool = True  # False => neural-only baseline
+    enabled_lanes: list[str] = field(default_factory=lambda: ["poly", "trig", "wavelet"])
 
     # Dimensions
     vocab_size: int = 50_257
@@ -83,14 +84,16 @@ class ModelConfig:
             "wavelet": self.recomposition.wavelet_capacity,
         }
 
-        for lane_name, base in lane_overheads.items():
+        for lane_name in self.enabled_lanes:
+            base = lane_overheads[lane_name]
             # Analytical parameters + recomposition MLP
             hidden = int(self.hidden_dim * lane_capacity_map[lane_name])
             lane_params += base * hidden + hidden * self.hidden_dim
 
         # Mixing mechanism estimate
+        num_lanes = len(self.enabled_lanes)
         if self.mixing_type == "gated":
-            mixing_params = self.num_lanes * self.hidden_dim * 2
+            mixing_params = num_lanes * self.hidden_dim * 2
         elif self.mixing_type == "attention":
             mixing_params = self.hidden_dim ** 2
         else:  # mlp

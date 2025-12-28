@@ -45,6 +45,11 @@ def main() -> None:
         default=1,
         help="How many times to repeat the full suite.",
     )
+    parser.add_argument(
+        "--include-ablations",
+        action="store_true",
+        help="Include lane ablation configs in the run list.",
+    )
     args = parser.parse_args()
 
     base_cmd = [
@@ -58,6 +63,17 @@ def main() -> None:
         ("experiments/exp1_expressivity/config_C_hybrid_50m.yaml", "50m"),
         ("experiments/exp1_expressivity/config_A_neural_50m.yaml", "50m"),
     ]
+    if args.include_ablations:
+        configs.extend(
+            [
+                ("experiments/exp1_expressivity/config_E_hybrid_12m_only_poly.yaml", "12m"),
+                ("experiments/exp1_expressivity/config_F_hybrid_12m_only_trig.yaml", "12m"),
+                ("experiments/exp1_expressivity/config_G_hybrid_12m_only_wavelet.yaml", "12m"),
+                ("experiments/exp1_expressivity/config_H_hybrid_12m_no_poly.yaml", "12m"),
+                ("experiments/exp1_expressivity/config_I_hybrid_12m_no_trig.yaml", "12m"),
+                ("experiments/exp1_expressivity/config_J_hybrid_12m_no_wavelet.yaml", "12m"),
+            ]
+        )
 
     for run_idx in range(args.repeat):
         if args.repeat > 1:

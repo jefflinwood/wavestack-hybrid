@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from typing import Dict
+from typing import Dict, Iterable
 
 import torch
 from torch import nn
@@ -42,15 +42,18 @@ class LaneRecompositionNetwork(nn.Module):
 class RecompositionBundle(nn.Module):
     """Builds recomposition networks for each lane and returns their outputs."""
 
-    def __init__(self, hidden_dim: int, config: RecompositionConfig):
+    def __init__(self, hidden_dim: int, config: RecompositionConfig, lanes: Iterable[str] | None = None):
         super().__init__()
-        self.lanes = nn.ModuleDict(
-            {
-                "poly": LaneRecompositionNetwork(hidden_dim, config, config.poly_capacity),
-                "trig": LaneRecompositionNetwork(hidden_dim, config, config.trig_capacity),
-                "wavelet": LaneRecompositionNetwork(hidden_dim, config, config.wavelet_capacity),
-            }
-        )
+        available = {
+            "poly": LaneRecompositionNetwork(hidden_dim, config, config.poly_capacity),
+            "trig": LaneRecompositionNetwork(hidden_dim, config, config.trig_capacity),
+            "wavelet": LaneRecompositionNetwork(hidden_dim, config, config.wavelet_capacity),
+        }
+        lane_list = list(lanes) if lanes is not None else list(available.keys())
+        missing = [lane for lane in lane_list if lane not in available]
+        if missing:
+            raise ValueError(f"Unknown lanes requested: {missing}")
+        self.lanes = nn.ModuleDict({lane: available[lane] for lane in lane_list})
 
     def forward(self, lane_features: Dict[str, torch.Tensor]) -> Dict[str, torch.Tensor]:
         return {name: net(lane_features[name]) for name, net in self.lanes.items()}

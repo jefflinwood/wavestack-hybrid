@@ -1,0 +1,16 @@
+name: hybrid_12m_only_trig
+model:
+  use_analytical_decomp: true
+  enabled_lanes:
+    - trig
+  num_lanes: 1
+  hidden_dim: 384
+  decomposition:
+    causal: true
+  recomposition:
+    depth: shallow
+training:
+  learning_rate: 0.0003
+  batch_size: 32
+  max_steps: 8000
+dataset_name: roneneldan/TinyStories
