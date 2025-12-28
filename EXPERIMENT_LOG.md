@@ -54,3 +54,51 @@ December 26, 2025
 - Samples: 16000
 - Train loss: 1.0298
 - Eval loss: 1.0028
+
+2025-12-27 14:01
+- Study: exp1_expressivity
+- Experiment: hybrid_12m
+- Config: experiments/exp1_expressivity/config_B_hybrid_12m.yaml
+- Dataset: roneneldan/TinyStories
+- Device: mps
+- Max steps: 3000
+- Samples: 8000
+- Train loss: 0.6730
+- Eval loss: 0.7725
+- Holdout loss: 0.8892
+
+2025-12-27 15:03
+- Study: exp1_expressivity
+- Experiment: neural_12m
+- Config: experiments/exp1_expressivity/config_D_neural_12m.yaml
+- Dataset: roneneldan/TinyStories
+- Device: mps
+- Max steps: 3000
+- Samples: 8000
+- Train loss: 0.9575
+- Eval loss: 1.0416
+- Holdout loss: 1.1380
+
+2025-12-27 16:57
+- Study: exp1_expressivity
+- Experiment: hybrid_50m
+- Config: experiments/exp1_expressivity/config_C_hybrid_50m.yaml
+- Dataset: roneneldan/TinyStories
+- Device: mps
+- Max steps: 3000
+- Samples: 16000
+- Train loss: 0.8614
+- Eval loss: 0.6277
+- Holdout loss: 0.8587
+
+2025-12-27 18:40
+- Study: exp1_expressivity
+- Experiment: neural_50m
+- Config: experiments/exp1_expressivity/config_A_neural_50m.yaml
+- Dataset: roneneldan/TinyStories
+- Device: mps
+- Max steps: 3000
+- Samples: 16000
+- Train loss: 1.0310
+- Eval loss: 1.0042
+- Holdout loss: 1.0791
