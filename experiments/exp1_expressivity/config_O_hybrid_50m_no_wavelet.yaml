@@ -1,0 +1,18 @@
+name: hybrid_50m_no_wavelet
+model:
+  use_analytical_decomp: true
+  enabled_lanes:
+    - poly
+    - trig
+  num_lanes: 2
+  hidden_dim: 768
+  decomposition:
+    causal: true
+    poly_order: 8
+  recomposition:
+    depth: deep
+training:
+  learning_rate: 0.00015
+  batch_size: 16
+  max_steps: 12000
+dataset_name: roneneldan/TinyStories

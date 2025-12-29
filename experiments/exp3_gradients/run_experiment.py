@@ -6,11 +6,14 @@ from __future__ import annotations
 import argparse
 from torch.utils.data import DataLoader, Subset
 
+import torch
+
 from wavestack_hybrid.analysis.gradient_tracker import GradientTracker
 from wavestack_hybrid.config import ExperimentConfig
 from wavestack_hybrid.data.dataset import WaveStackTextDataset
 from wavestack_hybrid.data.tokenizer import TokenizerWrapper
 from wavestack_hybrid.models.wavestack import HybridWaveStack
+from wavestack_hybrid.training.seed import set_seed
 from wavestack_hybrid.training.trainer import Trainer
 
 
@@ -20,6 +23,7 @@ def main():
     parser.add_argument("--device", default=None)
     parser.add_argument("--max-steps", type=int, default=None)
     parser.add_argument("--samples", type=int, default=None)
+    parser.add_argument("--seed", type=int, default=None, help="Seed for RNGs and dataloader shuffling.")
     args = parser.parse_args()
 
     experiment = ExperimentConfig.from_yaml(args.config)
@@ -27,6 +31,8 @@ def main():
         experiment.training.device = args.device
     if args.max_steps:
         experiment.training.max_steps = args.max_steps
+    if args.seed is not None:
+        set_seed(args.seed)
 
     tokenizer = TokenizerWrapper()
     dataset = WaveStackTextDataset(
@@ -38,7 +44,10 @@ def main():
     if args.samples:
         dataset = Subset(dataset, list(range(min(args.samples, len(dataset)))))
 
-    dataloader = DataLoader(dataset, batch_size=experiment.training.batch_size, shuffle=True)
+    generator = torch.Generator().manual_seed(args.seed) if args.seed is not None else None
+    dataloader = DataLoader(
+        dataset, batch_size=experiment.training.batch_size, shuffle=True, generator=generator
+    )
 
     print(
         f"[Gradients] Experiment={experiment.name} samples={len(dataloader.dataset)} "

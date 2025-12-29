@@ -40,6 +40,17 @@ Device selection defaults to `auto`, which prefers CUDA, then Apple Silicon MPS,
     --config experiments/exp1_expressivity/config_C_hybrid_50m.yaml \
     --device auto --max-steps 1000 --samples 2048
   ```
+  Seeded runs can be reproduced with `--seed`, which also fixes dataloader shuffling:
+  ```bash
+  uv run python experiments/exp1_expressivity/run_experiment.py \
+    --config experiments/exp1_expressivity/config_B_hybrid_12m.yaml \
+    --device auto --max-steps 3000 --samples 8000 --seed 1
+  ```
+  To run the whole expressivity suite (optionally with ablations) and multiple seeds:
+  ```bash
+  uv run python scripts/run_expressivity_suite.py --device auto --max-steps 3000 --seeds 1,2,3
+  uv run python scripts/run_expressivity_suite.py --device auto --max-steps 3000 --include-ablations --seeds 1,2
+  ```
 - Adaptation study (pretrain + finetune):
   ```bash
   uv run python experiments/exp2_adaptation/run_experiment.py \
