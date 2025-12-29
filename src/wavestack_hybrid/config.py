@@ -14,7 +14,7 @@ class DecompositionConfig:
     causal: bool = False
 
     # Chebyshev (polynomial) settings
-    poly_order: int = 32
+    poly_order: int = 8
     poly_normalization: Literal["unit", "standard"] = "unit"
 
     # Fourier (trigonometric) settings

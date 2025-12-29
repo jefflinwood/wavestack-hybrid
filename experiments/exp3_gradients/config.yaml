@@ -4,6 +4,7 @@ model:
   hidden_dim: 256
   decomposition:
     causal: true
+    poly_order: 8
 training:
   learning_rate: 0.0005
   batch_size: 16

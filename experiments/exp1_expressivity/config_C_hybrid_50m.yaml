@@ -4,6 +4,7 @@ model:
   hidden_dim: 768
   decomposition:
     causal: true
+    poly_order: 8
   recomposition:
     depth: deep
 training:
