@@ -594,3 +594,16 @@ December 26, 2025
 - Scaling exponent: 1.008
 - Timing: 64:13.02ms/39323.2tps, 128:24.10ms/42488.2tps, 256:47.88ms/42772.1tps, 512:106.39ms/38499.1tps
 - Output: n/a
+
+2025-12-30 23:32
+- Study: exp1_expressivity
+- Experiment: hybrid_12m_poly_order4
+- Config: experiments/exp1_expressivity/config_P_hybrid_12m_poly_order4.yaml
+- Dataset: roneneldan/TinyStories
+- Device: mps
+- Max steps: 3000
+- Samples: 8000
+- Seed: n/a
+- Train loss: 0.6159
+- Eval loss: 0.7379
+- Holdout loss: 0.8525
