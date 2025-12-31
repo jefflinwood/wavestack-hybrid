@@ -51,6 +51,15 @@ Device selection defaults to `auto`, which prefers CUDA, then Apple Silicon MPS,
   uv run python scripts/run_expressivity_suite.py --device auto --max-steps 3000 --seeds 1,2,3
   uv run python scripts/run_expressivity_suite.py --device auto --max-steps 3000 --include-ablations --seeds 1,2
   ```
+- Inference scaling benchmark (Hybrid vs Transformer baseline):
+  ```bash
+  uv run python scripts/benchmark_inference.py \
+    --model both \
+    --config experiments/exp1_expressivity/config_B_hybrid_12m.yaml \
+    --device auto \
+    --seq-lens 64,128,256,512 \
+    --batch-size 8 --steps 10
+  ```
 - Adaptation study (pretrain + finetune):
   ```bash
   uv run python experiments/exp2_adaptation/run_experiment.py \

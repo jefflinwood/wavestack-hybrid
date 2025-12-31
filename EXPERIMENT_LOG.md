@@ -570,3 +570,27 @@ December 26, 2025
 - Train loss: 0.9229
 - Eval loss: 0.6754
 - Holdout loss: 0.9205
+
+2025-12-30 21:34
+- Study: inference_benchmark
+- Model: hybrid
+- Device: mps
+- Seq lens: 64,128,256,512
+- Batch size: 8
+- Steps: 10
+- Warmup: 2
+- Scaling exponent: 1.078
+- Timing: 64:16.80ms/30477.0tps, 128:43.30ms/23646.5tps, 256:81.54ms/25117.4tps, 512:164.25ms/24937.7tps
+- Output: n/a
+
+2025-12-30 21:34
+- Study: inference_benchmark
+- Model: transformer
+- Device: mps
+- Seq lens: 64,128,256,512
+- Batch size: 8
+- Steps: 10
+- Warmup: 2
+- Scaling exponent: 1.008
+- Timing: 64:13.02ms/39323.2tps, 128:24.10ms/42488.2tps, 256:47.88ms/42772.1tps, 512:106.39ms/38499.1tps
+- Output: n/a
