@@ -8,7 +8,7 @@ model:
   hidden_dim: 768
   decomposition:
     causal: true
-    poly_order: 8
+    poly_order: 4
   recomposition:
     depth: deep
 training:
