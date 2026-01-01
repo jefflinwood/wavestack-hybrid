@@ -1,0 +1,12 @@
+name: adaptation_finetune_sanity
+model:
+  use_analytical_decomp: true
+  hidden_dim: 512
+  decomposition:
+    causal: true
+    poly_order: 4
+training:
+  learning_rate: 5.0e-05
+  batch_size: 16
+  max_steps: 1000
+dataset_name: mbpp

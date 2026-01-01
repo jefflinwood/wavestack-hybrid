@@ -1,0 +1,12 @@
+name: adaptation_pretrain_sanity
+model:
+  use_analytical_decomp: true
+  hidden_dim: 512
+  decomposition:
+    causal: true
+    poly_order: 4
+training:
+  learning_rate: 0.00025
+  batch_size: 32
+  max_steps: 2000
+dataset_name: roneneldan/TinyStories

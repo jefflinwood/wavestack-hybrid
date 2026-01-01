@@ -607,3 +607,265 @@ December 26, 2025
 - Train loss: 0.6159
 - Eval loss: 0.7379
 - Holdout loss: 0.8525
+
+2025-12-31 08:45
+- Study: exp1_expressivity
+- Experiment: hybrid_12m
+- Config: experiments/exp1_expressivity/config_B_hybrid_12m.yaml
+- Dataset: roneneldan/TinyStories
+- Device: mps
+- Max steps: 3000
+- Samples: 8000
+- Seed: 1
+- Train loss: 0.6161
+- Eval loss: 0.7412
+- Holdout loss: 0.8458
+
+2025-12-31 09:48
+- Study: exp1_expressivity
+- Experiment: neural_12m
+- Config: experiments/exp1_expressivity/config_D_neural_12m.yaml
+- Dataset: roneneldan/TinyStories
+- Device: mps
+- Max steps: 3000
+- Samples: 8000
+- Seed: 1
+- Train loss: 0.9611
+- Eval loss: 1.0363
+- Holdout loss: 1.1367
+
+2025-12-31 11:32
+- Study: exp1_expressivity
+- Experiment: hybrid_50m
+- Config: experiments/exp1_expressivity/config_C_hybrid_50m.yaml
+- Dataset: roneneldan/TinyStories
+- Device: mps
+- Max steps: 3000
+- Samples: 16000
+- Seed: 1
+- Train loss: 0.8531
+- Eval loss: 0.6195
+- Holdout loss: 0.8817
+
+2025-12-31 13:16
+- Study: exp1_expressivity
+- Experiment: neural_50m
+- Config: experiments/exp1_expressivity/config_A_neural_50m.yaml
+- Dataset: roneneldan/TinyStories
+- Device: mps
+- Max steps: 3000
+- Samples: 16000
+- Seed: 1
+- Train loss: 1.0196
+- Eval loss: 1.0040
+- Holdout loss: 1.0908
+
+2025-12-31 15:08
+- Study: exp1_expressivity
+- Experiment: hybrid_12m
+- Config: experiments/exp1_expressivity/config_B_hybrid_12m.yaml
+- Dataset: roneneldan/TinyStories
+- Device: mps
+- Max steps: 3000
+- Samples: 8000
+- Seed: 2
+- Train loss: 0.6167
+- Eval loss: 0.7372
+- Holdout loss: 0.8310
+
+2025-12-31 16:11
+- Study: exp1_expressivity
+- Experiment: neural_12m
+- Config: experiments/exp1_expressivity/config_D_neural_12m.yaml
+- Dataset: roneneldan/TinyStories
+- Device: mps
+- Max steps: 3000
+- Samples: 8000
+- Seed: 2
+- Train loss: 0.9593
+- Eval loss: 1.0378
+- Holdout loss: 1.1099
+
+2025-12-31 17:55
+- Study: exp1_expressivity
+- Experiment: hybrid_50m
+- Config: experiments/exp1_expressivity/config_C_hybrid_50m.yaml
+- Dataset: roneneldan/TinyStories
+- Device: mps
+- Max steps: 3000
+- Samples: 16000
+- Seed: 2
+- Train loss: 0.8405
+- Eval loss: 0.6170
+- Holdout loss: 0.8479
+
+2025-12-31 19:38
+- Study: exp1_expressivity
+- Experiment: neural_50m
+- Config: experiments/exp1_expressivity/config_A_neural_50m.yaml
+- Dataset: roneneldan/TinyStories
+- Device: mps
+- Max steps: 3000
+- Samples: 16000
+- Seed: 2
+- Train loss: 1.0280
+- Eval loss: 1.0046
+- Holdout loss: 1.0476
+
+2025-12-31 21:31
+- Study: exp1_expressivity
+- Experiment: hybrid_12m
+- Config: experiments/exp1_expressivity/config_B_hybrid_12m.yaml
+- Dataset: roneneldan/TinyStories
+- Device: mps
+- Max steps: 3000
+- Samples: 8000
+- Seed: 3
+- Train loss: 0.6194
+- Eval loss: 0.7382
+- Holdout loss: 0.8144
+
+2025-12-31 22:33
+- Study: exp1_expressivity
+- Experiment: neural_12m
+- Config: experiments/exp1_expressivity/config_D_neural_12m.yaml
+- Dataset: roneneldan/TinyStories
+- Device: mps
+- Max steps: 3000
+- Samples: 8000
+- Seed: 3
+- Train loss: 0.9630
+- Eval loss: 1.0359
+- Holdout loss: 1.0867
+
+2026-01-01 00:18
+- Study: exp1_expressivity
+- Experiment: hybrid_50m
+- Config: experiments/exp1_expressivity/config_C_hybrid_50m.yaml
+- Dataset: roneneldan/TinyStories
+- Device: mps
+- Max steps: 3000
+- Samples: 16000
+- Seed: 3
+- Train loss: 0.8516
+- Eval loss: 0.6179
+- Holdout loss: 0.8823
+
+2026-01-01 02:01
+- Study: exp1_expressivity
+- Experiment: neural_50m
+- Config: experiments/exp1_expressivity/config_A_neural_50m.yaml
+- Dataset: roneneldan/TinyStories
+- Device: mps
+- Max steps: 3000
+- Samples: 16000
+- Seed: 3
+- Train loss: 1.0363
+- Eval loss: 1.0031
+- Holdout loss: 1.1249
+
+2026-01-01 02:52
+- Study: exp1_expressivity
+- Experiment: hybrid_50m_only_wavelet
+- Config: experiments/exp1_expressivity/config_N_hybrid_50m_only_wavelet.yaml
+- Dataset: roneneldan/TinyStories
+- Device: mps
+- Max steps: 3000
+- Samples: 16000
+- Seed: 1
+- Train loss: 0.9240
+- Eval loss: 0.6843
+- Holdout loss: 0.9534
+
+2026-01-01 04:32
+- Study: exp1_expressivity
+- Experiment: hybrid_50m_no_wavelet
+- Config: experiments/exp1_expressivity/config_O_hybrid_50m_no_wavelet.yaml
+- Dataset: roneneldan/TinyStories
+- Device: mps
+- Max steps: 3000
+- Samples: 16000
+- Seed: 1
+- Train loss: 0.9456
+- Eval loss: 0.6842
+- Holdout loss: 0.9698
+
+2026-01-01 05:23
+- Study: exp1_expressivity
+- Experiment: hybrid_50m_only_wavelet
+- Config: experiments/exp1_expressivity/config_N_hybrid_50m_only_wavelet.yaml
+- Dataset: roneneldan/TinyStories
+- Device: mps
+- Max steps: 3000
+- Samples: 16000
+- Seed: 2
+- Train loss: 0.9091
+- Eval loss: 0.6787
+- Holdout loss: 0.9165
+
+2026-01-01 07:03
+- Study: exp1_expressivity
+- Experiment: hybrid_50m_no_wavelet
+- Config: experiments/exp1_expressivity/config_O_hybrid_50m_no_wavelet.yaml
+- Dataset: roneneldan/TinyStories
+- Device: mps
+- Max steps: 3000
+- Samples: 16000
+- Seed: 2
+- Train loss: 0.9342
+- Eval loss: 0.6833
+- Holdout loss: 0.9291
+
+2026-01-01 07:54
+- Study: exp1_expressivity
+- Experiment: hybrid_50m_only_wavelet
+- Config: experiments/exp1_expressivity/config_N_hybrid_50m_only_wavelet.yaml
+- Dataset: roneneldan/TinyStories
+- Device: mps
+- Max steps: 3000
+- Samples: 16000
+- Seed: 3
+- Train loss: 0.9204
+- Eval loss: 0.6811
+- Holdout loss: 0.9496
+
+2026-01-01 09:34
+- Study: exp1_expressivity
+- Experiment: hybrid_50m_no_wavelet
+- Config: experiments/exp1_expressivity/config_O_hybrid_50m_no_wavelet.yaml
+- Dataset: roneneldan/TinyStories
+- Device: mps
+- Max steps: 3000
+- Samples: 16000
+- Seed: 3
+- Train loss: 0.9477
+- Eval loss: 0.6853
+- Holdout loss: 0.9745
+
+2026-01-01 11:06
+- Study: exp2_adaptation
+- Stage: pretrain
+- Experiment: adaptation_pretrain_sanity
+- Config: experiments/exp2_adaptation/pretrain_config_sanity.yaml
+- Dataset: roneneldan/TinyStories
+- Device: mps
+- Max steps: 2000
+- Samples: all
+- Seed: 1
+- Train loss: 0.8401
+- Eval loss: 0.7376
+- Holdout loss: 0.8305
+
+2026-01-01 11:30
+- Study: exp2_adaptation
+- Stage: finetune
+- Experiment: adaptation_finetune_sanity
+- Config: experiments/exp2_adaptation/finetune_config_sanity.yaml
+- Dataset: mbpp
+- Device: mps
+- Max steps: 1000
+- Samples: all
+- Seed: 1
+- Train loss: 0.0217
+- Eval loss: 0.0593
+- Holdout loss: 0.0196
