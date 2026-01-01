@@ -4,6 +4,7 @@ This file collects experiment outcomes, takeaways, and open questions. Add new e
 
 ## 2026-01-01 — Multi-Seed Expressivity (Causal, poly_order=4)
 - **Setup:** TinyStories, 3 seeds, 3k steps, 8k/16k samples, MPS.
+- **Runtime:** ~1 day wall time on M1 Max (64 GB RAM) for the full batch (baselines + 50m ablations + adaptation sanity).
 - **Outcome:** Hybrid consistently beats neural baselines at 12m and 50m on eval and holdout losses.
 - **Representative ranges:**
   - Hybrid 12m eval ~0.737–0.741; holdout ~0.814–0.846.
