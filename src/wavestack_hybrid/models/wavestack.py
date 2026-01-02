@@ -60,8 +60,8 @@ class HybridWaveStack(nn.Module):
         self.ln = nn.LayerNorm(config.hidden_dim)
         self.lm_head = nn.Linear(config.hidden_dim, config.vocab_size, bias=False)
 
-    def forward(self, input_ids: torch.LongTensor) -> torch.Tensor:
-        """Forward pass returning vocabulary logits."""
+    def forward(self, input_ids: torch.LongTensor, return_lanes: bool = False):
+        """Forward pass returning vocabulary logits (and lane outputs when requested)."""
 
         hidden = self.embeddings(input_ids)
         lane_features: Dict[str, torch.Tensor]
@@ -93,4 +93,6 @@ class HybridWaveStack(nn.Module):
 
         mixed = self.ln(mixed)
         logits = self.lm_head(mixed)
+        if return_lanes:
+            return logits, lane_outputs
         return logits

@@ -158,6 +158,10 @@ class TrainingConfig:
     save_interval: int = 5000
     log_interval: int = 100
 
+    lane_diversity: bool = False
+    lane_diversity_metric: Literal["cosine", "energy"] = "cosine"
+    log_lane_stats: bool = False
+
     use_wandb: bool = True
     project_name: str = "wavestack_hybrid"
 

@@ -9,6 +9,7 @@ from typing import Iterable, Mapping
 
 import torch
 from torch import nn, optim
+import torch.nn.functional as F
 
 from ..config import ExperimentConfig
 from .loss import compute_multi_objective_loss
@@ -60,6 +61,7 @@ class Trainer:
         self.metrics_path = self.output_dir / f"{self.experiment.name}_metrics.jsonl"
         self.last_train_loss: float | None = None
         self.last_eval_loss: float | None = None
+        self.last_lane_stats: Mapping[str, float] | None = None
 
     def train(
         self,
@@ -100,6 +102,8 @@ class Trainer:
                         payload["train_loss"] = train_loss_avg
                     if eval_loss is not None:
                         payload["eval_loss"] = eval_loss
+                    if self.last_lane_stats:
+                        payload.update(self.last_lane_stats)
                     self._append_log(payload)
 
                 if (step + 1) % self.experiment.training.save_interval == 0:
@@ -157,13 +161,27 @@ class Trainer:
     def _training_step(self, batch: Mapping[str, torch.Tensor]) -> torch.Tensor:
         input_ids = batch["input_ids"].to(self.device)
         labels = batch["labels"].to(self.device)
+        self.last_lane_stats = None
+
+        want_lanes = self.experiment.training.lane_diversity or self.experiment.training.log_lane_stats
 
         autocast_ctx = (
             torch.amp.autocast(device_type="cuda", enabled=True) if self.use_amp else nullcontext()
         )
         with autocast_ctx:
-            logits = self.model(input_ids)
-            loss = compute_multi_objective_loss(logits, labels, None, None, self.experiment.training)
+            if want_lanes:
+                logits, lane_outputs = self.model(input_ids, return_lanes=True)
+                lane_balance = self._compute_lane_balance(lane_outputs)
+                loss = compute_multi_objective_loss(
+                    logits, labels, None, lane_balance, self.experiment.training
+                )
+                if self.experiment.training.log_lane_stats:
+                    self.last_lane_stats = self._compute_lane_stats(lane_outputs)
+            else:
+                logits = self.model(input_ids)
+                loss = compute_multi_objective_loss(
+                    logits, labels, None, None, self.experiment.training
+                )
 
         self.optimizer.zero_grad()
         if self.grad_scaler is not None:
@@ -178,6 +196,32 @@ class Trainer:
             self.optimizer.step()
 
         return loss.detach()
+
+    def _compute_lane_balance(self, lane_outputs: torch.Tensor) -> torch.Tensor:
+        if not self.experiment.training.lane_diversity:
+            return torch.tensor(0.0, device=lane_outputs.device)
+        metric = self.experiment.training.lane_diversity_metric
+        if lane_outputs.size(0) < 2:
+            return torch.tensor(0.0, device=lane_outputs.device)
+        if metric == "energy":
+            energies = lane_outputs.pow(2).mean(dim=(1, 2, 3))
+            mean = energies.mean().clamp_min(1e-6)
+            return energies.std() / mean
+        normalized = F.normalize(lane_outputs, dim=-1, eps=1e-6)
+        sims = []
+        for i in range(normalized.size(0)):
+            for j in range(i + 1, normalized.size(0)):
+                sims.append((normalized[i] * normalized[j]).sum(dim=-1).mean())
+        if not sims:
+            return torch.tensor(0.0, device=lane_outputs.device)
+        return torch.stack(sims).mean()
+
+    def _compute_lane_stats(self, lane_outputs: torch.Tensor) -> Mapping[str, float]:
+        names = getattr(self.model, "lane_names", None)
+        if not names:
+            names = [f"lane_{idx}" for idx in range(lane_outputs.size(0))]
+        norms = torch.linalg.vector_norm(lane_outputs, dim=-1).mean(dim=(1, 2))
+        return {f"{name}_norm": float(norm.item()) for name, norm in zip(names, norms)}
 
     def save_checkpoint(self, step: int):
         output_dir = Path(self.experiment.checkpoint_dir)
