@@ -14,6 +14,15 @@ This file collects experiment outcomes, takeaways, and open questions. Add new e
 - **Interpretation:** Advantage is stable across seeds after enforcing causal lanes and lowering poly order.
 - **Next check:** Extend to longer training horizons (e.g., 10k steps) to confirm gaps persist.
 
+## 2026-01-02 — Context Blocks (12m, Causal)
+- **Setup:** 2 seeds, 3k steps, 8k samples. Compared baseline vs MLP vs causal conv context blocks (pre+post).
+- **Outcome:** Conv context block consistently improved eval/holdout vs baseline; MLP context was neutral.
+- **Representative results:**
+  - Baseline eval ~0.737–0.741; holdout ~0.831–0.846.
+  - Context MLP eval ~0.739–0.743; holdout ~0.832–0.847.
+  - Context conv eval ~0.728–0.730; holdout ~0.823–0.836.
+- **Action:** Promoted conv context block to default in expressivity configs.
+
 ## 2026-01-01 — 50m Lane Ablations (Causal, poly_order=4)
 - **Setup:** 3 seeds, 3k steps, 16k samples.
 - **Outcome:** Wavelet-only and no-wavelet variants are close to each other but both lag the full hybrid.
