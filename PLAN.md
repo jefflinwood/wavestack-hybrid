@@ -3,7 +3,7 @@
 The initial infrastructure (phases 1–10) is in place: package scaffolding, analytical lane implementations, recomposition/mixing logic, experiment configs, and smoke tests. The focus now is on validating the analytical-lane hypothesis and benchmarking WaveStack against attention-driven models.
 
 ## Phase 11 – Analytical Lane Experiments (Days 15-17)
-- **Context Blocks:** Prototype optional lightweight convolutional or residual MLP blocks before/after the lane mixer to study non-attention context sharing. (pending)
+- **Context Blocks:** Prototype optional lightweight convolutional or residual MLP blocks before/after the lane mixer to study non-attention context sharing. (completed: conv context block improves results, promoted to default)
 - **Lane Diversity Regularizers:** Introduce configurable similarity/energy penalties plus per-lane logging to quantify specialization. (pending)
 - **Frequency/Scale Scheduling:** Add schedulers for Chebyshev order, Fourier bins, and wavelet levels so analytical capacity can ramp up during training. (pending)
 - **Causal Lanes:** Enforce causal analytical lanes to avoid future-token leakage and re-run expressivity baselines. (completed)
