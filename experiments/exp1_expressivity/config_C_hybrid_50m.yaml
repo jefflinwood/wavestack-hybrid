@@ -7,6 +7,14 @@ model:
     poly_order: 4
   recomposition:
     depth: deep
+  context_block:
+    enabled: true
+    position: both
+    block_type: conv
+    depth: 1
+    kernel_size: 3
+    dropout: 0.1
+    causal: true
 training:
   learning_rate: 0.00015
   batch_size: 16
