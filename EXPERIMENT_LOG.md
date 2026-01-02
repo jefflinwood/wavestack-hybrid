@@ -869,3 +869,81 @@ December 26, 2025
 - Train loss: 0.0217
 - Eval loss: 0.0593
 - Holdout loss: 0.0196
+
+2026-01-01 22:09
+- Study: exp1_expressivity
+- Experiment: hybrid_12m
+- Config: experiments/exp1_expressivity/config_B_hybrid_12m.yaml
+- Dataset: roneneldan/TinyStories
+- Device: mps
+- Max steps: 3000
+- Samples: 8000
+- Seed: 1
+- Train loss: 0.6161
+- Eval loss: 0.7412
+- Holdout loss: 0.8459
+
+2026-01-02 00:05
+- Study: exp1_expressivity
+- Experiment: hybrid_12m_context_mlp
+- Config: experiments/exp1_expressivity/config_Q_hybrid_12m_context_mlp.yaml
+- Dataset: roneneldan/TinyStories
+- Device: mps
+- Max steps: 3000
+- Samples: 8000
+- Seed: 1
+- Train loss: 0.6428
+- Eval loss: 0.7427
+- Holdout loss: 0.8465
+
+2026-01-02 02:00
+- Study: exp1_expressivity
+- Experiment: hybrid_12m_context_conv
+- Config: experiments/exp1_expressivity/config_R_hybrid_12m_context_conv.yaml
+- Dataset: roneneldan/TinyStories
+- Device: mps
+- Max steps: 3000
+- Samples: 8000
+- Seed: 1
+- Train loss: 0.6148
+- Eval loss: 0.7284
+- Holdout loss: 0.8355
+
+2026-01-02 03:53
+- Study: exp1_expressivity
+- Experiment: hybrid_12m
+- Config: experiments/exp1_expressivity/config_B_hybrid_12m.yaml
+- Dataset: roneneldan/TinyStories
+- Device: mps
+- Max steps: 3000
+- Samples: 8000
+- Seed: 2
+- Train loss: 0.6167
+- Eval loss: 0.7371
+- Holdout loss: 0.8308
+
+2026-01-02 05:48
+- Study: exp1_expressivity
+- Experiment: hybrid_12m_context_mlp
+- Config: experiments/exp1_expressivity/config_Q_hybrid_12m_context_mlp.yaml
+- Dataset: roneneldan/TinyStories
+- Device: mps
+- Max steps: 3000
+- Samples: 8000
+- Seed: 2
+- Train loss: 0.6422
+- Eval loss: 0.7390
+- Holdout loss: 0.8318
+
+2026-01-02 07:44
+- Study: exp1_expressivity
+- Experiment: hybrid_12m_context_conv
+- Config: experiments/exp1_expressivity/config_R_hybrid_12m_context_conv.yaml
+- Dataset: roneneldan/TinyStories
+- Device: mps
+- Max steps: 3000
+- Samples: 8000
+- Seed: 2
+- Train loss: 0.6126
+- Eval loss: 0.7296
+- Holdout loss: 0.8225

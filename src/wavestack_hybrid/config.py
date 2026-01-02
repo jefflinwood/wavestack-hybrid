@@ -40,11 +40,26 @@ class RecompositionConfig:
 
 
 @dataclass
+class ContextBlockConfig:
+    """Optional context block configuration."""
+
+    enabled: bool = False
+    position: Literal["pre", "post", "both"] = "both"
+    block_type: Literal["mlp", "conv"] = "mlp"
+    depth: int = 1
+    hidden_multiplier: float = 2.0
+    dropout: float = 0.1
+    kernel_size: int = 3
+    causal: bool = True
+
+
+@dataclass
 class ModelConfig:
     """Top-level model layout."""
 
     use_analytical_decomp: bool = True  # False => neural-only baseline
     enabled_lanes: list[str] = field(default_factory=lambda: ["poly", "trig", "wavelet"])
+    context_block: ContextBlockConfig = field(default_factory=ContextBlockConfig)
 
     # Dimensions
     vocab_size: int = 50_257
@@ -104,7 +119,22 @@ class ModelConfig:
         if not self.use_analytical_decomp:
             neural_params = self.neural_decomp_layers * (self.hidden_dim ** 2)
 
-        return embed_params + lane_params + mixing_params + neural_params
+        context_params = 0
+        if self.context_block.enabled:
+            block_count = 2 if self.context_block.position == "both" else 1
+            if self.context_block.block_type == "mlp":
+                width = int(self.hidden_dim * self.context_block.hidden_multiplier)
+                context_params = block_count * self.context_block.depth * (2 * self.hidden_dim * width)
+            else:
+                context_params = (
+                    block_count
+                    * self.context_block.depth
+                    * self.hidden_dim
+                    * self.hidden_dim
+                    * self.context_block.kernel_size
+                )
+
+        return embed_params + lane_params + mixing_params + neural_params + context_params
 
 
 @dataclass

@@ -13,6 +13,7 @@ from .decomposition.fourier import FourierDecomposition
 from .decomposition.neural import NeuralDecomposition
 from .decomposition.wavelet import WaveletDecomposition
 from .embeddings import HybridEmbedding
+from .context_block import ContextBlock
 from .mixing import LaneMixer
 from .recomposition import RecompositionBundle
 
@@ -48,6 +49,14 @@ class HybridWaveStack(nn.Module):
                 f"config.num_lanes={config.num_lanes} does not match enabled lanes {self.lane_names}"
             )
         self.mixer = LaneMixer(config.hidden_dim, len(self.lane_names), config.mixing_type)
+        self.pre_context_block = None
+        self.post_context_block = None
+        if config.context_block.enabled:
+            position = config.context_block.position
+            if position in {"pre", "both"}:
+                self.pre_context_block = ContextBlock(config.hidden_dim, config.context_block)
+            if position in {"post", "both"}:
+                self.post_context_block = ContextBlock(config.hidden_dim, config.context_block)
         self.ln = nn.LayerNorm(config.hidden_dim)
         self.lm_head = nn.Linear(config.hidden_dim, config.vocab_size, bias=False)
 
@@ -70,8 +79,14 @@ class HybridWaveStack(nn.Module):
             lane_features = {name: base for name in self.lane_names}
 
         recomposed = self.recomposition(lane_features)
+        if self.pre_context_block is not None:
+            recomposed = {
+                name: self.pre_context_block(recomposed[name]) for name in self.lane_names
+            }
         lane_outputs = torch.stack([recomposed[name] for name in self.lane_names], dim=0)
         mixed = self.mixer(lane_outputs)
+        if self.post_context_block is not None:
+            mixed = self.post_context_block(mixed)
 
         if self.config.use_skip_connections:
             mixed = mixed + hidden
