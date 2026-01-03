@@ -23,6 +23,14 @@ This file collects experiment outcomes, takeaways, and open questions. Add new e
   - Context conv eval ~0.728–0.730; holdout ~0.823–0.836.
 - **Action:** Promoted conv context block to default in expressivity configs.
 
+## 2026-01-03 — Scheduling (12m, Causal)
+- **Setup:** 2 seeds, 3k steps, 8k samples. Linear schedule ramped `poly_order`, `num_freqs`, `wavelet_levels` over 1k steps.
+- **Outcome:** Scheduled vs static showed no meaningful difference at 3k steps.
+- **Representative results:**
+  - Seed 1 baseline eval 0.7284 / holdout 0.8354 vs scheduled eval 0.7287 / holdout 0.8348.
+  - Seed 2 baseline eval 0.7296 / holdout 0.8225 vs scheduled eval 0.7296 / holdout 0.8225.
+- **Interpretation:** Scheduling may need longer horizons or different ramp settings; parked for larger hardware.
+
 ## 2026-01-01 — 50m Lane Ablations (Causal, poly_order=4)
 - **Setup:** 3 seeds, 3k steps, 16k samples.
 - **Outcome:** Wavelet-only and no-wavelet variants are close to each other but both lag the full hybrid.
