@@ -37,11 +37,13 @@ The `Trainer`:
 - Runs lightweight evaluation every `eval_interval` using `eval_batches`.
 - Writes metrics to `outputs/<experiment>_metrics.jsonl`.
 - Optionally writes checkpoints to `checkpoints/`.
+- Optional runtime/memory stats can be logged per interval when `training.log_runtime` or `training.log_memory` are enabled.
 
 ## Evaluation
 - Default evaluation uses the dataset `validation` split.
 - For additional sanity checks, the experiment runners compute a fixed-seed holdout loss from the train split (or remaining samples when `--samples` is used).
 - Results are appended to `EXPERIMENT_LOG.md`.
+- When enabled, runtime/tokens-per-second and peak memory entries are also appended to `EXPERIMENT_LOG.md`.
 
 ## Experiments
 - **Expressivity (exp1)**: Hybrid vs neural baselines at matched parameter sizes, plus lane ablations.

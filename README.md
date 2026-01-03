@@ -51,6 +51,12 @@ Device selection defaults to `auto`, which prefers CUDA, then Apple Silicon MPS,
   uv run python scripts/run_expressivity_suite.py --device auto --max-steps 3000 --seeds 1,2,3
   uv run python scripts/run_expressivity_suite.py --device auto --max-steps 3000 --include-ablations --seeds 1,2
   ```
+  Runtime/memory logging can be enabled in the YAML configs:
+  ```yaml
+  training:
+    log_runtime: true
+    log_memory: true
+  ```
 - Inference scaling benchmark (Hybrid vs Transformer baseline):
   ```bash
   uv run python scripts/benchmark_inference.py \
