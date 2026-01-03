@@ -85,6 +85,8 @@ class Trainer:
 
         while step < self.experiment.training.max_steps:
             for batch in dataloader:
+                if hasattr(self.model, "update_schedule"):
+                    self.model.update_schedule(step + 1, self.experiment.training.max_steps)
                 start_time = time.perf_counter()
                 loss = self._training_step(batch)
                 step_time = time.perf_counter() - start_time

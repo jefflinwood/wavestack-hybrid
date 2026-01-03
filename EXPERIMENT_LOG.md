@@ -973,3 +973,91 @@ December 26, 2025
 - Train loss: 0.6145
 - Eval loss: 0.7287
 - Holdout loss: 0.8354
+
+2026-01-03 00:47
+- Study: exp1_expressivity
+- Experiment: hybrid_12m
+- Config: experiments/exp1_expressivity/config_B_hybrid_12m.yaml
+- Dataset: roneneldan/TinyStories
+- Device: mps
+- Max steps: 3000
+- Samples: 8000
+- Seed: 1
+- Train loss: 0.6148
+- Eval loss: 0.7284
+- Holdout loss: 0.8354
+- Runtime (s): 5585.73
+- Tokens/s: 8799.57
+- Peak memory (bytes): n/a
+- Params total: 0
+- Params breakdown: {'embeddings': 19495296, 'lanes': 2215488, 'mixing': 443907, 'context': 885504}
+- Params lanes: {'poly': 443520, 'trig': 443520, 'wavelet': 1328448}
+- FLOPs total (seq): 2.34e+10
+- FLOPs breakdown (seq): {'lanes': 2264924160.0, 'mixing': 454754304.0, 'context': 905969664.0, 'lm_head': 19761856512.0, 'total': 23387504640.0}
+- FLOPs lanes (seq): {'poly': 452984832.0, 'trig': 452984832.0, 'wavelet': 1358954496.0}
+
+2026-01-03 02:46
+- Study: exp1_expressivity
+- Experiment: hybrid_12m_schedule
+- Config: experiments/exp1_expressivity/config_U_hybrid_12m_schedule.yaml
+- Dataset: roneneldan/TinyStories
+- Device: mps
+- Max steps: 3000
+- Samples: 8000
+- Seed: 1
+- Train loss: 0.6310
+- Eval loss: 0.7287
+- Holdout loss: 0.8348
+- Runtime (s): 5218.51
+- Tokens/s: 9418.78
+- Peak memory (bytes): n/a
+- Params total: 0
+- Params breakdown: {'embeddings': 19495296, 'lanes': 2215488, 'mixing': 443907, 'context': 885504}
+- Params lanes: {'poly': 443520, 'trig': 443520, 'wavelet': 1328448}
+- FLOPs total (seq): 2.34e+10
+- FLOPs breakdown (seq): {'lanes': 2264924160.0, 'mixing': 454754304.0, 'context': 905969664.0, 'lm_head': 19761856512.0, 'total': 23387504640.0}
+- FLOPs lanes (seq): {'poly': 452984832.0, 'trig': 452984832.0, 'wavelet': 1358954496.0}
+
+2026-01-03 04:41
+- Study: exp1_expressivity
+- Experiment: hybrid_12m
+- Config: experiments/exp1_expressivity/config_B_hybrid_12m.yaml
+- Dataset: roneneldan/TinyStories
+- Device: mps
+- Max steps: 3000
+- Samples: 8000
+- Seed: 2
+- Train loss: 0.6126
+- Eval loss: 0.7296
+- Holdout loss: 0.8225
+- Runtime (s): 5582.73
+- Tokens/s: 8804.30
+- Peak memory (bytes): n/a
+- Params total: 0
+- Params breakdown: {'embeddings': 19495296, 'lanes': 2215488, 'mixing': 443907, 'context': 885504}
+- Params lanes: {'poly': 443520, 'trig': 443520, 'wavelet': 1328448}
+- FLOPs total (seq): 2.34e+10
+- FLOPs breakdown (seq): {'lanes': 2264924160.0, 'mixing': 454754304.0, 'context': 905969664.0, 'lm_head': 19761856512.0, 'total': 23387504640.0}
+- FLOPs lanes (seq): {'poly': 452984832.0, 'trig': 452984832.0, 'wavelet': 1358954496.0}
+
+2026-01-03 06:32
+- Study: exp1_expressivity
+- Experiment: hybrid_12m_schedule
+- Config: experiments/exp1_expressivity/config_U_hybrid_12m_schedule.yaml
+- Dataset: roneneldan/TinyStories
+- Device: mps
+- Max steps: 3000
+- Samples: 8000
+- Seed: 2
+- Train loss: 0.6290
+- Eval loss: 0.7296
+- Holdout loss: 0.8225
+- Runtime (s): 4770.48
+- Tokens/s: 10303.37
+- Peak memory (bytes): n/a
+- Params total: 0
+- Params breakdown: {'embeddings': 19495296, 'lanes': 2215488, 'mixing': 443907, 'context': 885504}
+- Params lanes: {'poly': 443520, 'trig': 443520, 'wavelet': 1328448}
+- FLOPs total (seq): 2.34e+10
+- FLOPs breakdown (seq): {'lanes': 2264924160.0, 'mixing': 454754304.0, 'context': 905969664.0, 'lm_head': 19761856512.0, 'total': 23387504640.0}
+- FLOPs lanes (seq): {'poly': 452984832.0, 'trig': 452984832.0, 'wavelet': 1358954496.0}

@@ -12,6 +12,11 @@ class DecompositionConfig:
     """Analytical decomposition lane configuration."""
 
     causal: bool = False
+    schedule: bool = False
+    schedule_steps: int = 1000
+    poly_order_min: int = 4
+    num_freqs_min: int = 16
+    wavelet_levels_min: int = 1
 
     # Chebyshev (polynomial) settings
     poly_order: int = 4

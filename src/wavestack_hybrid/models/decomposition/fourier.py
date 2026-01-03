@@ -15,14 +15,18 @@ class FourierDecomposition(nn.Module):
 
     def __init__(self, hidden_dim: int, config: DecompositionConfig):
         super().__init__()
-        self.num_freqs = max(1, config.num_freqs)
+        self.max_num_freqs = max(1, config.num_freqs)
+        self.active_num_freqs = self.max_num_freqs
         self.freq_selection = config.freq_selection
         self.causal = config.causal
         if config.freq_selection == "learnable":
-            self.freq_gates = nn.Parameter(torch.ones(self.num_freqs))
+            self.freq_gates = nn.Parameter(torch.ones(self.max_num_freqs))
         else:
-            self.register_buffer("freq_gates", torch.ones(self.num_freqs), persistent=False)
+            self.register_buffer("freq_gates", torch.ones(self.max_num_freqs), persistent=False)
         self.project = nn.Linear(hidden_dim, hidden_dim)
+
+    def set_active_num_freqs(self, num_freqs: int) -> None:
+        self.active_num_freqs = max(1, min(int(num_freqs), self.max_num_freqs))
 
     def forward(self, hidden_states: torch.Tensor) -> torch.Tensor:
         """Return time-domain reconstruction from truncated spectrum."""
@@ -32,7 +36,7 @@ class FourierDecomposition(nn.Module):
             return self._causal_reconstruct(hidden_states, seq_len)
         freq_full_len = seq_len // 2 + 1
         freq = torch.fft.rfft(hidden_states, dim=1, norm="ortho")
-        num_freqs = min(self.num_freqs, freq.size(1))
+        num_freqs = min(self.active_num_freqs, freq.size(1))
         truncated = freq[:, :num_freqs, :]
         gates = self.freq_gates[:num_freqs].view(1, num_freqs, 1)
         gated = truncated * gates
@@ -52,7 +56,7 @@ class FourierDecomposition(nn.Module):
         """Approximate causal band-limited reconstruction using prefix Fourier features."""
 
         x = hidden_states
-        num_freqs = min(self.num_freqs, seq_len // 2 + 1)
+        num_freqs = min(self.active_num_freqs, seq_len // 2 + 1)
         positions = torch.arange(seq_len, device=x.device, dtype=x.dtype)
         freqs = torch.arange(num_freqs, device=x.device, dtype=x.dtype)
         angles = (2.0 * math.pi / max(1, seq_len)) * positions[:, None] * freqs[None, :]

@@ -96,3 +96,24 @@ class HybridWaveStack(nn.Module):
         if return_lanes:
             return logits, lane_outputs
         return logits
+
+    def update_schedule(self, step: int, total_steps: int) -> None:
+        """Update decomposition lane capacities according to schedule settings."""
+
+        config = self.config.decomposition
+        if not config.schedule or total_steps <= 0:
+            return
+        steps = max(1, config.schedule_steps)
+        progress = min(step, steps) / steps
+
+        def _interp(min_val: int, max_val: int) -> int:
+            return max(1, int(min_val + (max_val - min_val) * progress))
+
+        poly_target = _interp(config.poly_order_min, config.poly_order)
+        num_freqs_target = _interp(config.num_freqs_min, config.num_freqs)
+        levels_target = _interp(config.wavelet_levels_min, config.wavelet_levels)
+
+        if self.config.use_analytical_decomp:
+            self.chebyshev.set_active_order(poly_target)
+            self.fourier.set_active_num_freqs(num_freqs_target)
+            self.wavelet.set_active_levels(levels_target)

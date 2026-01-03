@@ -13,21 +13,27 @@ class ChebyshevDecomposition(nn.Module):
 
     def __init__(self, hidden_dim: int, config: DecompositionConfig):
         super().__init__()
-        self.order = max(1, config.poly_order)
+        self.max_order = max(1, config.poly_order)
+        self.active_order = self.max_order
         self.normalization = config.poly_normalization
         self.causal = config.causal
         self.project = nn.Linear(hidden_dim, hidden_dim)
 
-    def _basis(self, seq_len: int, device: torch.device, dtype: torch.dtype) -> torch.Tensor:
+    def set_active_order(self, order: int) -> None:
+        self.active_order = max(1, min(int(order), self.max_order))
+
+    def _basis(
+        self, seq_len: int, device: torch.device, dtype: torch.dtype, order: int
+    ) -> torch.Tensor:
         """Compute Chebyshev basis functions evaluated at normalized positions."""
 
         positions = torch.linspace(-1.0, 1.0, steps=seq_len, device=device, dtype=dtype)
         basis = [torch.ones_like(positions)]
-        if self.order > 1:
+        if order > 1:
             basis.append(positions)
-        for _ in range(2, self.order):
+        for _ in range(2, order):
             basis.append(2 * positions * basis[-1] - basis[-2])
-        return torch.stack(basis[: self.order], dim=-1)  # (seq_len, order)
+        return torch.stack(basis[:order], dim=-1)  # (seq_len, order)
 
     def forward(self, hidden_states: torch.Tensor) -> torch.Tensor:
         """Return reconstruction from truncated Chebyshev series."""
@@ -38,7 +44,8 @@ class ChebyshevDecomposition(nn.Module):
             denom = x.abs().amax(dim=-1, keepdim=True).clamp_min(1e-6)
             x = x / denom
 
-        basis = self._basis(seq_len, x.device, x.dtype)  # (seq_len, order)
+        order = self.active_order
+        basis = self._basis(seq_len, x.device, x.dtype, order)  # (seq_len, order)
         if not self.causal:
             # Coefficients per polynomial order
             coeffs = torch.einsum("bsh,so->boh", x, basis) / seq_len
@@ -47,7 +54,7 @@ class ChebyshevDecomposition(nn.Module):
 
         reconstructed = torch.zeros_like(x)
         denom = torch.arange(1, seq_len + 1, device=x.device, dtype=x.dtype).view(1, seq_len, 1)
-        for order_idx in range(self.order):
+        for order_idx in range(order):
             basis_vec = basis[:, order_idx].view(1, seq_len, 1)
             weighted = x * basis_vec
             coeffs = torch.cumsum(weighted, dim=1) / denom
