@@ -53,6 +53,11 @@ def main():
         f"[Gradients] Experiment={experiment.name} samples={len(dataloader.dataset)} "
         f"device={experiment.training.device} max_steps={experiment.training.max_steps}"
     )
+    params = experiment.model.get_param_breakdown()
+    lane_params = experiment.model.get_lane_param_breakdown()
+    flops = experiment.model.get_flop_breakdown(seq_len=experiment.model.max_seq_len)
+    flops["total"] = sum(flops.values())
+    lane_flops = experiment.model.get_lane_flop_breakdown(seq_len=experiment.model.max_seq_len)
 
     model = HybridWaveStack(experiment.model)
     tracker = GradientTracker(model)
@@ -66,6 +71,12 @@ def main():
             break
 
     print(tracker.summary())
+    print(f"[Gradients] Params total: {params.get('total', 0)}")
+    print(f"[Gradients] Params breakdown: {params}")
+    print(f"[Gradients] Params lanes: {lane_params}")
+    print(f"[Gradients] FLOPs total (seq): {flops.get('total', 0):.2e}")
+    print(f"[Gradients] FLOPs breakdown (seq): {flops}")
+    print(f"[Gradients] FLOPs lanes (seq): {lane_flops}")
 
 
 if __name__ == "__main__":

@@ -111,6 +111,11 @@ def _append_experiment_log(
     timestamp = datetime.now().strftime("%Y-%m-%d %H:%M")
     train_loss = summary.get("train_loss")
     eval_loss = summary.get("eval_loss")
+    params = experiment.model.get_param_breakdown()
+    lane_params = experiment.model.get_lane_param_breakdown()
+    flops = experiment.model.get_flop_breakdown(seq_len=experiment.model.max_seq_len)
+    flops["total"] = sum(flops.values())
+    lane_flops = experiment.model.get_lane_flop_breakdown(seq_len=experiment.model.max_seq_len)
     lines = [
         "",
         timestamp,
@@ -126,6 +131,12 @@ def _append_experiment_log(
         f"- Train loss: {train_loss:.4f}" if train_loss is not None else "- Train loss: n/a",
         f"- Eval loss: {eval_loss:.4f}" if eval_loss is not None else "- Eval loss: n/a",
         f"- Holdout loss: {holdout_loss:.4f}" if holdout_loss is not None else "- Holdout loss: n/a",
+        f"- Params total: {params.get('total', 0)}",
+        f"- Params breakdown: {params}",
+        f"- Params lanes: {lane_params}",
+        f"- FLOPs total (seq): {flops.get('total', 0):.2e}",
+        f"- FLOPs breakdown (seq): {flops}",
+        f"- FLOPs lanes (seq): {lane_flops}",
     ]
     log_path = Path("EXPERIMENT_LOG.md")
     with log_path.open("a", encoding="utf-8") as fp:
