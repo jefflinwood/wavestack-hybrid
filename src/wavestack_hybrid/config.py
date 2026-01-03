@@ -85,56 +85,188 @@ class ModelConfig:
         # Token + positional embeddings
         embed_params = self.vocab_size * self.hidden_dim + self.max_seq_len * self.hidden_dim
 
-        # Lane-specific decompositions (cheap analytical filters approximated here)
-        lane_overheads = {
-            "poly": self.decomposition.poly_order,
-            "trig": self.decomposition.num_freqs * 2,
-            "wavelet": self.decomposition.wavelet_levels * 16,
-        }
-
-        lane_params = 0
-        lane_capacity_map = {
-            "poly": self.recomposition.poly_capacity,
-            "trig": self.recomposition.trig_capacity,
-            "wavelet": self.recomposition.wavelet_capacity,
-        }
-
-        for lane_name in self.enabled_lanes:
-            base = lane_overheads[lane_name]
-            # Analytical parameters + recomposition MLP
-            hidden = int(self.hidden_dim * lane_capacity_map[lane_name])
-            lane_params += base * hidden + hidden * self.hidden_dim
+        lane_params = sum(self._lane_param_breakdown().values())
 
         # Mixing mechanism estimate
         num_lanes = len(self.enabled_lanes)
-        if self.mixing_type == "gated":
-            mixing_params = num_lanes * self.hidden_dim * 2
-        elif self.mixing_type == "attention":
-            mixing_params = self.hidden_dim ** 2
-        else:  # mlp
-            mixing_params = self.hidden_dim * (self.hidden_dim // 2)
+        mixing_params = self._mixing_param_count(num_lanes)
 
         # Optional neural decomposition stack (baseline)
         neural_params = 0
         if not self.use_analytical_decomp:
             neural_params = self.neural_decomp_layers * (self.hidden_dim ** 2)
 
-        context_params = 0
-        if self.context_block.enabled:
-            block_count = 2 if self.context_block.position == "both" else 1
-            if self.context_block.block_type == "mlp":
-                width = int(self.hidden_dim * self.context_block.hidden_multiplier)
-                context_params = block_count * self.context_block.depth * (2 * self.hidden_dim * width)
-            else:
-                context_params = (
-                    block_count
-                    * self.context_block.depth
-                    * self.hidden_dim
-                    * self.hidden_dim
-                    * self.context_block.kernel_size
-                )
+        context_params = self._context_param_count()
 
         return embed_params + lane_params + mixing_params + neural_params + context_params
+
+    def get_param_breakdown(self) -> Dict[str, int]:
+        """Return parameter estimates grouped by major subsystem."""
+
+        num_lanes = len(self.enabled_lanes)
+        breakdown: Dict[str, int] = {
+            "embeddings": self.vocab_size * self.hidden_dim + self.max_seq_len * self.hidden_dim,
+            "lanes": sum(self._lane_param_breakdown().values()),
+            "mixing": self._mixing_param_count(num_lanes),
+            "context": self._context_param_count(),
+        }
+        if not self.use_analytical_decomp:
+            breakdown["neural_decomp"] = self._neural_param_count()
+        return breakdown
+
+    def get_lane_param_breakdown(self) -> Dict[str, int]:
+        """Return per-lane parameter estimates."""
+
+        return self._lane_param_breakdown()
+
+    def get_flop_breakdown(self, seq_len: int | None = None) -> Dict[str, float]:
+        """Approximate FLOPs per forward pass (linear layers only).
+
+        Returns per-token FLOPs when seq_len is None, otherwise per-sequence FLOPs.
+        Analytical basis/FFT costs are not included in this estimate.
+        """
+
+        per_token = self._flops_per_token()
+        if seq_len is None:
+            return per_token
+        return {name: value * seq_len for name, value in per_token.items()}
+
+    def get_lane_flop_breakdown(self, seq_len: int | None = None) -> Dict[str, float]:
+        """Return per-lane FLOP estimates for recomposition + projections."""
+
+        per_token = self._lane_flops_per_token()
+        if seq_len is None:
+            return per_token
+        return {name: value * seq_len for name, value in per_token.items()}
+
+    def _lane_param_breakdown(self) -> Dict[str, int]:
+        lane_capacity_map = {
+            "poly": self.recomposition.poly_capacity,
+            "trig": self.recomposition.trig_capacity,
+            "wavelet": self.recomposition.wavelet_capacity,
+        }
+        lane_params: Dict[str, int] = {}
+        for lane_name in self.enabled_lanes:
+            width = max(32, int(self.hidden_dim * lane_capacity_map[lane_name]))
+            recomposition_params = self._recomposition_param_count(width)
+            if lane_name == "wavelet":
+                decomp_params = (self.hidden_dim * (self.hidden_dim * 2 * self.decomposition.wavelet_levels)) + self.hidden_dim
+            else:
+                decomp_params = (self.hidden_dim * self.hidden_dim) + self.hidden_dim
+            lane_params[lane_name] = recomposition_params + decomp_params
+        return lane_params
+
+    def _recomposition_param_count(self, width: int) -> int:
+        depth = {"shallow": 1, "standard": 2, "deep": 3}[self.recomposition.depth]
+        params = 0
+        in_dim = self.hidden_dim
+        for _ in range(depth):
+            params += in_dim * width + width
+            in_dim = width
+        params += width * self.hidden_dim + self.hidden_dim
+        return params
+
+    def _mixing_param_count(self, num_lanes: int) -> int:
+        if self.mixing_type == "gated":
+            return (self.hidden_dim * num_lanes) * self.hidden_dim + self.hidden_dim + self.hidden_dim * num_lanes + num_lanes
+        if self.mixing_type == "attention":
+            return 3 * (self.hidden_dim * self.hidden_dim)
+        return (self.hidden_dim * num_lanes) * self.hidden_dim + self.hidden_dim + self.hidden_dim * self.hidden_dim + self.hidden_dim
+
+    def _context_param_count(self) -> int:
+        if not self.context_block.enabled:
+            return 0
+        block_count = 2 if self.context_block.position == "both" else 1
+        depth = max(1, self.context_block.depth)
+        if self.context_block.block_type == "mlp":
+            width = max(8, int(self.hidden_dim * self.context_block.hidden_multiplier))
+            per_block = (self.hidden_dim * width + width) + (width * self.hidden_dim + self.hidden_dim)
+            return block_count * depth * per_block
+        per_conv = (self.hidden_dim * self.hidden_dim * self.context_block.kernel_size) + self.hidden_dim
+        return block_count * depth * per_conv
+
+    def _neural_param_count(self) -> int:
+        params = 0
+        for _ in range(self.neural_decomp_layers):
+            params += self.hidden_dim * self.hidden_dim + self.hidden_dim
+            params += 2 * self.hidden_dim
+        return params
+
+    def _flops_per_token(self) -> Dict[str, float]:
+        num_lanes = len(self.enabled_lanes)
+        per_token: Dict[str, float] = {
+            "lanes": sum(self._lane_flops_per_token().values()),
+            "mixing": self._mixing_flops_per_token(num_lanes),
+            "context": self._context_flops_per_token(),
+            "lm_head": 2.0 * self.hidden_dim * self.vocab_size,
+        }
+        if not self.use_analytical_decomp:
+            per_token["neural_decomp"] = self._neural_flops_per_token()
+        return per_token
+
+    def _lane_flops_per_token(self) -> Dict[str, float]:
+        lane_capacity_map = {
+            "poly": self.recomposition.poly_capacity,
+            "trig": self.recomposition.trig_capacity,
+            "wavelet": self.recomposition.wavelet_capacity,
+        }
+        flops: Dict[str, float] = {}
+        for lane_name in self.enabled_lanes:
+            width = max(32, int(self.hidden_dim * lane_capacity_map[lane_name]))
+            recomposition_flops = self._recomposition_flops_per_token(width)
+            decomp_flops = 0.0
+            if self.use_analytical_decomp:
+                if lane_name == "wavelet":
+                    decomp_flops = 2.0 * self.hidden_dim * (
+                        self.hidden_dim * 2 * self.decomposition.wavelet_levels
+                    )
+                else:
+                    decomp_flops = 2.0 * self.hidden_dim * self.hidden_dim
+            flops[lane_name] = recomposition_flops + decomp_flops
+        return flops
+
+    def _recomposition_flops_per_token(self, width: int) -> float:
+        depth = {"shallow": 1, "standard": 2, "deep": 3}[self.recomposition.depth]
+        flops = 0.0
+        in_dim = self.hidden_dim
+        for _ in range(depth):
+            flops += 2.0 * in_dim * width
+            in_dim = width
+        flops += 2.0 * width * self.hidden_dim
+        return flops
+
+    def _mixing_flops_per_token(self, num_lanes: int) -> float:
+        if self.mixing_type == "gated":
+            return (
+                2.0 * (self.hidden_dim * num_lanes) * self.hidden_dim
+                + 2.0 * self.hidden_dim * num_lanes
+                + self.hidden_dim * num_lanes
+            )
+        if self.mixing_type == "attention":
+            lane_tokens = num_lanes
+            qkv = 3.0 * (2.0 * self.hidden_dim * self.hidden_dim) * lane_tokens
+            attn_scores = 2.0 * lane_tokens * lane_tokens * self.hidden_dim
+            attn_apply = 2.0 * lane_tokens * lane_tokens * self.hidden_dim
+            return qkv + attn_scores + attn_apply
+        return 2.0 * (self.hidden_dim * num_lanes) * self.hidden_dim + 2.0 * self.hidden_dim * self.hidden_dim
+
+    def _context_flops_per_token(self) -> float:
+        if not self.context_block.enabled:
+            return 0.0
+        block_count = 2 if self.context_block.position == "both" else 1
+        depth = max(1, self.context_block.depth)
+        if self.context_block.block_type == "mlp":
+            width = max(8, int(self.hidden_dim * self.context_block.hidden_multiplier))
+            per_block = 2.0 * self.hidden_dim * width + 2.0 * width * self.hidden_dim
+            return block_count * depth * per_block
+        per_conv = 2.0 * self.hidden_dim * self.hidden_dim * self.context_block.kernel_size
+        return block_count * depth * per_conv
+
+    def _neural_flops_per_token(self) -> float:
+        flops = 0.0
+        for _ in range(self.neural_decomp_layers):
+            flops += 2.0 * self.hidden_dim * self.hidden_dim
+        return flops
 
 
 @dataclass
