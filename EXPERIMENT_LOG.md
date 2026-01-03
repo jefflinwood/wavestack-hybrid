@@ -960,3 +960,16 @@ December 26, 2025
 - Train loss: 0.6134
 - Eval loss: 0.7287
 - Holdout loss: 0.8357
+
+2026-01-02 19:50
+- Study: exp1_expressivity
+- Experiment: hybrid_12m_lane_diversity_energy
+- Config: experiments/exp1_expressivity/config_T_hybrid_12m_lane_diversity_energy.yaml
+- Dataset: roneneldan/TinyStories
+- Device: mps
+- Max steps: 3000
+- Samples: 8000
+- Seed: 1
+- Train loss: 0.6145
+- Eval loss: 0.7287
+- Holdout loss: 0.8354
