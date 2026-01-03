@@ -31,6 +31,9 @@ def _append_experiment_log(
     timestamp = datetime.now().strftime("%Y-%m-%d %H:%M")
     train_loss = summary.get("train_loss")
     eval_loss = summary.get("eval_loss")
+    runtime_s = summary.get("runtime_s")
+    tokens_per_s = summary.get("tokens_per_s")
+    peak_memory_bytes = summary.get("peak_memory_bytes")
     params = experiment.model.get_param_breakdown()
     lane_params = experiment.model.get_lane_param_breakdown()
     flops = experiment.model.get_flop_breakdown(seq_len=experiment.model.max_seq_len)
@@ -50,6 +53,9 @@ def _append_experiment_log(
         f"- Train loss: {train_loss:.4f}" if train_loss is not None else "- Train loss: n/a",
         f"- Eval loss: {eval_loss:.4f}" if eval_loss is not None else "- Eval loss: n/a",
         f"- Holdout loss: {holdout_loss:.4f}" if holdout_loss is not None else "- Holdout loss: n/a",
+        f"- Runtime (s): {runtime_s:.2f}" if runtime_s is not None else "- Runtime (s): n/a",
+        f"- Tokens/s: {tokens_per_s:.2f}" if tokens_per_s is not None else "- Tokens/s: n/a",
+        f"- Peak memory (bytes): {peak_memory_bytes}" if peak_memory_bytes is not None else "- Peak memory (bytes): n/a",
         f"- Params total: {params.get('total', 0)}",
         f"- Params breakdown: {params}",
         f"- Params lanes: {lane_params}",

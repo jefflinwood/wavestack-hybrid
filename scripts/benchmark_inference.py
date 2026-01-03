@@ -25,6 +25,7 @@ class BenchmarkResult:
     batch_size: int
     time_s: float
     tokens_per_s: float
+    memory_bytes: int | None
 
 
 class TransformerBlock(nn.Module):
@@ -91,6 +92,16 @@ def _sync(device: torch.device) -> None:
         torch.mps.synchronize()
 
 
+def _get_memory_bytes(device: torch.device) -> int | None:
+    if device.type == "cuda":
+        return int(torch.cuda.max_memory_allocated(device))
+    if device.type == "mps":
+        current = getattr(torch.mps, "current_allocated_memory", None)
+        if current is not None:
+            return int(current())
+    return None
+
+
 def _fit_power(xs: Iterable[int], ys: Iterable[float]) -> float:
     xs = list(xs)
     ys = list(ys)
@@ -143,6 +154,7 @@ def _benchmark_model(
                     _ = model(input_ids)
             _sync(device)
             total_time = time.perf_counter() - start
+        memory_bytes = _get_memory_bytes(device)
         time_per_step = total_time / max(1, steps)
         tokens_per_s = (batch_size * seq_len) / time_per_step
         result = BenchmarkResult(
@@ -151,6 +163,7 @@ def _benchmark_model(
             batch_size=batch_size,
             time_s=time_per_step,
             tokens_per_s=tokens_per_s,
+            memory_bytes=memory_bytes,
         )
         results.append(result)
         if output_path:
@@ -164,9 +177,12 @@ def _print_summary(results: list[BenchmarkResult]) -> float:
     seqs = [res.seq_len for res in results]
     exponent = _fit_power(seqs, times)
     print(f"\n{results[0].model_name} scaling: time ~ seq_len^{exponent:.2f}")
-    print("seq_len  time_ms  tokens_per_s")
+    print("seq_len  time_ms  tokens_per_s  memory_bytes")
     for res in results:
-        print(f"{res.seq_len:>7}  {res.time_s*1000:>7.2f}  {res.tokens_per_s:>12.1f}")
+        mem_str = f"{res.memory_bytes}" if res.memory_bytes is not None else "n/a"
+        print(
+            f\"{res.seq_len:>7}  {res.time_s*1000:>7.2f}  {res.tokens_per_s:>12.1f}  {mem_str:>12}\"
+        )
     return exponent
 
 
@@ -182,7 +198,8 @@ def _append_experiment_log(
 ) -> None:
     seq_lens = [str(r.seq_len) for r in results]
     timing_pairs = ", ".join(
-        f"{r.seq_len}:{r.time_s*1000:.2f}ms/{r.tokens_per_s:.1f}tps" for r in results
+        f\"{r.seq_len}:{r.time_s*1000:.2f}ms/{r.tokens_per_s:.1f}tps/{r.memory_bytes or 0}B\"
+        for r in results
     )
     timestamp = time.strftime("%Y-%m-%d %H:%M")
     lines = [

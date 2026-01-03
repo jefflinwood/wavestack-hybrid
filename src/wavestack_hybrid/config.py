@@ -293,6 +293,8 @@ class TrainingConfig:
     lane_diversity: bool = False
     lane_diversity_metric: Literal["cosine", "energy"] = "cosine"
     log_lane_stats: bool = False
+    log_runtime: bool = False
+    log_memory: bool = False
 
     use_wandb: bool = True
     project_name: str = "wavestack_hybrid"

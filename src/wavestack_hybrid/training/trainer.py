@@ -4,6 +4,8 @@ from __future__ import annotations
 
 from contextlib import nullcontext
 import json
+import sys
+import time
 from pathlib import Path
 from typing import Iterable, Mapping
 
@@ -69,13 +71,35 @@ class Trainer:
         eval_dataloader: Iterable[Mapping[str, torch.Tensor]] | None = None,
     ) -> Mapping[str, float | int | None]:
         step = 0
+        interval_steps = 0
+        interval_time = 0.0
+        interval_tokens = 0
+        total_time = 0.0
+        total_tokens = 0
+        peak_memory_bytes: int | None = None
         self.model.train()
         if hasattr(dataloader, "__len__") and len(dataloader) == 0:
             raise ValueError("Dataloader is empty; no training steps to run.")
+        if self.experiment.training.log_memory and self.device.type == "cuda":
+            torch.cuda.reset_peak_memory_stats(self.device)
 
         while step < self.experiment.training.max_steps:
             for batch in dataloader:
+                start_time = time.perf_counter()
                 loss = self._training_step(batch)
+                step_time = time.perf_counter() - start_time
+                batch_tokens = int(batch["input_ids"].numel())
+                total_time += step_time
+                total_tokens += batch_tokens
+                interval_time += step_time
+                interval_tokens += batch_tokens
+                interval_steps += 1
+                if self.experiment.training.log_memory:
+                    memory = self._get_memory_bytes()
+                    if memory is not None:
+                        peak_memory_bytes = memory if peak_memory_bytes is None else max(
+                            peak_memory_bytes, memory
+                        )
                 loss_value = loss.item()
                 self.metric_tracker.update("loss", loss_value)
 
@@ -102,9 +126,18 @@ class Trainer:
                         payload["train_loss"] = train_loss_avg
                     if eval_loss is not None:
                         payload["eval_loss"] = eval_loss
+                    if self.experiment.training.log_runtime and interval_steps > 0:
+                        avg_step = interval_time / interval_steps
+                        payload["step_time_ms"] = avg_step * 1000.0
+                        payload["tokens_per_s"] = interval_tokens / max(1e-8, interval_time)
+                    if self.experiment.training.log_memory and peak_memory_bytes is not None:
+                        payload["peak_memory_bytes"] = peak_memory_bytes
                     if self.last_lane_stats:
                         payload.update(self.last_lane_stats)
                     self._append_log(payload)
+                    interval_steps = 0
+                    interval_time = 0.0
+                    interval_tokens = 0
 
                 if (step + 1) % self.experiment.training.save_interval == 0:
                     self.save_checkpoint(step + 1)
@@ -124,6 +157,9 @@ class Trainer:
             "steps": step,
             "train_loss": self.last_train_loss,
             "eval_loss": self.last_eval_loss,
+            "runtime_s": total_time if total_time else None,
+            "tokens_per_s": (total_tokens / total_time) if total_time else None,
+            "peak_memory_bytes": peak_memory_bytes,
         }
 
     def evaluate(self, dataloader: Iterable[Mapping[str, torch.Tensor]]) -> float:
@@ -222,6 +258,26 @@ class Trainer:
             names = [f"lane_{idx}" for idx in range(lane_outputs.size(0))]
         norms = torch.linalg.vector_norm(lane_outputs, dim=-1).mean(dim=(1, 2))
         return {f"{name}_norm": float(norm.item()) for name, norm in zip(names, norms)}
+
+    def _get_memory_bytes(self) -> int | None:
+        if self.device.type == "cuda":
+            return int(torch.cuda.max_memory_allocated(self.device))
+        if self.device.type == "mps":
+            current = getattr(torch.mps, "current_allocated_memory", None)
+            if current is not None:
+                return int(current())
+            return None
+        if self.device.type == "cpu":
+            try:
+                import resource
+
+                rss = resource.getrusage(resource.RUSAGE_SELF).ru_maxrss
+                if sys.platform == "darwin":
+                    return int(rss)
+                return int(rss * 1024)
+            except Exception:
+                return None
+        return None
 
     def save_checkpoint(self, step: int):
         output_dir = Path(self.experiment.checkpoint_dir)
