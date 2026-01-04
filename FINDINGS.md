@@ -31,6 +31,15 @@ This file collects experiment outcomes, takeaways, and open questions. Add new e
   - Seed 2 baseline eval 0.7296 / holdout 0.8225 vs scheduled eval 0.7296 / holdout 0.8225.
 - **Interpretation:** Scheduling may need longer horizons or different ramp settings; parked for larger hardware.
 
+## 2026-01-04 — Long-Horizon Expressivity (10k Steps)
+- **Setup:** 10k steps, TinyStories, seed 1, sample caps 8k (12m) / 16k (50m).
+- **Outcome:** Hybrid maintains a strong advantage at 10k steps.
+- **Representative results:**
+  - Hybrid 12m eval 0.8859 / holdout 1.0365.
+  - Neural 12m eval 1.1825 / holdout 1.3058.
+  - Hybrid 50m eval 0.5128 / holdout 0.7628.
+  - Neural 50m eval 1.0861 / holdout 1.1878.
+
 ## 2026-01-01 — 50m Lane Ablations (Causal, poly_order=4)
 - **Setup:** 3 seeds, 3k steps, 16k samples.
 - **Outcome:** Wavelet-only and no-wavelet variants are close to each other but both lag the full hybrid.

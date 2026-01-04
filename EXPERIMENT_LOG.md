@@ -1061,3 +1061,91 @@ December 26, 2025
 - FLOPs total (seq): 2.34e+10
 - FLOPs breakdown (seq): {'lanes': 2264924160.0, 'mixing': 454754304.0, 'context': 905969664.0, 'lm_head': 19761856512.0, 'total': 23387504640.0}
 - FLOPs lanes (seq): {'poly': 452984832.0, 'trig': 452984832.0, 'wavelet': 1358954496.0}
+
+2026-01-03 14:00
+- Study: exp1_expressivity
+- Experiment: hybrid_12m_long
+- Config: experiments/exp1_expressivity/config_V_hybrid_12m_long.yaml
+- Dataset: roneneldan/TinyStories
+- Device: mps
+- Max steps: 10000
+- Samples: 8000
+- Seed: 1
+- Train loss: 0.3790
+- Eval loss: 0.8859
+- Holdout loss: 1.0365
+- Runtime (s): 18626.01
+- Tokens/s: 8796.30
+- Peak memory (bytes): n/a
+- Params total: 0
+- Params breakdown: {'embeddings': 19495296, 'lanes': 2215488, 'mixing': 443907, 'context': 885504}
+- Params lanes: {'poly': 443520, 'trig': 443520, 'wavelet': 1328448}
+- FLOPs total (seq): 2.34e+10
+- FLOPs breakdown (seq): {'lanes': 2264924160.0, 'mixing': 454754304.0, 'context': 905969664.0, 'lm_head': 19761856512.0, 'total': 23387504640.0}
+- FLOPs lanes (seq): {'poly': 452984832.0, 'trig': 452984832.0, 'wavelet': 1358954496.0}
+
+2026-01-03 17:29
+- Study: exp1_expressivity
+- Experiment: neural_12m_long
+- Config: experiments/exp1_expressivity/config_W_neural_12m_long.yaml
+- Dataset: roneneldan/TinyStories
+- Device: mps
+- Max steps: 10000
+- Samples: 8000
+- Seed: 1
+- Train loss: 0.8070
+- Eval loss: 1.1825
+- Holdout loss: 1.3058
+- Runtime (s): 124.01
+- Tokens/s: 1321228.77
+- Peak memory (bytes): n/a
+- Params total: 0
+- Params breakdown: {'embeddings': 19495296, 'lanes': 2843520, 'mixing': 443907, 'context': 0, 'neural_decomp': 445824}
+- Params lanes: {'poly': 591360, 'trig': 591360, 'wavelet': 1660800}
+- FLOPs total (seq): 2.24e+10
+- FLOPs breakdown (seq): {'lanes': 1698693120.0, 'mixing': 454754304.0, 'context': 0.0, 'lm_head': 19761856512.0, 'neural_decomp': 452984832.0, 'total': 22368288768.0}
+- FLOPs lanes (seq): {'poly': 452984832.0, 'trig': 452984832.0, 'wavelet': 792723456.0}
+
+2026-01-03 23:35
+- Study: exp1_expressivity
+- Experiment: hybrid_50m_long
+- Config: experiments/exp1_expressivity/config_X_hybrid_50m_long.yaml
+- Dataset: roneneldan/TinyStories
+- Device: mps
+- Max steps: 10000
+- Samples: 16000
+- Seed: 1
+- Train loss: 0.6378
+- Eval loss: 0.5128
+- Holdout loss: 0.7628
+- Runtime (s): 18021.20
+- Tokens/s: 4545.76
+- Peak memory (bytes): n/a
+- Params total: 0
+- Params breakdown: {'embeddings': 38990592, 'lanes': 13873536, 'mixing': 1772547, 'context': 3540480}
+- Params lanes: {'poly': 2952960, 'trig': 2952960, 'wavelet': 7967616}
+- FLOPs total (seq): 5.92e+10
+- FLOPs breakdown (seq): {'lanes': 14193524736.0, 'mixing': 1815478272.0, 'context': 3623878656.0, 'lm_head': 39523713024.0, 'total': 59156594688.0}
+- FLOPs lanes (seq): {'poly': 3019898880.0, 'trig': 3019898880.0, 'wavelet': 8153726976.0}
+
+2026-01-04 05:17
+- Study: exp1_expressivity
+- Experiment: neural_50m_long
+- Config: experiments/exp1_expressivity/config_Y_neural_50m_long.yaml
+- Dataset: roneneldan/TinyStories
+- Device: mps
+- Max steps: 10000
+- Samples: 16000
+- Seed: 1
+- Train loss: 0.9061
+- Eval loss: 1.0861
+- Holdout loss: 1.1878
+- Runtime (s): 138.66
+- Tokens/s: 1181603.74
+- Peak memory (bytes): n/a
+- Params total: 0
+- Params breakdown: {'embeddings': 38990592, 'lanes': 11364096, 'mixing': 1772547, 'context': 0, 'neural_decomp': 3552768}
+- Params lanes: {'poly': 2362368, 'trig': 2362368, 'wavelet': 6639360}
+- FLOPs total (seq): 5.18e+10
+- FLOPs breakdown (seq): {'lanes': 6794772480.0, 'mixing': 1815478272.0, 'context': 0.0, 'lm_head': 39523713024.0, 'neural_decomp': 3623878656.0, 'total': 51757842432.0}
+- FLOPs lanes (seq): {'poly': 1811939328.0, 'trig': 1811939328.0, 'wavelet': 3170893824.0}
