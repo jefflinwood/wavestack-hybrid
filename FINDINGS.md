@@ -40,6 +40,15 @@ This file collects experiment outcomes, takeaways, and open questions. Add new e
   - Hybrid 50m eval 0.5128 / holdout 0.7628.
   - Neural 50m eval 1.0861 / holdout 1.1878.
 
+## 2026-01-04 — Lane Diversity Follow-up (12m)
+- **Setup:** 2 seeds, 3k steps, 8k samples; compared baseline vs cosine and energy diversity penalties.
+- **Outcome:** Both diversity regularizers provide a small, consistent improvement over baseline.
+- **Representative averages:**
+  - Baseline avg eval 0.7361 / holdout 0.8335.
+  - Cosine diversity avg eval 0.7291 / holdout 0.8315.
+  - Energy diversity avg eval 0.7291 / holdout 0.8313.
+- **Interpretation:** Gains are modest; cosine/energy are effectively tied. Defaulting to cosine is reasonable.
+
 ## 2026-01-01 — 50m Lane Ablations (Causal, poly_order=4)
 - **Setup:** 3 seeds, 3k steps, 16k samples.
 - **Outcome:** Wavelet-only and no-wavelet variants are close to each other but both lag the full hybrid.
