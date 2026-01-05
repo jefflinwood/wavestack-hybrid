@@ -78,6 +78,11 @@ Device selection defaults to `auto`, which prefers CUDA, then Apple Silicon MPS,
   uv run python experiments/exp3_gradients/run_experiment.py \
     --config experiments/exp3_gradients/config.yaml --device auto --samples 1024
   ```
+  Lane diversity follow-up (baseline vs cosine/energy diversity):
+  ```bash
+  uv run python scripts/run_lane_diversity_experiment.py --device auto --seeds 1,2,3
+  uv run python scripts/run_lane_diversity_experiment.py --device auto --seeds 1,2 --include-energy
+  ```
 All runners accept `--device` and optional step/sample limits to keep local iterations lightweight.
 
 ## Status
