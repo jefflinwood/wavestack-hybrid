@@ -1,0 +1,13 @@
+name: neural_12m_openwebtext10k
+model:
+  use_analytical_decomp: false
+  hidden_dim: 384
+  decomposition:
+    causal: true
+training:
+  learning_rate: 0.0004
+  batch_size: 32
+  max_steps: 8000
+dataset_name: stas/openwebtext-10k
+train_split: train
+val_split: train

@@ -4,7 +4,7 @@ This plan picks up after the initial expressivity/ablation work and focuses on s
 
 ## Phase 1 – Stability & Generalization
 - **Longer Horizons:** Run 20k–50k steps on TinyStories for hybrid vs neural at 12m and/or 50m to confirm the gap persists.
-- **Second Dataset:** Add a small non‑TinyStories corpus (e.g., MBPP or a small code/text mix) to validate transfer behavior.
+- **Second Dataset:** Add a small non‑TinyStories corpus (e.g., MBPP or a small code/text mix) to validate transfer behavior. (openwebtext-10k configs + runner added)
 - **Holdout Consistency:** Keep fixed‑seed train holdouts to monitor generalization drift.
 
 ## Phase 2 – Efficiency & Scaling
