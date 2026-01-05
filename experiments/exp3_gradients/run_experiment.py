@@ -45,9 +45,18 @@ def main():
         dataset = Subset(dataset, list(range(min(args.samples, len(dataset)))))
 
     generator = torch.Generator().manual_seed(args.seed) if args.seed is not None else None
-    dataloader = DataLoader(
-        dataset, batch_size=experiment.training.batch_size, shuffle=True, generator=generator
-    )
+    loader_kwargs: dict[str, object] = {
+        "batch_size": experiment.training.batch_size,
+        "shuffle": True,
+        "generator": generator,
+        "num_workers": experiment.training.num_workers,
+        "pin_memory": experiment.training.pin_memory,
+    }
+    if experiment.training.num_workers > 0:
+        loader_kwargs["persistent_workers"] = experiment.training.persistent_workers
+        if experiment.training.prefetch_factor is not None:
+            loader_kwargs["prefetch_factor"] = experiment.training.prefetch_factor
+    dataloader = DataLoader(dataset, **loader_kwargs)
 
     print(
         f"[Gradients] Experiment={experiment.name} samples={len(dataloader.dataset)} "

@@ -17,6 +17,9 @@ The initial infrastructure (phases 1–10) is in place: package scaffolding, ana
 - **Benchmark Runner:** Build scripts/notebooks to run matched-parameter experiments versus a reference Transformer (e.g., GPT-style) capturing loss, accuracy, runtime, and memory. (partial: inference scaling script + expressivity suite)
 - **Findings Report:** Document where WaveStack requires more parameters, where it wins (latency, stability, interpretability), and outline next research directions. (pending)
 
+## Engineering Updates
+- **Training Optimization Pass:** Add gradient accumulation and dataloader tuning (num_workers, pin_memory, prefetch_factor) while keeping defaults stable. (completed)
+
 ## Next Experiments (Immediate)
 - **Multi-seed Baselines:** Run 2–3 seeds for hybrid_12m vs neural_12m and hybrid_50m vs neural_50m using causal lanes and poly_order=4. (completed)
 - **50m Lane Ablations:** Re-run hybrid_50m_only_wavelet and hybrid_50m_no_wavelet with poly_order=4 to validate lane importance at scale. (completed)

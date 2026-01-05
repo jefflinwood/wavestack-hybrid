@@ -40,9 +40,18 @@ def _build_train_loader(
     if samples:
         dataset = Subset(base_dataset, list(range(min(samples, len(base_dataset)))))
     generator = torch.Generator().manual_seed(seed) if seed is not None else None
-    dataloader = DataLoader(
-        dataset, batch_size=experiment.training.batch_size, shuffle=True, generator=generator
-    )
+    loader_kwargs: dict[str, object] = {
+        "batch_size": experiment.training.batch_size,
+        "shuffle": True,
+        "generator": generator,
+        "num_workers": experiment.training.num_workers,
+        "pin_memory": experiment.training.pin_memory,
+    }
+    if experiment.training.num_workers > 0:
+        loader_kwargs["persistent_workers"] = experiment.training.persistent_workers
+        if experiment.training.prefetch_factor is not None:
+            loader_kwargs["prefetch_factor"] = experiment.training.prefetch_factor
+    dataloader = DataLoader(dataset, **loader_kwargs)
     print(
         f"[Adaptation] Stage={experiment.name} samples={len(dataloader.dataset)} "
         f"device={experiment.training.device} max_steps={experiment.training.max_steps}"
@@ -61,7 +70,17 @@ def _build_eval_loader(experiment: ExperimentConfig, tokenizer: TokenizerWrapper
     except Exception as exc:  # pragma: no cover - best-effort eval hook
         print(f"[Adaptation] Eval loader unavailable for {experiment.name}: {exc}")
         return None
-    return DataLoader(dataset, batch_size=experiment.training.batch_size, shuffle=False)
+    loader_kwargs = {
+        "batch_size": experiment.training.batch_size,
+        "shuffle": False,
+        "num_workers": experiment.training.num_workers,
+        "pin_memory": experiment.training.pin_memory,
+    }
+    if experiment.training.num_workers > 0:
+        loader_kwargs["persistent_workers"] = experiment.training.persistent_workers
+        if experiment.training.prefetch_factor is not None:
+            loader_kwargs["prefetch_factor"] = experiment.training.prefetch_factor
+    return DataLoader(dataset, **loader_kwargs)
 
 
 def _build_holdout_loss(
@@ -93,9 +112,17 @@ def _build_holdout_loss(
         return None
     holdout_base = base_dataset if use_base_indices else train_dataset
     holdout_dataset = Subset(holdout_base, holdout_indices)
-    holdout_loader = DataLoader(
-        holdout_dataset, batch_size=experiment.training.batch_size, shuffle=False
-    )
+    loader_kwargs = {
+        "batch_size": experiment.training.batch_size,
+        "shuffle": False,
+        "num_workers": experiment.training.num_workers,
+        "pin_memory": experiment.training.pin_memory,
+    }
+    if experiment.training.num_workers > 0:
+        loader_kwargs["persistent_workers"] = experiment.training.persistent_workers
+        if experiment.training.prefetch_factor is not None:
+            loader_kwargs["prefetch_factor"] = experiment.training.prefetch_factor
+    holdout_loader = DataLoader(holdout_dataset, **loader_kwargs)
     return trainer.evaluate(holdout_loader)
 
 

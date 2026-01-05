@@ -57,6 +57,15 @@ Device selection defaults to `auto`, which prefers CUDA, then Apple Silicon MPS,
     log_runtime: true
     log_memory: true
   ```
+  Dataloader and gradient accumulation tuning:
+  ```yaml
+  training:
+    gradient_accumulation_steps: 2
+    num_workers: 2
+    pin_memory: true
+    persistent_workers: true
+    prefetch_factor: 2
+  ```
 - Inference scaling benchmark (Hybrid vs Transformer baseline):
   ```bash
   uv run python scripts/benchmark_inference.py \
@@ -86,4 +95,4 @@ Device selection defaults to `auto`, which prefers CUDA, then Apple Silicon MPS,
 All runners accept `--device` and optional step/sample limits to keep local iterations lightweight.
 
 ## Status
-This project is under active construction following the execution plan in `PLAN.md`. Refer to `AGENTS.md` for contributor guidelines. Issues and PRs are welcome once core infrastructure is stabilized.
+This project is under active construction following the execution plan in `PLAN.md` and the follow-on roadmap in `PLAN_2.md`. Refer to `AGENTS.md` for contributor guidelines. Issues and PRs are welcome once core infrastructure is stabilized.

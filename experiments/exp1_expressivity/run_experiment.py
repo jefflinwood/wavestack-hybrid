@@ -99,9 +99,18 @@ def main():
         dataset = Subset(base_dataset, list(range(subset_size)))
 
     generator = torch.Generator().manual_seed(args.seed) if args.seed is not None else None
-    dataloader = DataLoader(
-        dataset, batch_size=experiment.training.batch_size, shuffle=True, generator=generator
-    )
+    loader_kwargs: dict[str, object] = {
+        "batch_size": experiment.training.batch_size,
+        "shuffle": True,
+        "generator": generator,
+        "num_workers": experiment.training.num_workers,
+        "pin_memory": experiment.training.pin_memory,
+    }
+    if experiment.training.num_workers > 0:
+        loader_kwargs["persistent_workers"] = experiment.training.persistent_workers
+        if experiment.training.prefetch_factor is not None:
+            loader_kwargs["prefetch_factor"] = experiment.training.prefetch_factor
+    dataloader = DataLoader(dataset, **loader_kwargs)
     val_dataloader = None
     try:
         val_dataset = WaveStackTextDataset(
@@ -110,9 +119,17 @@ def main():
             tokenizer,
             experiment.model.max_seq_len,
         )
-        val_dataloader = DataLoader(
-            val_dataset, batch_size=experiment.training.batch_size, shuffle=False
-        )
+        val_loader_kwargs = {
+            "batch_size": experiment.training.batch_size,
+            "shuffle": False,
+            "num_workers": experiment.training.num_workers,
+            "pin_memory": experiment.training.pin_memory,
+        }
+        if experiment.training.num_workers > 0:
+            val_loader_kwargs["persistent_workers"] = experiment.training.persistent_workers
+            if experiment.training.prefetch_factor is not None:
+                val_loader_kwargs["prefetch_factor"] = experiment.training.prefetch_factor
+        val_dataloader = DataLoader(val_dataset, **val_loader_kwargs)
     except Exception as exc:  # pragma: no cover - best-effort eval hook
         print(f"[Expressivity] Eval loader unavailable: {exc}")
 
@@ -146,9 +163,17 @@ def main():
     if holdout_indices:
         holdout_base = base_dataset if use_base_indices else dataset
         holdout_dataset = Subset(holdout_base, holdout_indices)
-        holdout_loader = DataLoader(
-            holdout_dataset, batch_size=experiment.training.batch_size, shuffle=False
-        )
+        holdout_loader_kwargs = {
+            "batch_size": experiment.training.batch_size,
+            "shuffle": False,
+            "num_workers": experiment.training.num_workers,
+            "pin_memory": experiment.training.pin_memory,
+        }
+        if experiment.training.num_workers > 0:
+            holdout_loader_kwargs["persistent_workers"] = experiment.training.persistent_workers
+            if experiment.training.prefetch_factor is not None:
+                holdout_loader_kwargs["prefetch_factor"] = experiment.training.prefetch_factor
+        holdout_loader = DataLoader(holdout_dataset, **holdout_loader_kwargs)
         holdout_loss = trainer.evaluate(holdout_loader)
 
     _append_experiment_log(experiment, args.config, args.samples, summary, holdout_loss, args.seed)

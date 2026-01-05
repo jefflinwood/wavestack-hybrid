@@ -285,6 +285,10 @@ class TrainingConfig:
     batch_size: int = 32
     gradient_accumulation_steps: int = 1
     max_grad_norm: float = 1.0
+    num_workers: int = 0
+    pin_memory: bool = False
+    persistent_workers: bool = False
+    prefetch_factor: int | None = None
 
     alpha_autoregressive: float = 0.7
     alpha_reconstruction: float = 0.2

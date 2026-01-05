@@ -71,6 +71,14 @@ class Trainer:
         eval_dataloader: Iterable[Mapping[str, torch.Tensor]] | None = None,
     ) -> Mapping[str, float | int | None]:
         step = 0
+        if accumulation_steps != 1:
+            print(
+                "[Trainer] Gradient accumulation steps="
+                f"{accumulation_steps} (effective batch size="
+                f"{self.experiment.training.batch_size * accumulation_steps})"
+            )
+        accumulation_steps = max(1, self.experiment.training.gradient_accumulation_steps)
+        accumulation_count = 0
         interval_steps = 0
         interval_time = 0.0
         interval_tokens = 0
@@ -83,12 +91,18 @@ class Trainer:
         if self.experiment.training.log_memory and self.device.type == "cuda":
             torch.cuda.reset_peak_memory_stats(self.device)
 
+        self.optimizer.zero_grad()
         while step < self.experiment.training.max_steps:
             for batch in dataloader:
                 if hasattr(self.model, "update_schedule"):
                     self.model.update_schedule(step + 1, self.experiment.training.max_steps)
                 start_time = time.perf_counter()
-                loss = self._training_step(batch)
+                loss = self._compute_loss(batch)
+                loss_to_backprop = loss / accumulation_steps
+                if self.grad_scaler is not None:
+                    self.grad_scaler.scale(loss_to_backprop).backward()
+                else:
+                    loss_to_backprop.backward()
                 step_time = time.perf_counter() - start_time
                 batch_tokens = int(batch["input_ids"].numel())
                 total_time += step_time
@@ -104,6 +118,7 @@ class Trainer:
                         )
                 loss_value = loss.item()
                 self.metric_tracker.update("loss", loss_value)
+                accumulation_count += 1
 
                 train_loss_avg = None
                 eval_loss = None
@@ -141,12 +156,44 @@ class Trainer:
                     interval_time = 0.0
                     interval_tokens = 0
 
+                if accumulation_count >= accumulation_steps:
+                    if self.grad_scaler is not None:
+                        self.grad_scaler.unscale_(self.optimizer)
+                        torch.nn.utils.clip_grad_norm_(
+                            self.model.parameters(), self.experiment.training.max_grad_norm
+                        )
+                        self.grad_scaler.step(self.optimizer)
+                        self.grad_scaler.update()
+                    else:
+                        torch.nn.utils.clip_grad_norm_(
+                            self.model.parameters(), self.experiment.training.max_grad_norm
+                        )
+                        self.optimizer.step()
+                    self.optimizer.zero_grad()
+                    accumulation_count = 0
+
                 if (step + 1) % self.experiment.training.save_interval == 0:
                     self.save_checkpoint(step + 1)
 
                 step += 1
                 if step >= self.experiment.training.max_steps:
                     break
+
+        if accumulation_count > 0:
+            if self.grad_scaler is not None:
+                self.grad_scaler.unscale_(self.optimizer)
+                torch.nn.utils.clip_grad_norm_(
+                    self.model.parameters(), self.experiment.training.max_grad_norm
+                )
+                self.grad_scaler.step(self.optimizer)
+                self.grad_scaler.update()
+            else:
+                torch.nn.utils.clip_grad_norm_(
+                    self.model.parameters(), self.experiment.training.max_grad_norm
+                )
+                self.optimizer.step()
+            self.optimizer.zero_grad()
+            accumulation_count = 0
 
         if self.metric_tracker.storage:
             final_train_loss = self.metric_tracker.compute().get("loss")
@@ -196,7 +243,7 @@ class Trainer:
         with self.metrics_path.open("a", encoding="utf-8") as fp:
             fp.write(json.dumps(payload) + "\n")
 
-    def _training_step(self, batch: Mapping[str, torch.Tensor]) -> torch.Tensor:
+    def _compute_loss(self, batch: Mapping[str, torch.Tensor]) -> torch.Tensor:
         input_ids = batch["input_ids"].to(self.device)
         labels = batch["labels"].to(self.device)
         self.last_lane_stats = None
@@ -220,18 +267,6 @@ class Trainer:
                 loss = compute_multi_objective_loss(
                     logits, labels, None, None, self.experiment.training
                 )
-
-        self.optimizer.zero_grad()
-        if self.grad_scaler is not None:
-            self.grad_scaler.scale(loss).backward()
-            self.grad_scaler.unscale_(self.optimizer)
-            torch.nn.utils.clip_grad_norm_(self.model.parameters(), self.experiment.training.max_grad_norm)
-            self.grad_scaler.step(self.optimizer)
-            self.grad_scaler.update()
-        else:
-            loss.backward()
-            torch.nn.utils.clip_grad_norm_(self.model.parameters(), self.experiment.training.max_grad_norm)
-            self.optimizer.step()
 
         return loss.detach()
 

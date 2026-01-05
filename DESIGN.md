@@ -38,6 +38,7 @@ The `Trainer`:
 - Writes metrics to `outputs/<experiment>_metrics.jsonl`.
 - Optionally writes checkpoints to `checkpoints/`.
 - Optional runtime/memory stats can be logged per interval when `training.log_runtime` or `training.log_memory` are enabled.
+- Supports gradient accumulation via `training.gradient_accumulation_steps` and dataloader tuning knobs (`num_workers`, `pin_memory`, `persistent_workers`, `prefetch_factor`).
 
 ## Evaluation
 - Default evaluation uses the dataset `validation` split.
