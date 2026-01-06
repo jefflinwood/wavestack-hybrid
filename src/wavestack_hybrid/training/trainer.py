@@ -71,13 +71,13 @@ class Trainer:
         eval_dataloader: Iterable[Mapping[str, torch.Tensor]] | None = None,
     ) -> Mapping[str, float | int | None]:
         step = 0
+        accumulation_steps = max(1, self.experiment.training.gradient_accumulation_steps)
         if accumulation_steps != 1:
             print(
                 "[Trainer] Gradient accumulation steps="
                 f"{accumulation_steps} (effective batch size="
                 f"{self.experiment.training.batch_size * accumulation_steps})"
             )
-        accumulation_steps = max(1, self.experiment.training.gradient_accumulation_steps)
         accumulation_count = 0
         interval_steps = 0
         interval_time = 0.0
@@ -116,7 +116,7 @@ class Trainer:
                         peak_memory_bytes = memory if peak_memory_bytes is None else max(
                             peak_memory_bytes, memory
                         )
-                loss_value = loss.item()
+                loss_value = float(loss.detach().item())
                 self.metric_tracker.update("loss", loss_value)
                 accumulation_count += 1
 
@@ -268,7 +268,7 @@ class Trainer:
                     logits, labels, None, None, self.experiment.training
                 )
 
-        return loss.detach()
+        return loss
 
     def _compute_lane_balance(self, lane_outputs: torch.Tensor) -> torch.Tensor:
         if not self.experiment.training.lane_diversity:

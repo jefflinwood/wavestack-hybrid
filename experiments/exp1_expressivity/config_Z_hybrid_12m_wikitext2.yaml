@@ -1,4 +1,4 @@
-name: hybrid_12m_openwebtext10k
+name: hybrid_12m_wikitext2
 model:
   use_analytical_decomp: true
   enabled_lanes:
@@ -24,6 +24,6 @@ training:
   learning_rate: 0.0003
   batch_size: 32
   max_steps: 8000
-dataset_name: stas/openwebtext-10k
+dataset_name: wikitext:wikitext-2-raw-v1
 train_split: train
-val_split: train
+val_split: validation

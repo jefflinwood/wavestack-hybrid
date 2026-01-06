@@ -1281,3 +1281,91 @@ December 26, 2025
 - FLOPs total (seq): 2.34e+10
 - FLOPs breakdown (seq): {'lanes': 2264924160.0, 'mixing': 454754304.0, 'context': 905969664.0, 'lm_head': 19761856512.0, 'total': 23387504640.0}
 - FLOPs lanes (seq): {'poly': 452984832.0, 'trig': 452984832.0, 'wavelet': 1358954496.0}
+
+2026-01-05 18:26
+- Study: exp1_expressivity
+- Experiment: hybrid_12m_wikitext2
+- Config: experiments/exp1_expressivity/config_Z_hybrid_12m_wikitext2.yaml
+- Dataset: wikitext:wikitext-2-raw-v1
+- Device: mps
+- Max steps: 3000
+- Samples: 8000
+- Seed: 1
+- Train loss: 0.1795
+- Eval loss: 0.7038
+- Holdout loss: 0.6916
+- Runtime (s): 5415.53
+- Tokens/s: 9076.11
+- Peak memory (bytes): n/a
+- Params total: 0
+- Params breakdown: {'embeddings': 19495296, 'lanes': 2215488, 'mixing': 443907, 'context': 885504}
+- Params lanes: {'poly': 443520, 'trig': 443520, 'wavelet': 1328448}
+- FLOPs total (seq): 2.34e+10
+- FLOPs breakdown (seq): {'lanes': 2264924160.0, 'mixing': 454754304.0, 'context': 905969664.0, 'lm_head': 19761856512.0, 'total': 23387504640.0}
+- FLOPs lanes (seq): {'poly': 452984832.0, 'trig': 452984832.0, 'wavelet': 1358954496.0}
+
+2026-01-05 19:31
+- Study: exp1_expressivity
+- Experiment: neural_12m_wikitext2
+- Config: experiments/exp1_expressivity/config_AA_neural_12m_wikitext2.yaml
+- Dataset: wikitext:wikitext-2-raw-v1
+- Device: mps
+- Max steps: 3000
+- Samples: 8000
+- Seed: 1
+- Train loss: 0.3168
+- Eval loss: 0.6926
+- Holdout loss: 0.6651
+- Runtime (s): 64.52
+- Tokens/s: 761796.66
+- Peak memory (bytes): n/a
+- Params total: 0
+- Params breakdown: {'embeddings': 19495296, 'lanes': 2843520, 'mixing': 443907, 'context': 0, 'neural_decomp': 445824}
+- Params lanes: {'poly': 591360, 'trig': 591360, 'wavelet': 1660800}
+- FLOPs total (seq): 2.24e+10
+- FLOPs breakdown (seq): {'lanes': 1698693120.0, 'mixing': 454754304.0, 'context': 0.0, 'lm_head': 19761856512.0, 'neural_decomp': 452984832.0, 'total': 22368288768.0}
+- FLOPs lanes (seq): {'poly': 452984832.0, 'trig': 452984832.0, 'wavelet': 792723456.0}
+
+2026-01-05 21:30
+- Study: exp1_expressivity
+- Experiment: hybrid_12m_wikitext2
+- Config: experiments/exp1_expressivity/config_Z_hybrid_12m_wikitext2.yaml
+- Dataset: wikitext:wikitext-2-raw-v1
+- Device: mps
+- Max steps: 3000
+- Samples: 8000
+- Seed: 2
+- Train loss: 0.1726
+- Eval loss: 0.7054
+- Holdout loss: 0.7021
+- Runtime (s): 5412.22
+- Tokens/s: 9081.67
+- Peak memory (bytes): n/a
+- Params total: 0
+- Params breakdown: {'embeddings': 19495296, 'lanes': 2215488, 'mixing': 443907, 'context': 885504}
+- Params lanes: {'poly': 443520, 'trig': 443520, 'wavelet': 1328448}
+- FLOPs total (seq): 2.34e+10
+- FLOPs breakdown (seq): {'lanes': 2264924160.0, 'mixing': 454754304.0, 'context': 905969664.0, 'lm_head': 19761856512.0, 'total': 23387504640.0}
+- FLOPs lanes (seq): {'poly': 452984832.0, 'trig': 452984832.0, 'wavelet': 1358954496.0}
+
+2026-01-05 22:36
+- Study: exp1_expressivity
+- Experiment: neural_12m_wikitext2
+- Config: experiments/exp1_expressivity/config_AA_neural_12m_wikitext2.yaml
+- Dataset: wikitext:wikitext-2-raw-v1
+- Device: mps
+- Max steps: 3000
+- Samples: 8000
+- Seed: 2
+- Train loss: 0.3166
+- Eval loss: 0.6893
+- Holdout loss: 0.6798
+- Runtime (s): 65.99
+- Tokens/s: 744892.27
+- Peak memory (bytes): n/a
+- Params total: 0
+- Params breakdown: {'embeddings': 19495296, 'lanes': 2843520, 'mixing': 443907, 'context': 0, 'neural_decomp': 445824}
+- Params lanes: {'poly': 591360, 'trig': 591360, 'wavelet': 1660800}
+- FLOPs total (seq): 2.24e+10
+- FLOPs breakdown (seq): {'lanes': 1698693120.0, 'mixing': 454754304.0, 'context': 0.0, 'lm_head': 19761856512.0, 'neural_decomp': 452984832.0, 'total': 22368288768.0}
+- FLOPs lanes (seq): {'poly': 452984832.0, 'trig': 452984832.0, 'wavelet': 792723456.0}

@@ -15,7 +15,11 @@ class WaveStackTextDataset(Dataset):
 
     def __init__(self, dataset_name: str, split: str, tokenizer, seq_len: int):
         super().__init__()
-        self.dataset = load_dataset(dataset_name, split=split, streaming=False)
+        if ":" in dataset_name:
+            base_name, config_name = dataset_name.split(":", 1)
+            self.dataset = load_dataset(base_name, config_name, split=split, streaming=False)
+        else:
+            self.dataset = load_dataset(dataset_name, split=split, streaming=False)
         self.tokenizer = tokenizer
         self.seq_len = seq_len
 

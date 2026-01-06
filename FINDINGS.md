@@ -49,6 +49,14 @@ This file collects experiment outcomes, takeaways, and open questions. Add new e
   - Energy diversity avg eval 0.7291 / holdout 0.8313.
 - **Interpretation:** Gains are modest; cosine/energy are effectively tied. Defaulting to cosine is reasonable.
 
+## 2026-01-05 — Small Corpus (Wikitext-2)
+- **Setup:** 2 seeds, 3k steps, 8k samples; hybrid vs neural on `wikitext-2-raw-v1`.
+- **Outcome:** Neural baseline slightly outperforms hybrid at 12m on this small corpus.
+- **Representative results:**
+  - Hybrid eval ~0.704–0.705; holdout ~0.692–0.702.
+  - Neural eval ~0.689–0.693; holdout ~0.665–0.680.
+- **Interpretation:** Hybrid gains may be dataset‑dependent; revisit with longer horizons or adjusted hyperparameters.
+
 ## 2026-01-01 — 50m Lane Ablations (Causal, poly_order=4)
 - **Setup:** 3 seeds, 3k steps, 16k samples.
 - **Outcome:** Wavelet-only and no-wavelet variants are close to each other but both lag the full hybrid.
