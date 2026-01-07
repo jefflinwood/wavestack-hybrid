@@ -1,0 +1,13 @@
+name: neural_12m_wikitext2_long
+model:
+  use_analytical_decomp: false
+  hidden_dim: 384
+  decomposition:
+    causal: true
+training:
+  learning_rate: 0.0003
+  batch_size: 32
+  max_steps: 10000
+dataset_name: wikitext:wikitext-2-raw-v1
+train_split: train
+val_split: validation

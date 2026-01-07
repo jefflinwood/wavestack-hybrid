@@ -57,6 +57,14 @@ This file collects experiment outcomes, takeaways, and open questions. Add new e
   - Neural eval ~0.689–0.693; holdout ~0.665–0.680.
 - **Interpretation:** Hybrid gains may be dataset‑dependent; revisit with longer horizons or adjusted hyperparameters.
 
+## 2026-01-07 — Wikitext-2 Long Follow-up (10k Steps)
+- **Setup:** 10k steps, 2 seeds, 8k samples; hybrid vs neural on `wikitext-2-raw-v1`.
+- **Outcome:** Neural baseline remains substantially better; hybrid underperforms at longer horizons.
+- **Representative results:**
+  - Hybrid eval ~1.138–1.140; holdout ~1.122–1.125.
+  - Neural eval ~0.864–0.874; holdout ~0.840–0.849.
+- **Interpretation:** The hybrid advantage does not transfer to Wikitext‑2 with current settings; investigate dataset‑specific tuning or decomposition adaptations.
+
 ## 2026-01-01 — 50m Lane Ablations (Causal, poly_order=4)
 - **Setup:** 3 seeds, 3k steps, 16k samples.
 - **Outcome:** Wavelet-only and no-wavelet variants are close to each other but both lag the full hybrid.
