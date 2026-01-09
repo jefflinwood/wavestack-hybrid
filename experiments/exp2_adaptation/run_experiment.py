@@ -16,6 +16,7 @@ from wavestack_hybrid.config import ExperimentConfig
 from wavestack_hybrid.data.dataset import WaveStackTextDataset
 from wavestack_hybrid.data.tokenizer import TokenizerWrapper
 from wavestack_hybrid.models.wavestack import HybridWaveStack
+from wavestack_hybrid.models.transformer_baseline import TransformerBaseline
 from wavestack_hybrid.training.seed import set_seed
 from wavestack_hybrid.training.trainer import Trainer
 
@@ -198,7 +199,10 @@ def main():
     if args.seed is not None:
         set_seed(args.seed)
 
-    model = HybridWaveStack(pretrain.model)
+    if pretrain.model.architecture == "transformer":
+        model = TransformerBaseline(pretrain.model)
+    else:
+        model = HybridWaveStack(pretrain.model)
 
     pretrain_loader, pretrain_base, pretrain_dataset = _build_train_loader(
         pretrain, tokenizer, args.pretrain_samples, args.seed

@@ -59,12 +59,25 @@ class ContextBlockConfig:
 
 
 @dataclass
+class TransformerConfig:
+    """Configuration for transformer baselines."""
+
+    num_layers: int = 6
+    num_heads: int = 6
+    mlp_ratio: int = 4
+    dropout: float = 0.1
+    attn_dropout: float = 0.0
+
+
+@dataclass
 class ModelConfig:
     """Top-level model layout."""
 
+    architecture: Literal["hybrid", "transformer"] = "hybrid"
     use_analytical_decomp: bool = True  # False => neural-only baseline
     enabled_lanes: list[str] = field(default_factory=lambda: ["poly", "trig", "wavelet"])
     context_block: ContextBlockConfig = field(default_factory=ContextBlockConfig)
+    transformer: TransformerConfig = field(default_factory=TransformerConfig)
 
     # Dimensions
     vocab_size: int = 50_257
@@ -87,6 +100,9 @@ class ModelConfig:
     def get_param_count(self) -> int:
         """Rough parameter estimate used for experiment planning."""
 
+        if self.architecture == "transformer":
+            return self._transformer_param_count()
+
         # Token + positional embeddings
         embed_params = self.vocab_size * self.hidden_dim + self.max_seq_len * self.hidden_dim
 
@@ -108,6 +124,11 @@ class ModelConfig:
     def get_param_breakdown(self) -> Dict[str, int]:
         """Return parameter estimates grouped by major subsystem."""
 
+        if self.architecture == "transformer":
+            breakdown = self._transformer_param_breakdown()
+            breakdown["total"] = sum(breakdown.values())
+            return breakdown
+
         num_lanes = len(self.enabled_lanes)
         breakdown: Dict[str, int] = {
             "embeddings": self.vocab_size * self.hidden_dim + self.max_seq_len * self.hidden_dim,
@@ -122,6 +143,9 @@ class ModelConfig:
     def get_lane_param_breakdown(self) -> Dict[str, int]:
         """Return per-lane parameter estimates."""
 
+        if self.architecture == "transformer":
+            return {}
+
         return self._lane_param_breakdown()
 
     def get_flop_breakdown(self, seq_len: int | None = None) -> Dict[str, float]:
@@ -131,6 +155,11 @@ class ModelConfig:
         Analytical basis/FFT costs are not included in this estimate.
         """
 
+        if self.architecture == "transformer":
+            if seq_len is None:
+                seq_len = 1
+            return self._transformer_flop_breakdown(seq_len)
+
         per_token = self._flops_per_token()
         if seq_len is None:
             return per_token
@@ -138,6 +167,9 @@ class ModelConfig:
 
     def get_lane_flop_breakdown(self, seq_len: int | None = None) -> Dict[str, float]:
         """Return per-lane FLOP estimates for recomposition + projections."""
+
+        if self.architecture == "transformer":
+            return {}
 
         per_token = self._lane_flops_per_token()
         if seq_len is None:
@@ -272,6 +304,44 @@ class ModelConfig:
         for _ in range(self.neural_decomp_layers):
             flops += 2.0 * self.hidden_dim * self.hidden_dim
         return flops
+
+    def _transformer_param_breakdown(self) -> Dict[str, int]:
+        embed = self.vocab_size * self.hidden_dim + self.max_seq_len * self.hidden_dim
+        layers = 0
+        heads = self.transformer.num_heads
+        if self.hidden_dim % heads != 0:
+            raise ValueError("hidden_dim must be divisible by transformer.num_heads")
+        for _ in range(self.transformer.num_layers):
+            # QKV + output projection
+            layers += (3 * self.hidden_dim * self.hidden_dim) + (3 * self.hidden_dim)
+            layers += self.hidden_dim * self.hidden_dim + self.hidden_dim
+            # MLP
+            mlp_hidden = self.hidden_dim * self.transformer.mlp_ratio
+            layers += self.hidden_dim * mlp_hidden + mlp_hidden
+            layers += mlp_hidden * self.hidden_dim + self.hidden_dim
+            # LayerNorms (2 per block)
+            layers += 4 * self.hidden_dim
+        return {"embeddings": embed, "transformer_blocks": layers, "lm_head": self.hidden_dim * self.vocab_size}
+
+    def _transformer_param_count(self) -> int:
+        breakdown = self._transformer_param_breakdown()
+        return sum(breakdown.values())
+
+    def _transformer_flop_breakdown(self, seq_len: int) -> Dict[str, float]:
+        layers = 0.0
+        mlp_hidden = self.hidden_dim * self.transformer.mlp_ratio
+        for _ in range(self.transformer.num_layers):
+            # QKV and output projections
+            layers += 2.0 * seq_len * self.hidden_dim * self.hidden_dim * 4
+            # Attention scores and application
+            layers += 2.0 * seq_len * seq_len * self.hidden_dim * 2
+            # MLP
+            layers += 2.0 * seq_len * self.hidden_dim * mlp_hidden * 2
+        return {
+            "embeddings": 0.0,
+            "transformer_blocks": layers,
+            "lm_head": 2.0 * seq_len * self.hidden_dim * self.vocab_size,
+        }
 
 
 @dataclass

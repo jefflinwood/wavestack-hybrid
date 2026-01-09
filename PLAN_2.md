@@ -10,7 +10,7 @@ This plan picks up after the initial expressivity/ablation work and focuses on s
 
 ## Phase 2 – Efficiency & Scaling
 - **Runtime/Memory Sweep:** Use the new logging to capture tokens/s and peak memory at multiple sequence lengths.
-- **Matched‑Param Baselines:** Compare hybrid vs a simple transformer at similar parameter counts, not just hidden_dim.
+- **Matched‑Param Baselines:** Compare hybrid vs a simple transformer at similar parameter counts, not just hidden_dim. (configs added: transformer_12m/50m)
 - **Cost Tables:** Report params/FLOPs/tokens‑per‑second side‑by‑side for all headline runs.
 
 ## Phase 3 – Targeted Ablations

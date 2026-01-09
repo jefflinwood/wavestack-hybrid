@@ -1,0 +1,17 @@
+name: transformer_50m
+model:
+  architecture: transformer
+  hidden_dim: 384
+  max_seq_len: 512
+  vocab_size: 50257
+  transformer:
+    num_layers: 11
+    num_heads: 6
+    mlp_ratio: 4
+    dropout: 0.1
+    attn_dropout: 0.0
+training:
+  learning_rate: 0.0002
+  batch_size: 32
+  max_steps: 8000
+dataset_name: roneneldan/TinyStories

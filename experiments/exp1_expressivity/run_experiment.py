@@ -16,6 +16,7 @@ from wavestack_hybrid.config import ExperimentConfig
 from wavestack_hybrid.data.dataset import WaveStackTextDataset
 from wavestack_hybrid.data.tokenizer import TokenizerWrapper
 from wavestack_hybrid.models.wavestack import HybridWaveStack
+from wavestack_hybrid.models.transformer_baseline import TransformerBaseline
 from wavestack_hybrid.training.seed import set_seed
 from wavestack_hybrid.training.trainer import Trainer
 
@@ -138,7 +139,10 @@ def main():
     print(f"[Expressivity] Experiment={experiment.name} samples={dataset_size} device={experiment.training.device}")
     print(f"[Expressivity] Max steps {experiment.training.max_steps} | Batch size {experiment.training.batch_size}")
 
-    model = HybridWaveStack(experiment.model)
+    if experiment.model.architecture == "transformer":
+        model = TransformerBaseline(experiment.model)
+    else:
+        model = HybridWaveStack(experiment.model)
     trainer = Trainer(model, experiment)
     summary = trainer.train(dataloader, eval_dataloader=val_dataloader)
 

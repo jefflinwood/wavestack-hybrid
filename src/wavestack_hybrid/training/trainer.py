@@ -249,6 +249,8 @@ class Trainer:
         self.last_lane_stats = None
 
         want_lanes = self.experiment.training.lane_diversity or self.experiment.training.log_lane_stats
+        if want_lanes and not getattr(self.model, "supports_lanes", False):
+            raise ValueError("Lane diversity/logging requires a model that supports lane outputs.")
 
         autocast_ctx = (
             torch.amp.autocast(device_type="cuda", enabled=True) if self.use_amp else nullcontext()

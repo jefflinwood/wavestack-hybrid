@@ -21,6 +21,8 @@ from .recomposition import RecompositionBundle
 class HybridWaveStack(nn.Module):
     """High-level module glueing decompositions, recomposition, and mixing."""
 
+    supports_lanes = True
+
     def __init__(self, config: ModelConfig):
         super().__init__()
         self.config = config
