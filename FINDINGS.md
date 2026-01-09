@@ -65,6 +65,16 @@ This file collects experiment outcomes, takeaways, and open questions. Add new e
   - Neural eval ~0.864–0.874; holdout ~0.840–0.849.
 - **Interpretation:** The hybrid advantage does not transfer to Wikitext‑2 with current settings; investigate dataset‑specific tuning or decomposition adaptations.
 
+## 2026-01-08 — Wikitext-2 Tuning Sweep (Hybrid)
+- **Setup:** 10k steps, seed 1, 8k samples; swept lower LR, higher dropout, and lane capacity reductions.
+- **Outcome:** Lowering LR to 1e‑4 significantly improves eval/holdout; other tweaks do not help.
+- **Representative results:**
+  - Baseline long eval 1.1371 / holdout 1.1227.
+  - LR 1e‑4 eval 0.9401 / holdout 0.9279.
+  - Dropout 0.2 eval 1.1462 / holdout 1.1303.
+  - Lane caps eval 1.1474 / holdout 1.1220.
+- **Interpretation:** Wikitext‑2 likely needs a lower LR; next step is re-running hybrid vs neural with LR 1e‑4 on both for parity.
+
 ## 2026-01-01 — 50m Lane Ablations (Causal, poly_order=4)
 - **Setup:** 3 seeds, 3k steps, 16k samples.
 - **Outcome:** Wavelet-only and no-wavelet variants are close to each other but both lag the full hybrid.

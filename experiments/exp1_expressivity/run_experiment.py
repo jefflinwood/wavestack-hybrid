@@ -35,6 +35,7 @@ def _append_experiment_log(
     tokens_per_s = summary.get("tokens_per_s")
     peak_memory_bytes = summary.get("peak_memory_bytes")
     params = experiment.model.get_param_breakdown()
+    params["total"] = experiment.model.get_param_count()
     lane_params = experiment.model.get_lane_param_breakdown()
     flops = experiment.model.get_flop_breakdown(seq_len=experiment.model.max_seq_len)
     flops["total"] = sum(flops.values())
