@@ -1,0 +1,120 @@
+{"step": 100, "train_loss": NaN}
+{"step": 200, "train_loss": NaN}
+{"step": 300, "train_loss": NaN}
+{"step": 400, "train_loss": NaN}
+{"step": 500, "train_loss": NaN}
+{"step": 600, "train_loss": NaN}
+{"step": 700, "train_loss": NaN}
+{"step": 800, "train_loss": NaN}
+{"step": 900, "train_loss": NaN}
+{"step": 1000, "train_loss": NaN, "eval_loss": NaN}
+{"step": 1100, "train_loss": NaN}
+{"step": 1200, "train_loss": NaN}
+{"step": 1300, "train_loss": NaN}
+{"step": 1400, "train_loss": NaN}
+{"step": 1500, "train_loss": NaN}
+{"step": 1600, "train_loss": NaN}
+{"step": 1700, "train_loss": NaN}
+{"step": 1800, "train_loss": NaN}
+{"step": 1900, "train_loss": NaN}
+{"step": 2000, "train_loss": NaN, "eval_loss": NaN}
+{"step": 2100, "train_loss": NaN}
+{"step": 2200, "train_loss": NaN}
+{"step": 2300, "train_loss": NaN}
+{"step": 2400, "train_loss": NaN}
+{"step": 2500, "train_loss": NaN}
+{"step": 2600, "train_loss": NaN}
+{"step": 2700, "train_loss": NaN}
+{"step": 2800, "train_loss": NaN}
+{"step": 2900, "train_loss": NaN}
+{"step": 3000, "train_loss": NaN, "eval_loss": NaN}
+{"step": 100, "train_loss": NaN}
+{"step": 200, "train_loss": NaN}
+{"step": 300, "train_loss": NaN}
+{"step": 400, "train_loss": NaN}
+{"step": 500, "train_loss": NaN}
+{"step": 600, "train_loss": NaN}
+{"step": 700, "train_loss": NaN}
+{"step": 800, "train_loss": NaN}
+{"step": 900, "train_loss": NaN}
+{"step": 1000, "train_loss": NaN, "eval_loss": NaN}
+{"step": 1100, "train_loss": NaN}
+{"step": 1200, "train_loss": NaN}
+{"step": 1300, "train_loss": NaN}
+{"step": 1400, "train_loss": NaN}
+{"step": 1500, "train_loss": NaN}
+{"step": 1600, "train_loss": NaN}
+{"step": 1700, "train_loss": NaN}
+{"step": 1800, "train_loss": NaN}
+{"step": 1900, "train_loss": NaN}
+{"step": 2000, "train_loss": NaN, "eval_loss": NaN}
+{"step": 2100, "train_loss": NaN}
+{"step": 2200, "train_loss": NaN}
+{"step": 2300, "train_loss": NaN}
+{"step": 2400, "train_loss": NaN}
+{"step": 2500, "train_loss": NaN}
+{"step": 2600, "train_loss": NaN}
+{"step": 2700, "train_loss": NaN}
+{"step": 2800, "train_loss": NaN}
+{"step": 2900, "train_loss": NaN}
+{"step": 3000, "train_loss": NaN, "eval_loss": NaN}
+{"step": 100, "train_loss": 2.8340961861610414}
+{"step": 200, "train_loss": 1.4711835587024689}
+{"step": 300, "train_loss": 1.3365104126930236}
+{"step": 400, "train_loss": 1.2504727733135224}
+{"step": 500, "train_loss": 1.2129104816913605}
+{"step": 600, "train_loss": 1.1645766305923462}
+{"step": 700, "train_loss": 1.1640263378620148}
+{"step": 800, "train_loss": 1.1511436003446578}
+{"step": 900, "train_loss": 1.1265352648496627}
+{"step": 1000, "train_loss": 1.1147759717702865, "eval_loss": 1.1050498932600021}
+{"step": 1100, "train_loss": 1.1105254930257797}
+{"step": 1200, "train_loss": 1.0914049285650254}
+{"step": 1300, "train_loss": 1.0867099392414092}
+{"step": 1400, "train_loss": 1.0827073293924332}
+{"step": 1500, "train_loss": 1.0733690357208252}
+{"step": 1600, "train_loss": 1.0660836827754974}
+{"step": 1700, "train_loss": 1.0636718851327895}
+{"step": 1800, "train_loss": 1.0545339584350586}
+{"step": 1900, "train_loss": 1.0481844139099121}
+{"step": 2000, "train_loss": 1.0616030043363571, "eval_loss": 1.06170105189085}
+{"step": 2100, "train_loss": 1.0347103756666183}
+{"step": 2200, "train_loss": 1.044841341972351}
+{"step": 2300, "train_loss": 1.0414232677221298}
+{"step": 2400, "train_loss": 1.0401142930984497}
+{"step": 2500, "train_loss": 1.0280451917648314}
+{"step": 2600, "train_loss": 1.0238021790981293}
+{"step": 2700, "train_loss": 1.033256825208664}
+{"step": 2800, "train_loss": 1.006695607304573}
+{"step": 2900, "train_loss": 1.0224911487102508}
+{"step": 3000, "train_loss": 1.0203986996412278, "eval_loss": 1.0481868237257004}
+{"step": 100, "train_loss": 2.781877839565277}
+{"step": 200, "train_loss": 1.4775294482707977}
+{"step": 300, "train_loss": 1.3282283353805542}
+{"step": 400, "train_loss": 1.2553925287723542}
+{"step": 500, "train_loss": 1.2147707915306092}
+{"step": 600, "train_loss": 1.171502537727356}
+{"step": 700, "train_loss": 1.1657814812660217}
+{"step": 800, "train_loss": 1.138917996287346}
+{"step": 900, "train_loss": 1.1159887564182283}
+{"step": 1000, "train_loss": 1.1267281013727188, "eval_loss": 1.1043920889496803}
+{"step": 1100, "train_loss": 1.0945965486764908}
+{"step": 1200, "train_loss": 1.1075595545768737}
+{"step": 1300, "train_loss": 1.0809846329689026}
+{"step": 1400, "train_loss": 1.0816923439502717}
+{"step": 1500, "train_loss": 1.0781613183021546}
+{"step": 1600, "train_loss": 1.0677080541849135}
+{"step": 1700, "train_loss": 1.060562509894371}
+{"step": 1800, "train_loss": 1.0568906998634338}
+{"step": 1900, "train_loss": 1.0576356536149978}
+{"step": 2000, "train_loss": 1.050054550766945, "eval_loss": 1.0641071945428848}
+{"step": 2100, "train_loss": 1.0398331701755523}
+{"step": 2200, "train_loss": 1.038694109916687}
+{"step": 2300, "train_loss": 1.0469145578145982}
+{"step": 2400, "train_loss": 1.0286896657943725}
+{"step": 2500, "train_loss": 1.0338369035720825}
+{"step": 2600, "train_loss": 1.0294756788015365}
+{"step": 2700, "train_loss": 1.0241265803575517}
+{"step": 2800, "train_loss": 1.0188199442625046}
+{"step": 2900, "train_loss": 1.0142758345603944}
+{"step": 3000, "train_loss": 1.0194945472478867, "eval_loss": 1.0484341010451317}

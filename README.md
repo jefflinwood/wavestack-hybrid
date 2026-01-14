@@ -92,6 +92,10 @@ Device selection defaults to `auto`, which prefers CUDA, then Apple Silicon MPS,
   uv run python scripts/run_lane_diversity_experiment.py --device auto --seeds 1,2,3
   uv run python scripts/run_lane_diversity_experiment.py --device auto --seeds 1,2 --include-energy
   ```
+- Matched-parameter transformer baselines:
+  ```bash
+  uv run python scripts/run_transformer_baselines.py --device auto --max-steps 3000 --seeds 1,2
+  ```
 All runners accept `--device` and optional step/sample limits to keep local iterations lightweight.
 
 ## Status

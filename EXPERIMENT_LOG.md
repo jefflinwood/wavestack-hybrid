@@ -1545,3 +1545,223 @@ December 26, 2025
 - FLOPs total (seq): 2.30e+10
 - FLOPs breakdown (seq): {'lanes': 1902379008.0, 'mixing': 454754304.0, 'context': 905969664.0, 'lm_head': 19761856512.0, 'total': 23024959488.0}
 - FLOPs lanes (seq): {'poly': 301989888.0, 'trig': 392429568.0, 'wavelet': 1207959552.0}
+
+2026-01-09 14:23
+- Study: exp1_expressivity
+- Experiment: hybrid_12m
+- Config: experiments/exp1_expressivity/config_B_hybrid_12m.yaml
+- Dataset: roneneldan/TinyStories
+- Device: mps
+- Max steps: 3000
+- Samples: 8000
+- Seed: 1
+- Train loss: 0.6148
+- Eval loss: 0.7276
+- Holdout loss: 0.8353
+- Runtime (s): 5414.94
+- Tokens/s: 9077.11
+- Peak memory (bytes): n/a
+- Params total: 23040195
+- Params breakdown: {'embeddings': 19495296, 'lanes': 2215488, 'mixing': 443907, 'context': 885504, 'total': 23040195}
+- Params lanes: {'poly': 443520, 'trig': 443520, 'wavelet': 1328448}
+- FLOPs total (seq): 2.34e+10
+- FLOPs breakdown (seq): {'lanes': 2264924160.0, 'mixing': 454754304.0, 'context': 905969664.0, 'lm_head': 19761856512.0, 'total': 23387504640.0}
+- FLOPs lanes (seq): {'poly': 452984832.0, 'trig': 452984832.0, 'wavelet': 1358954496.0}
+
+2026-01-09 15:17
+- Study: exp1_expressivity
+- Experiment: transformer_12m
+- Config: experiments/exp1_expressivity/config_AI_transformer_12m.yaml
+- Dataset: roneneldan/TinyStories
+- Device: mps
+- Max steps: 3000
+- Samples: 8000
+- Seed: 1
+- Train loss: nan
+- Eval loss: nan
+- Holdout loss: nan
+- Runtime (s): 38.33
+- Tokens/s: 1282325.46
+- Peak memory (bytes): n/a
+- Params total: 23839872
+- Params breakdown: {'embeddings': 11372256, 'transformer_blocks': 1210048, 'lm_head': 11257568, 'total': 23839872}
+- Params lanes: {}
+- FLOPs total (seq): 1.32e+10
+- FLOPs breakdown (seq): {'embeddings': 0.0, 'transformer_blocks': 1702887424.0, 'lm_head': 11527749632.0, 'total': 13230637056.0}
+- FLOPs lanes (seq): {}
+
+2026-01-09 17:07
+- Study: exp1_expressivity
+- Experiment: hybrid_50m
+- Config: experiments/exp1_expressivity/config_C_hybrid_50m.yaml
+- Dataset: roneneldan/TinyStories
+- Device: mps
+- Max steps: 3000
+- Samples: 16000
+- Seed: 1
+- Train loss: 0.8307
+- Eval loss: 0.6017
+- Holdout loss: 0.8566
+- Runtime (s): 5194.64
+- Tokens/s: 4731.03
+- Peak memory (bytes): n/a
+- Params total: 58177155
+- Params breakdown: {'embeddings': 38990592, 'lanes': 13873536, 'mixing': 1772547, 'context': 3540480, 'total': 58177155}
+- Params lanes: {'poly': 2952960, 'trig': 2952960, 'wavelet': 7967616}
+- FLOPs total (seq): 5.92e+10
+- FLOPs breakdown (seq): {'lanes': 14193524736.0, 'mixing': 1815478272.0, 'context': 3623878656.0, 'lm_head': 39523713024.0, 'total': 59156594688.0}
+- FLOPs lanes (seq): {'poly': 3019898880.0, 'trig': 3019898880.0, 'wavelet': 8153726976.0}
+
+2026-01-09 18:54
+- Study: exp1_expressivity
+- Experiment: transformer_50m
+- Config: experiments/exp1_expressivity/config_AJ_transformer_50m.yaml
+- Dataset: roneneldan/TinyStories
+- Device: mps
+- Max steps: 3000
+- Samples: 16000
+- Seed: 1
+- Train loss: 1.0318
+- Eval loss: 1.0196
+- Holdout loss: 1.1040
+- Runtime (s): 4551.13
+- Tokens/s: 10799.95
+- Peak memory (bytes): n/a
+- Params total: 58313088
+- Params breakdown: {'embeddings': 19495296, 'transformer_blocks': 19519104, 'lm_head': 19298688, 'total': 58313088}
+- Params lanes: {}
+- FLOPs total (seq): 4.41e+10
+- FLOPs breakdown (seq): {'embeddings': 0.0, 'transformer_blocks': 24360517632.0, 'lm_head': 19761856512.0, 'total': 44122374144.0}
+- FLOPs lanes (seq): {}
+
+2026-01-09 20:50
+- Study: exp1_expressivity
+- Experiment: hybrid_12m
+- Config: experiments/exp1_expressivity/config_B_hybrid_12m.yaml
+- Dataset: roneneldan/TinyStories
+- Device: mps
+- Max steps: 3000
+- Samples: 8000
+- Seed: 2
+- Train loss: 0.6126
+- Eval loss: 0.7295
+- Holdout loss: 0.8226
+- Runtime (s): 5409.25
+- Tokens/s: 9086.65
+- Peak memory (bytes): n/a
+- Params total: 23040195
+- Params breakdown: {'embeddings': 19495296, 'lanes': 2215488, 'mixing': 443907, 'context': 885504, 'total': 23040195}
+- Params lanes: {'poly': 443520, 'trig': 443520, 'wavelet': 1328448}
+- FLOPs total (seq): 2.34e+10
+- FLOPs breakdown (seq): {'lanes': 2264924160.0, 'mixing': 454754304.0, 'context': 905969664.0, 'lm_head': 19761856512.0, 'total': 23387504640.0}
+- FLOPs lanes (seq): {'poly': 452984832.0, 'trig': 452984832.0, 'wavelet': 1358954496.0}
+
+2026-01-09 21:44
+- Study: exp1_expressivity
+- Experiment: transformer_12m
+- Config: experiments/exp1_expressivity/config_AI_transformer_12m.yaml
+- Dataset: roneneldan/TinyStories
+- Device: mps
+- Max steps: 3000
+- Samples: 8000
+- Seed: 2
+- Train loss: nan
+- Eval loss: nan
+- Holdout loss: nan
+- Runtime (s): 37.54
+- Tokens/s: 1309299.81
+- Peak memory (bytes): n/a
+- Params total: 23839872
+- Params breakdown: {'embeddings': 11372256, 'transformer_blocks': 1210048, 'lm_head': 11257568, 'total': 23839872}
+- Params lanes: {}
+- FLOPs total (seq): 1.32e+10
+- FLOPs breakdown (seq): {'embeddings': 0.0, 'transformer_blocks': 1702887424.0, 'lm_head': 11527749632.0, 'total': 13230637056.0}
+- FLOPs lanes (seq): {}
+
+2026-01-09 23:34
+- Study: exp1_expressivity
+- Experiment: hybrid_50m
+- Config: experiments/exp1_expressivity/config_C_hybrid_50m.yaml
+- Dataset: roneneldan/TinyStories
+- Device: mps
+- Max steps: 3000
+- Samples: 16000
+- Seed: 2
+- Train loss: 0.8182
+- Eval loss: 0.5992
+- Holdout loss: 0.8262
+- Runtime (s): 5193.84
+- Tokens/s: 4731.76
+- Peak memory (bytes): n/a
+- Params total: 58177155
+- Params breakdown: {'embeddings': 38990592, 'lanes': 13873536, 'mixing': 1772547, 'context': 3540480, 'total': 58177155}
+- Params lanes: {'poly': 2952960, 'trig': 2952960, 'wavelet': 7967616}
+- FLOPs total (seq): 5.92e+10
+- FLOPs breakdown (seq): {'lanes': 14193524736.0, 'mixing': 1815478272.0, 'context': 3623878656.0, 'lm_head': 39523713024.0, 'total': 59156594688.0}
+- FLOPs lanes (seq): {'poly': 3019898880.0, 'trig': 3019898880.0, 'wavelet': 8153726976.0}
+
+2026-01-10 01:21
+- Study: exp1_expressivity
+- Experiment: transformer_50m
+- Config: experiments/exp1_expressivity/config_AJ_transformer_50m.yaml
+- Dataset: roneneldan/TinyStories
+- Device: mps
+- Max steps: 3000
+- Samples: 16000
+- Seed: 2
+- Train loss: 1.0400
+- Eval loss: 1.0205
+- Holdout loss: 1.0627
+- Runtime (s): 4536.31
+- Tokens/s: 10835.25
+- Peak memory (bytes): n/a
+- Params total: 58313088
+- Params breakdown: {'embeddings': 19495296, 'transformer_blocks': 19519104, 'lm_head': 19298688, 'total': 58313088}
+- Params lanes: {}
+- FLOPs total (seq): 4.41e+10
+- FLOPs breakdown (seq): {'embeddings': 0.0, 'transformer_blocks': 24360517632.0, 'lm_head': 19761856512.0, 'total': 44122374144.0}
+- FLOPs lanes (seq): {}
+
+2026-01-13 18:17
+- Study: exp1_expressivity
+- Experiment: transformer_12m
+- Config: experiments/exp1_expressivity/config_AI_transformer_12m.yaml
+- Dataset: roneneldan/TinyStories
+- Device: mps
+- Max steps: 3000
+- Samples: 8000
+- Seed: 1
+- Train loss: 1.0204
+- Eval loss: 1.0482
+- Holdout loss: 1.1462
+- Runtime (s): 39.26
+- Tokens/s: 1252041.45
+- Peak memory (bytes): n/a
+- Params total: 23839872
+- Params breakdown: {'embeddings': 11372256, 'transformer_blocks': 1210048, 'lm_head': 11257568, 'total': 23839872}
+- Params lanes: {}
+- FLOPs total (seq): 1.32e+10
+- FLOPs breakdown (seq): {'embeddings': 0.0, 'transformer_blocks': 1702887424.0, 'lm_head': 11527749632.0, 'total': 13230637056.0}
+- FLOPs lanes (seq): {}
+
+2026-01-13 19:18
+- Study: exp1_expressivity
+- Experiment: transformer_12m
+- Config: experiments/exp1_expressivity/config_AI_transformer_12m.yaml
+- Dataset: roneneldan/TinyStories
+- Device: mps
+- Max steps: 3000
+- Samples: 8000
+- Seed: 2
+- Train loss: 1.0195
+- Eval loss: 1.0484
+- Holdout loss: 1.1173
+- Runtime (s): 38.79
+- Tokens/s: 1266984.40
+- Peak memory (bytes): n/a
+- Params total: 23839872
+- Params breakdown: {'embeddings': 11372256, 'transformer_blocks': 1210048, 'lm_head': 11257568, 'total': 23839872}
+- Params lanes: {}
+- FLOPs total (seq): 1.32e+10
+- FLOPs breakdown (seq): {'embeddings': 0.0, 'transformer_blocks': 1702887424.0, 'lm_head': 11527749632.0, 'total': 13230637056.0}
+- FLOPs lanes (seq): {}

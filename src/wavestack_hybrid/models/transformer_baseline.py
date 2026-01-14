@@ -63,17 +63,15 @@ class TransformerBaseline(nn.Module):
         )
         self.ln = nn.LayerNorm(config.hidden_dim)
         self.lm_head = nn.Linear(config.hidden_dim, config.vocab_size, bias=False)
-        self.register_buffer(
-            "causal_mask",
-            torch.triu(torch.ones(config.max_seq_len, config.max_seq_len), diagonal=1).bool(),
-            persistent=False,
-        )
+        mask = torch.triu(torch.ones(config.max_seq_len, config.max_seq_len), diagonal=1)
+        self.register_buffer("causal_mask", mask, persistent=False)
 
     def forward(self, input_ids: torch.LongTensor) -> torch.Tensor:
         seq_len = input_ids.size(1)
         positions = torch.arange(seq_len, device=input_ids.device)
         hidden = self.embeddings(input_ids) + self.positions(positions)
         attn_mask = self.causal_mask[:seq_len, :seq_len]
+        attn_mask = attn_mask.masked_fill(attn_mask == 1, float("-inf"))
         for block in self.blocks:
             hidden = block(hidden, attn_mask)
         hidden = self.ln(hidden)

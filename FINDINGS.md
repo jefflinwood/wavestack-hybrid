@@ -75,6 +75,15 @@ This file collects experiment outcomes, takeaways, and open questions. Add new e
   - Lane caps eval 1.1474 / holdout 1.1220.
 - **Interpretation:** Wikitext‑2 likely needs a lower LR; next step is re-running hybrid vs neural with LR 1e‑4 on both for parity.
 
+## 2026-01-13 — Matched-Param Transformer Baselines (TinyStories)
+- **Setup:** 2 seeds, 3k steps, TinyStories; matched-param transformer vs hybrid at ~12m.
+- **Outcome:** Hybrid significantly outperforms the matched transformer baseline.
+- **Representative results:**
+  - Hybrid eval ~0.728–0.730; holdout ~0.823–0.835.
+  - Transformer eval ~1.048; holdout ~1.117–1.146.
+- **50m snapshot:** Transformer eval ~1.020; holdout ~1.063–1.104, while hybrid eval ~0.599–0.602 and holdout ~0.826–0.857.
+- **Interpretation:** Even before optimization, the hybrid architecture is ahead at matched parameter counts on TinyStories.
+
 ## 2026-01-01 — 50m Lane Ablations (Causal, poly_order=4)
 - **Setup:** 3 seeds, 3k steps, 16k samples.
 - **Outcome:** Wavelet-only and no-wavelet variants are close to each other but both lag the full hybrid.
