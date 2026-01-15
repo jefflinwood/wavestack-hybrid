@@ -133,7 +133,8 @@ def _benchmark_model(
     results: list[BenchmarkResult] = []
     for seq_len in seq_lens:
         if seq_len > max_seq_len:
-            raise ValueError(f"seq_len {seq_len} exceeds max_seq_len {max_seq_len}")
+            print(f"[benchmark] Skipping seq_len={seq_len} (max_seq_len={max_seq_len})")
+            continue
         input_ids = torch.randint(0, vocab_size, (batch_size, seq_len), device=device)
         attn_mask = None
         if use_attention_mask:
@@ -181,7 +182,7 @@ def _print_summary(results: list[BenchmarkResult]) -> float:
     for res in results:
         mem_str = f"{res.memory_bytes}" if res.memory_bytes is not None else "n/a"
         print(
-            f\"{res.seq_len:>7}  {res.time_s*1000:>7.2f}  {res.tokens_per_s:>12.1f}  {mem_str:>12}\"
+            f"{res.seq_len:>7}  {res.time_s*1000:>7.2f}  {res.tokens_per_s:>12.1f}  {mem_str:>12}"
         )
     return exponent
 
@@ -198,7 +199,7 @@ def _append_experiment_log(
 ) -> None:
     seq_lens = [str(r.seq_len) for r in results]
     timing_pairs = ", ".join(
-        f\"{r.seq_len}:{r.time_s*1000:.2f}ms/{r.tokens_per_s:.1f}tps/{r.memory_bytes or 0}B\"
+        f"{r.seq_len}:{r.time_s*1000:.2f}ms/{r.tokens_per_s:.1f}tps/{r.memory_bytes or 0}B"
         for r in results
     )
     timestamp = time.strftime("%Y-%m-%d %H:%M")

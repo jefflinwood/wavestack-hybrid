@@ -84,6 +84,14 @@ This file collects experiment outcomes, takeaways, and open questions. Add new e
 - **50m snapshot:** Transformer eval ~1.020; holdout ~1.063–1.104, while hybrid eval ~0.599–0.602 and holdout ~0.826–0.857.
 - **Interpretation:** Even before optimization, the hybrid architecture is ahead at matched parameter counts on TinyStories.
 
+## 2026-01-15 — Scaling Sweep (Inference, MPS)
+- **Setup:** Sequence lengths 128/256/512, batch size 8, 10 steps, 2 warmup steps; same hybrid/transformer configs.
+- **Outcome:** Both models appear near‑linear in this range; transformer is faster, hybrid is slightly lower memory.
+- **Representative results:**
+  - Hybrid exponent ~0.95; timing `128:44.32ms/23106.6tps/375MB`, `256:82.93ms/24695.7tps/581MB`, `512:166.30ms/24630.0tps/993MB`.
+  - Transformer exponent ~1.07; timing `128:24.02ms/42638.1tps/518MB`, `256:47.78ms/42864.2tps/724MB`, `512:106.47ms/38469.9tps/1137MB`.
+- **Interpretation:** No quadratic behavior is visible at 512 tokens; a longer sequence sweep (with higher max_seq_len) is needed to differentiate scaling.
+
 ## 2026-01-01 — 50m Lane Ablations (Causal, poly_order=4)
 - **Setup:** 3 seeds, 3k steps, 16k samples.
 - **Outcome:** Wavelet-only and no-wavelet variants are close to each other but both lag the full hybrid.

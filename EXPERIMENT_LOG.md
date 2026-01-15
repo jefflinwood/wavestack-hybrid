@@ -1765,3 +1765,27 @@ December 26, 2025
 - FLOPs total (seq): 1.32e+10
 - FLOPs breakdown (seq): {'embeddings': 0.0, 'transformer_blocks': 1702887424.0, 'lm_head': 11527749632.0, 'total': 13230637056.0}
 - FLOPs lanes (seq): {}
+
+2026-01-15 13:56
+- Study: inference_benchmark
+- Model: hybrid
+- Device: mps
+- Seq lens: 128,256,512
+- Batch size: 8
+- Steps: 10
+- Warmup: 2
+- Scaling exponent: 0.954
+- Timing: 128:44.32ms/23106.6tps/375219968B, 256:82.93ms/24695.7tps/581097216B, 512:166.30ms/24630.0tps/992802560B
+- Output: outputs/scaling_sweep.jsonl
+
+2026-01-15 13:56
+- Study: inference_benchmark
+- Model: transformer
+- Device: mps
+- Seq lens: 128,256,512
+- Batch size: 8
+- Steps: 10
+- Warmup: 2
+- Scaling exponent: 1.074
+- Timing: 128:24.02ms/42638.1tps/518152960B, 256:47.78ms/42864.2tps/724259584B, 512:106.47ms/38469.9tps/1136751360B
+- Output: outputs/scaling_sweep.jsonl
