@@ -100,3 +100,6 @@ All runners accept `--device` and optional step/sample limits to keep local iter
 
 ## Status
 This project is under active construction following the execution plan in `PLAN.md` and the follow-on roadmap in `PLAN_2.md`. Refer to `AGENTS.md` for contributor guidelines. Issues and PRs are welcome once core infrastructure is stabilized.
+
+## Cost Tables
+- `COSTS_TRAINING.md` and `COSTS_INFERENCE.md` summarize matched hybrid vs transformer costs (params, FLOPs, tokens/s).
