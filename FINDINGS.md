@@ -92,6 +92,14 @@ This file collects experiment outcomes, takeaways, and open questions. Add new e
   - Transformer exponent ~1.07; timing `128:24.02ms/42638.1tps/518MB`, `256:47.78ms/42864.2tps/724MB`, `512:106.47ms/38469.9tps/1137MB`.
 - **Interpretation:** No quadratic behavior is visible at 512 tokens; a longer sequence sweep (with higher max_seq_len) is needed to differentiate scaling.
 
+## 2026-01-15 — Scaling Sweep (Long-Seq, MPS)
+- **Setup:** Sequence lengths 512/1024/2048/4096, batch size 8, 10 steps, 2 warmup steps; `max_seq_len=4096`.
+- **Outcome:** Hybrid remains near‑linear; transformer shows super‑linear scaling consistent with quadratic attention.
+- **Representative results:**
+  - Hybrid exponent ~1.00; timing `512:165.81ms/24703.0tps/998MB`, `1024:330.36ms/24797.0tps/1822MB`, `2048:659.53ms/24841.9tps/3469MB`, `4096:1318.81ms/24846.6tps/6762MB`.
+  - Transformer exponent ~1.48; timing `512:106.97ms/38289.5tps/1183MB`, `1024:260.02ms/31505.4tps/2008MB`, `2048:724.75ms/22606.6tps/3666MB`, `4096:2295.93ms/14272.2tps/6966MB`.
+- **Interpretation:** At long sequence lengths, transformer runtime scales super‑linearly while hybrid stays near‑linear, supporting the scaling hypothesis.
+
 ## 2026-01-01 — 50m Lane Ablations (Causal, poly_order=4)
 - **Setup:** 3 seeds, 3k steps, 16k samples.
 - **Outcome:** Wavelet-only and no-wavelet variants are close to each other but both lag the full hybrid.

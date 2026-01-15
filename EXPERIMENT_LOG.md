@@ -1789,3 +1789,27 @@ December 26, 2025
 - Scaling exponent: 1.074
 - Timing: 128:24.02ms/42638.1tps/518152960B, 256:47.78ms/42864.2tps/724259584B, 512:106.47ms/38469.9tps/1136751360B
 - Output: outputs/scaling_sweep.jsonl
+
+2026-01-15 13:59
+- Study: inference_benchmark
+- Model: hybrid
+- Device: mps
+- Seq lens: 512,1024,2048,4096
+- Batch size: 8
+- Steps: 10
+- Warmup: 2
+- Scaling exponent: 0.997
+- Timing: 512:165.81ms/24703.0tps/998307584B, 1024:330.36ms/24797.0tps/1821816576B, 2048:659.53ms/24841.9tps/3468637952B, 4096:1318.81ms/24846.6tps/6762411776B
+- Output: outputs/scaling_sweep.jsonl
+
+2026-01-15 14:00
+- Study: inference_benchmark
+- Model: transformer
+- Device: mps
+- Seq lens: 512,1024,2048,4096
+- Batch size: 8
+- Steps: 10
+- Warmup: 2
+- Scaling exponent: 1.475
+- Timing: 512:106.97ms/38289.5tps/1183664896B, 1024:260.02ms/31505.4tps/2008091392B, 2048:724.75ms/22606.6tps/3666447104B, 4096:2295.93ms/14272.2tps/6966381312B
+- Output: outputs/scaling_sweep.jsonl

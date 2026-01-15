@@ -7,3 +7,11 @@
 {"model_name": "transformer", "seq_len": 128, "batch_size": 8, "time_s": 0.024016062496230006, "tokens_per_s": 42638.13021642267, "memory_bytes": 518152960}
 {"model_name": "transformer", "seq_len": 256, "batch_size": 8, "time_s": 0.0477788417134434, "tokens_per_s": 42864.16176187377, "memory_bytes": 724259584}
 {"model_name": "transformer", "seq_len": 512, "batch_size": 8, "time_s": 0.10647294588852674, "tokens_per_s": 38469.86636669527, "memory_bytes": 1136751360}
+{"model_name": "hybrid", "seq_len": 512, "batch_size": 8, "time_s": 0.16581007919739932, "tokens_per_s": 24702.96148356369, "memory_bytes": 998307584}
+{"model_name": "hybrid", "seq_len": 1024, "batch_size": 8, "time_s": 0.33036263750400396, "tokens_per_s": 24796.99297079475, "memory_bytes": 1821816576}
+{"model_name": "hybrid", "seq_len": 2048, "batch_size": 8, "time_s": 0.6595304749906064, "tokens_per_s": 24841.915000566663, "memory_bytes": 3468637952}
+{"model_name": "hybrid", "seq_len": 4096, "batch_size": 8, "time_s": 1.3188121875049545, "tokens_per_s": 24846.600835554455, "memory_bytes": 6762411776}
+{"model_name": "transformer", "seq_len": 512, "batch_size": 8, "time_s": 0.10697460409719498, "tokens_per_s": 38289.461639684654, "memory_bytes": 1183664896}
+{"model_name": "transformer", "seq_len": 1024, "batch_size": 8, "time_s": 0.26001860830001533, "tokens_per_s": 31505.437451414575, "memory_bytes": 2008091392}
+{"model_name": "transformer", "seq_len": 2048, "batch_size": 8, "time_s": 0.7247454833937809, "tokens_per_s": 22606.556888465588, "memory_bytes": 3666447104}
+{"model_name": "transformer", "seq_len": 4096, "batch_size": 8, "time_s": 2.295925850002095, "tokens_per_s": 14272.237929622204, "memory_bytes": 6966381312}

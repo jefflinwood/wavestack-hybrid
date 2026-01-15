@@ -16,10 +16,16 @@ def _run_command(args: list[str]) -> None:
 def main() -> None:
     parser = argparse.ArgumentParser(description="Scaling protocol runner.")
     parser.add_argument("--device", default="auto")
-    parser.add_argument("--seq-lens", default="128,256,512,1024,2048")
+    parser.add_argument(
+        "--config",
+        default="experiments/exp1_expressivity/config_B_hybrid_12m.yaml",
+        help="Hybrid config path to set max_seq_len.",
+    )
+    parser.add_argument("--seq-lens", default="512,1024,2048,4096")
     parser.add_argument("--batch-size", type=int, default=8)
     parser.add_argument("--steps", type=int, default=10)
     parser.add_argument("--warmup", type=int, default=2)
+    parser.add_argument("--tf-max-seq-len", type=int, default=4096)
     parser.add_argument(
         "--output",
         default="outputs/scaling_sweep.jsonl",
@@ -35,7 +41,7 @@ def main() -> None:
         "--model",
         "both",
         "--config",
-        "experiments/exp1_expressivity/config_B_hybrid_12m.yaml",
+        args.config,
         "--device",
         args.device,
         "--seq-lens",
@@ -46,6 +52,8 @@ def main() -> None:
         str(args.steps),
         "--warmup",
         str(args.warmup),
+        "--tf-max-seq-len",
+        str(args.tf_max_seq_len),
         "--output",
         args.output,
         "--log-results",
