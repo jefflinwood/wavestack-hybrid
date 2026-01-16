@@ -1,0 +1,17 @@
+name: transformer_12m_longseq
+model:
+  architecture: transformer
+  hidden_dim: 224
+  max_seq_len: 4096
+  vocab_size: 50257
+  transformer:
+    num_layers: 2
+    num_heads: 7
+    mlp_ratio: 4
+    dropout: 0.1
+    attn_dropout: 0.0
+training:
+  learning_rate: 0.0003
+  batch_size: 32
+  max_steps: 8000
+dataset_name: roneneldan/TinyStories

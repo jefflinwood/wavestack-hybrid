@@ -1945,3 +1945,123 @@ December 26, 2025
 - FLOPs total (seq): 1.32e+10
 - FLOPs breakdown (seq): {'embeddings': 0.0, 'transformer_blocks': 1702887424.0, 'lm_head': 11527749632.0, 'total': 13230637056.0}
 - FLOPs lanes (seq): {}
+
+2026-01-16 07:56
+- Study: inference_benchmark
+- Model: hybrid
+- Device: cpu
+- Seq lens: 128,256,512
+- Batch size: 4
+- Steps: 5
+- Warmup: 1
+- Scaling exponent: 0.928
+- Timing: 128:69.89ms/7325.9tps/0B, 256:124.42ms/8230.3tps/0B, 512:253.07ms/8092.8tps/0B
+- Output: n/a
+
+2026-01-16 07:56
+- Study: inference_benchmark
+- Model: transformer
+- Device: cpu
+- Seq lens: 128,256,512
+- Batch size: 4
+- Steps: 5
+- Warmup: 1
+- Scaling exponent: 0.981
+- Timing: 128:65.10ms/7864.9tps/0B, 256:121.98ms/8394.8tps/0B, 512:253.60ms/8075.6tps/0B
+- Output: n/a
+
+2026-01-16 07:56
+- Study: inference_benchmark
+- Model: hybrid
+- Device: cpu
+- Seq lens: 128,256,512
+- Batch size: 4
+- Steps: 5
+- Warmup: 1
+- Scaling exponent: 0.912
+- Timing: 128:68.75ms/7447.8tps/0B, 256:114.03ms/8979.9tps/0B, 512:243.44ms/8412.9tps/0B
+- Output: n/a
+
+2026-01-16 07:56
+- Study: inference_benchmark
+- Model: transformer
+- Device: cpu
+- Seq lens: 128,256,512
+- Batch size: 4
+- Steps: 5
+- Warmup: 1
+- Scaling exponent: 0.984
+- Timing: 128:57.12ms/8964.1tps/0B, 256:113.26ms/9041.3tps/0B, 512:223.45ms/9165.5tps/0B
+- Output: n/a
+
+2026-01-16 07:57
+- Study: inference_benchmark
+- Model: hybrid
+- Device: cpu
+- Seq lens: 128,256,512,1024,2048
+- Batch size: 4
+- Steps: 5
+- Warmup: 1
+- Scaling exponent: 0.951
+- Timing: 128:73.69ms/6948.0tps/0B, 256:126.98ms/8064.4tps/0B, 512:254.01ms/8062.5tps/0B, 1024:559.88ms/7315.8tps/0B, 2048:948.78ms/8634.3tps/0B
+- Output: n/a
+
+2026-01-16 07:57
+- Study: inference_benchmark
+- Model: transformer
+- Device: cpu
+- Seq lens: 128,256,512
+- Batch size: 4
+- Steps: 5
+- Warmup: 1
+- Scaling exponent: 0.920
+- Timing: 128:63.32ms/8085.3tps/0B, 256:118.48ms/8642.8tps/0B, 512:226.72ms/9033.3tps/0B
+- Output: n/a
+
+2026-01-16 07:58
+- Study: inference_benchmark
+- Model: hybrid
+- Device: cpu
+- Seq lens: 128,256,512,1024,2048,4096
+- Batch size: 4
+- Steps: 5
+- Warmup: 1
+- Scaling exponent: 0.961
+- Timing: 128:69.13ms/7406.1tps/0B, 256:120.34ms/8509.3tps/0B, 512:245.08ms/8356.4tps/0B, 1024:497.77ms/8228.7tps/0B, 2048:907.54ms/9026.6tps/0B, 4096:1888.37ms/8676.3tps/0B
+- Output: n/a
+
+2026-01-16 07:58
+- Study: inference_benchmark
+- Model: transformer
+- Device: cpu
+- Seq lens: 128,256,512
+- Batch size: 4
+- Steps: 5
+- Warmup: 1
+- Scaling exponent: 1.001
+- Timing: 128:65.12ms/7862.5tps/0B, 256:124.02ms/8256.8tps/0B, 512:260.90ms/7849.8tps/0B
+- Output: n/a
+
+2026-01-16 08:00
+- Study: inference_benchmark
+- Model: hybrid
+- Device: cpu
+- Seq lens: 128,256,512,1024,2048,4096
+- Batch size: 4
+- Steps: 5
+- Warmup: 1
+- Scaling exponent: 0.939
+- Timing: 128:77.94ms/6569.3tps/0B, 256:122.68ms/8346.8tps/0B, 512:249.61ms/8204.7tps/0B, 1024:518.31ms/7902.5tps/0B, 2048:949.48ms/8627.9tps/0B, 4096:1874.64ms/8739.8tps/0B
+- Output: n/a
+
+2026-01-16 08:01
+- Study: inference_benchmark
+- Model: transformer
+- Device: cpu
+- Seq lens: 128,256,512,1024,2048,4096
+- Batch size: 4
+- Steps: 5
+- Warmup: 1
+- Scaling exponent: 1.278
+- Timing: 128:68.59ms/7464.5tps/0B, 256:125.31ms/8171.4tps/0B, 512:292.88ms/6992.6tps/0B, 1024:737.83ms/5551.4tps/0B, 2048:1722.80ms/4755.0tps/0B, 4096:5842.10ms/2804.5tps/0B
+- Output: n/a
