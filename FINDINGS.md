@@ -65,6 +65,15 @@ This file collects experiment outcomes, takeaways, and open questions. Add new e
   - Neural eval ~0.864–0.874; holdout ~0.840–0.849.
 - **Interpretation:** The hybrid advantage does not transfer to Wikitext‑2 with current settings; investigate dataset‑specific tuning or decomposition adaptations.
 
+## 2026-01-15 — Wikitext-2 Matched-Param Transformer (12m)
+- **Setup:** 2 seeds, 3k steps, 8k samples; matched‑param transformer vs hybrid/neural on Wikitext‑2.
+- **Outcome:** Transformer baseline outperforms both hybrid and neural at 12m.
+- **Representative results:**
+  - Transformer eval ~0.632; holdout ~0.606–0.617.
+  - Neural eval ~0.689–0.693; holdout ~0.665–0.680.
+  - Hybrid eval ~0.704–0.705; holdout ~0.692–0.702.
+- **Interpretation:** On Wikitext‑2, transformer remains best; hybrid currently lags even at matched params.
+
 ## 2026-01-08 — Wikitext-2 Tuning Sweep (Hybrid)
 - **Setup:** 10k steps, seed 1, 8k samples; swept lower LR, higher dropout, and lane capacity reductions.
 - **Outcome:** Lowering LR to 1e‑4 significantly improves eval/holdout; other tweaks do not help.

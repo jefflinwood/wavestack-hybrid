@@ -28,6 +28,7 @@ def main() -> None:
     configs = [
         "experiments/exp1_expressivity/config_Z_hybrid_12m_wikitext2.yaml",
         "experiments/exp1_expressivity/config_AA_neural_12m_wikitext2.yaml",
+        "experiments/exp1_expressivity/config_AH_transformer_12m_wikitext2.yaml",
     ]
 
     seeds = _parse_seeds(args.seeds)

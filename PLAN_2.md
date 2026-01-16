@@ -6,6 +6,7 @@ This plan picks up after the initial expressivity/ablation work and focuses on s
 - **Longer Horizons:** Run 20k–50k steps on TinyStories for hybrid vs neural at 12m and/or 50m to confirm the gap persists.
 - **Second Dataset:** Add a small non‑TinyStories corpus (e.g., MBPP or a small code/text mix) to validate transfer behavior. (completed: wikitext-2-raw-v1 runs)
 - **Wikitext-2 Long Follow-up:** Run 10k-step Wikitext-2 baselines to test whether hybrid catches up with longer horizons. (completed)
+- **Wikitext-2 Transformer Baseline:** Run matched-parameter transformer vs hybrid/neural to assess dataset dependence. (completed)
 - **Holdout Consistency:** Keep fixed‑seed train holdouts to monitor generalization drift.
 
 ## Phase 2 – Efficiency & Scaling
