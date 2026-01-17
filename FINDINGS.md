@@ -117,6 +117,14 @@ This file collects experiment outcomes, takeaways, and open questions. Add new e
   - Transformer exponent ~1.28; tokens/s drops from ~7.5k (128) to ~2.8k (4096).
 - **Interpretation:** CPU scaling reinforces the linear vs super‑linear behavior; hybrid is more stable at long sequences.
 
+## 2026-01-15 — Scaling Sweep (Long-Seq, Wikitext-2, MPS)
+- **Setup:** Sequence lengths 512/1024/2048/4096, batch size 8, 10 steps, 2 warmup; `max_seq_len=4096`.
+- **Outcome:** Hybrid remains near‑linear; transformer shows super‑linear scaling on Wikitext‑2.
+- **Representative results:**
+  - Hybrid exponent ~1.00; timing `512:166.32ms/24626.7tps/998MB`, `1024:330.12ms/24815.5tps/1822MB`, `2048:658.56ms/24878.6tps/3469MB`, `4096:1318.23ms/24857.6tps/6762MB`.
+  - Transformer exponent ~1.48; timing `512:106.84ms/38338.7tps/1183MB`, `1024:259.69ms/31545.3tps/2008MB`, `2048:725.26ms/22590.5tps/3666MB`, `4096:2295.27ms/14276.3tps/6966MB`.
+- **Interpretation:** Long‑seq scaling behavior is consistent across datasets; hybrid stays near‑linear while transformer trends super‑linear.
+
 ## 2026-01-01 — 50m Lane Ablations (Causal, poly_order=4)
 - **Setup:** 3 seeds, 3k steps, 16k samples.
 - **Outcome:** Wavelet-only and no-wavelet variants are close to each other but both lag the full hybrid.

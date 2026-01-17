@@ -2065,3 +2065,27 @@ December 26, 2025
 - Scaling exponent: 1.278
 - Timing: 128:68.59ms/7464.5tps/0B, 256:125.31ms/8171.4tps/0B, 512:292.88ms/6992.6tps/0B, 1024:737.83ms/5551.4tps/0B, 2048:1722.80ms/4755.0tps/0B, 4096:5842.10ms/2804.5tps/0B
 - Output: n/a
+
+2026-01-17 15:59
+- Study: inference_benchmark
+- Model: hybrid
+- Device: mps
+- Seq lens: 512,1024,2048,4096
+- Batch size: 8
+- Steps: 10
+- Warmup: 2
+- Scaling exponent: 0.996
+- Timing: 512:166.32ms/24626.7tps/998307584B, 1024:330.12ms/24815.5tps/1821816576B, 2048:658.56ms/24878.6tps/3468637952B, 4096:1318.23ms/24857.6tps/6762411776B
+- Output: outputs/scaling_sweep_wikitext2.jsonl
+
+2026-01-17 16:00
+- Study: inference_benchmark
+- Model: transformer
+- Device: mps
+- Seq lens: 512,1024,2048,4096
+- Batch size: 8
+- Steps: 10
+- Warmup: 2
+- Scaling exponent: 1.476
+- Timing: 512:106.84ms/38338.7tps/1183664896B, 1024:259.69ms/31545.3tps/2008091392B, 2048:725.26ms/22590.5tps/3666447104B, 4096:2295.27ms/14276.3tps/6966381312B
+- Output: outputs/scaling_sweep_wikitext2.jsonl

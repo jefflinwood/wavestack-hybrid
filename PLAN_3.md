@@ -3,7 +3,7 @@
 This phase focuses on empirically determining whether WaveStack Hybrid scales linearly or quadratically with sequence length and how it compares to transformer baselines under matched conditions.
 
 ## Phase 1 – Scaling Protocol
-- **Controlled Sweep:** Fix batch size, model params, and device; vary sequence length across a wide range (e.g., 128 → 2048 or 4096).
+- **Controlled Sweep:** Fix batch size, model params, and device; vary sequence length across a wide range (e.g., 128 → 2048 or 4096). (completed for MPS + CPU + Wikitext-2)
 - **Stable Seeds:** Use a fixed seed and fixed input data size to ensure repeatability.
 - **Warmup & Timing:** Use warmup iterations before timing; record average step time over multiple iterations.
 - **Memory Tracking:** Capture peak memory during sweeps to validate O(S) vs O(S^2) behavior.
