@@ -2129,3 +2129,25 @@ December 26, 2025
 - Steps: 5
 - Warmup: 1
 - Timing: 128:78.97ms/6483.8tps/777194752B, 256:117.34ms/8726.6tps/777779968B, 512:228.56ms/8960.5tps/777779968B
+
+2026-01-18 00:52
+- Study: exp1_expressivity
+- Experiment: hybrid_12m_codesearchnet
+- Config: experiments/exp1_expressivity/config_AM_hybrid_12m_codesearchnet.yaml
+- Dataset: json:train=data/codesearchnet/python_train.jsonl,validation=data/codesearchnet/python_valid.jsonl
+- Device: auto
+- Max steps: 10000
+- Samples: 8000
+- Seed: 1
+- Train loss: 0.3534
+- Eval loss: 3.5519
+- Holdout loss: 3.3570
+- Runtime (s): 18056.53
+- Tokens/s: 9073.72
+- Peak memory (bytes): n/a
+- Params total: 23040195
+- Params breakdown: {'embeddings': 19495296, 'lanes': 2215488, 'mixing': 443907, 'context': 885504, 'total': 23040195}
+- Params lanes: {'poly': 443520, 'trig': 443520, 'wavelet': 1328448}
+- FLOPs total (seq): 2.34e+10
+- FLOPs breakdown (seq): {'lanes': 2264924160.0, 'mixing': 454754304.0, 'context': 905969664.0, 'lm_head': 19761856512.0, 'total': 23387504640.0}
+- FLOPs lanes (seq): {'poly': 452984832.0, 'trig': 452984832.0, 'wavelet': 1358954496.0}

@@ -125,6 +125,12 @@ This file collects experiment outcomes, takeaways, and open questions. Add new e
   - Transformer exponent ~1.48; timing `512:106.84ms/38338.7tps/1183MB`, `1024:259.69ms/31545.3tps/2008MB`, `2048:725.26ms/22590.5tps/3666MB`, `4096:2295.27ms/14276.3tps/6966MB`.
 - **Interpretation:** Long‑seq scaling behavior is consistent across datasets; hybrid stays near‑linear while transformer trends super‑linear.
 
+## 2026-01-18 — CodeSearchNet Hybrid Run
+- **Setup:** 10k steps, seed 1, 8k samples; CodeSearchNet Python JSONL (train/valid).
+- **Outcome:** Training loss is reasonable; eval/holdout are higher than TinyStories, as expected for code data.
+- **Results:** Train loss 0.3534, eval loss 3.5519, holdout loss 3.3570.
+- **Notes:** Dataset now uses `code` column with pad masking for loss.
+
 ## 2026-01-15 — Training-Step Scaling (MPS)
 - **Setup:** Training step benchmark at seq lengths 128/256/512, batch size 4, 5 steps, 1 warmup.
 - **Outcome:** Transformer is faster per step and higher throughput at these lengths; hybrid uses less memory.
