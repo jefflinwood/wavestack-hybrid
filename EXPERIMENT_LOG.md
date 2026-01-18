@@ -2089,3 +2089,43 @@ December 26, 2025
 - Scaling exponent: 1.476
 - Timing: 512:106.84ms/38338.7tps/1183664896B, 1024:259.69ms/31545.3tps/2008091392B, 2048:725.26ms/22590.5tps/3666447104B, 4096:2295.27ms/14276.3tps/6966381312B
 - Output: outputs/scaling_sweep_wikitext2.jsonl
+
+2026-01-17 18:02
+- Study: training_benchmark
+- Model: hybrid
+- Device: mps
+- Seq lens: 128,256,512
+- Batch size: 4
+- Steps: 5
+- Warmup: 1
+- Timing: 128:196.76ms/2602.1tps/585826560B, 256:179.12ms/5716.8tps/586019072B, 512:317.72ms/6445.9tps/586608896B
+
+2026-01-17 18:02
+- Study: training_benchmark
+- Model: transformer
+- Device: mps
+- Seq lens: 128,256,512
+- Batch size: 4
+- Steps: 5
+- Warmup: 1
+- Timing: 128:85.26ms/6005.4tps/777194752B, 256:117.64ms/8704.7tps/777779968B, 512:226.00ms/9061.9tps/777779968B
+
+2026-01-17 18:05
+- Study: training_benchmark
+- Model: hybrid
+- Device: mps
+- Seq lens: 128,256,512
+- Batch size: 4
+- Steps: 5
+- Warmup: 1
+- Timing: 128:141.47ms/3619.1tps/585826560B, 256:167.02ms/6131.1tps/586019072B, 512:312.92ms/6544.8tps/586608896B
+
+2026-01-17 18:05
+- Study: training_benchmark
+- Model: transformer
+- Device: mps
+- Seq lens: 128,256,512
+- Batch size: 4
+- Steps: 5
+- Warmup: 1
+- Timing: 128:78.97ms/6483.8tps/777194752B, 256:117.34ms/8726.6tps/777779968B, 512:228.56ms/8960.5tps/777779968B

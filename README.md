@@ -96,6 +96,21 @@ Device selection defaults to `auto`, which prefers CUDA, then Apple Silicon MPS,
   ```bash
   uv run python scripts/run_transformer_baselines.py --device auto --max-steps 3000 --seeds 1,2
   ```
+  Training-step scaling benchmark:
+  ```bash
+  uv run python scripts/benchmark_training_step.py \
+    --model both \
+    --config experiments/exp1_expressivity/config_B_hybrid_12m.yaml \
+    --device auto \
+    --seq-lens 128,256,512 \
+    --batch-size 4 --steps 5 --warmup 1 \
+    --output outputs/training_sweep.jsonl \
+    --log-results
+  ```
+  Generate the training scaling table:
+  ```bash
+  uv run python scripts/report_training_scaling_tables.py
+  ```
 All runners accept `--device` and optional step/sample limits to keep local iterations lightweight.
 
 ## Status

@@ -10,7 +10,7 @@ This phase focuses on empirically determining whether WaveStack Hybrid scales li
 
 ## Phase 2 – Matched Baselines
 - **Hybrid vs Transformer:** Use the matched‑param transformer configs and hybrid configs already in the repo.
-- **Training vs Inference:** Benchmark both forward‑only inference and a short training step to see scaling in each regime.
+- **Training vs Inference:** Benchmark both forward‑only inference and a short training step to see scaling in each regime. (completed: MPS training step sweep)
 - **Baseline Sanity:** Confirm no NaNs in transformer runs and validate consistent loss curves across lengths.
 
 ## Phase 3 – Reporting

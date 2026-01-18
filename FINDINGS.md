@@ -125,6 +125,14 @@ This file collects experiment outcomes, takeaways, and open questions. Add new e
   - Transformer exponent ~1.48; timing `512:106.84ms/38338.7tps/1183MB`, `1024:259.69ms/31545.3tps/2008MB`, `2048:725.26ms/22590.5tps/3666MB`, `4096:2295.27ms/14276.3tps/6966MB`.
 - **Interpretation:** Long‑seq scaling behavior is consistent across datasets; hybrid stays near‑linear while transformer trends super‑linear.
 
+## 2026-01-15 — Training-Step Scaling (MPS)
+- **Setup:** Training step benchmark at seq lengths 128/256/512, batch size 4, 5 steps, 1 warmup.
+- **Outcome:** Transformer is faster per step and higher throughput at these lengths; hybrid uses less memory.
+- **Representative results:**
+  - Hybrid timing `128:196.76ms/2602.1tps/586MB`, `256:179.12ms/5716.8tps/586MB`, `512:317.72ms/6445.9tps/587MB`.
+  - Transformer timing `128:85.26ms/6005.4tps/777MB`, `256:117.64ms/8704.7tps/778MB`, `512:226.00ms/9061.9tps/778MB`.
+- **Interpretation:** Training throughput favors transformer at short lengths; long‑seq training scaling still needs measurement.
+
 ## 2026-01-01 — 50m Lane Ablations (Causal, poly_order=4)
 - **Setup:** 3 seeds, 3k steps, 16k samples.
 - **Outcome:** Wavelet-only and no-wavelet variants are close to each other but both lag the full hybrid.
