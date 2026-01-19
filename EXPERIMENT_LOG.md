@@ -2151,3 +2151,47 @@ December 26, 2025
 - FLOPs total (seq): 2.34e+10
 - FLOPs breakdown (seq): {'lanes': 2264924160.0, 'mixing': 454754304.0, 'context': 905969664.0, 'lm_head': 19761856512.0, 'total': 23387504640.0}
 - FLOPs lanes (seq): {'poly': 452984832.0, 'trig': 452984832.0, 'wavelet': 1358954496.0}
+
+2026-01-18 11:54
+- Study: exp1_expressivity
+- Experiment: neural_12m_codesearchnet
+- Config: experiments/exp1_expressivity/config_AN_neural_12m_codesearchnet.yaml
+- Dataset: json:train=data/codesearchnet/python_train.jsonl,validation=data/codesearchnet/python_valid.jsonl
+- Device: auto
+- Max steps: 10000
+- Samples: 8000
+- Seed: 1
+- Train loss: 1.3358
+- Eval loss: 3.1363
+- Holdout loss: 2.9842
+- Runtime (s): 141.51
+- Tokens/s: 1157758.26
+- Peak memory (bytes): n/a
+- Params total: 23225091
+- Params breakdown: {'embeddings': 19495296, 'lanes': 2843520, 'mixing': 443907, 'context': 0, 'neural_decomp': 445824, 'total': 23225091}
+- Params lanes: {'poly': 591360, 'trig': 591360, 'wavelet': 1660800}
+- FLOPs total (seq): 2.24e+10
+- FLOPs breakdown (seq): {'lanes': 1698693120.0, 'mixing': 454754304.0, 'context': 0.0, 'lm_head': 19761856512.0, 'neural_decomp': 452984832.0, 'total': 22368288768.0}
+- FLOPs lanes (seq): {'poly': 452984832.0, 'trig': 452984832.0, 'wavelet': 792723456.0}
+
+2026-01-18 18:39
+- Study: exp1_expressivity
+- Experiment: transformer_12m_codesearchnet
+- Config: experiments/exp1_expressivity/config_AO_transformer_12m_codesearchnet.yaml
+- Dataset: json:train=data/codesearchnet/python_train.jsonl,validation=data/codesearchnet/python_valid.jsonl
+- Device: auto
+- Max steps: 10000
+- Samples: 8000
+- Seed: 1
+- Train loss: 1.6145
+- Eval loss: 2.7744
+- Holdout loss: 2.6473
+- Runtime (s): 111.79
+- Tokens/s: 1465639.26
+- Peak memory (bytes): n/a
+- Params total: 23839872
+- Params breakdown: {'embeddings': 11372256, 'transformer_blocks': 1210048, 'lm_head': 11257568, 'total': 23839872}
+- Params lanes: {}
+- FLOPs total (seq): 1.32e+10
+- FLOPs breakdown (seq): {'embeddings': 0.0, 'transformer_blocks': 1702887424.0, 'lm_head': 11527749632.0, 'total': 13230637056.0}
+- FLOPs lanes (seq): {}

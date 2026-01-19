@@ -8,8 +8,8 @@ This phase focuses on running and analyzing a CodeSearchNet training pass to tes
 - **Logging:** Capture eval/holdout, params/FLOPs, runtime, and tokens/s in `EXPERIMENT_LOG.md`.
 
 ## Phase 2 – Baselines
-- **Neural Baseline:** Run the neural baseline at matched size.
-- **Transformer Baseline:** Optional matched‑param transformer baseline if time allows.
+- **Neural Baseline:** Run the neural baseline at matched size. (completed)
+- **Transformer Baseline:** Optional matched‑param transformer baseline if time allows. (completed)
 
 ## Phase 3 – Analysis
 - **Compare:** Evaluate hybrid vs baseline losses and runtime.

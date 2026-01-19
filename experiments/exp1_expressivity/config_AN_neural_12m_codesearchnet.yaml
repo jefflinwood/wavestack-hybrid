@@ -1,0 +1,13 @@
+name: neural_12m_codesearchnet
+model:
+  use_analytical_decomp: false
+  hidden_dim: 384
+  decomposition:
+    causal: true
+training:
+  learning_rate: 0.0004
+  batch_size: 32
+  max_steps: 10000
+dataset_name: json:train=data/codesearchnet/python_train.jsonl,validation=data/codesearchnet/python_valid.jsonl
+train_split: train
+val_split: validation

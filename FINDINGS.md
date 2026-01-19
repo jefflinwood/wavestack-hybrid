@@ -131,6 +131,15 @@ This file collects experiment outcomes, takeaways, and open questions. Add new e
 - **Results:** Train loss 0.3534, eval loss 3.5519, holdout loss 3.3570.
 - **Notes:** Dataset now uses `code` column with pad masking for loss.
 
+## 2026-01-18 — CodeSearchNet Baselines (12m)
+- **Setup:** 10k steps, seed 1, 8k samples; hybrid vs neural vs matched-param transformer.
+- **Outcome:** Transformer baseline performs best, neural second, hybrid worst on eval/holdout.
+- **Results:**
+  - Hybrid eval 3.5519 / holdout 3.3570.
+  - Neural eval 3.1363 / holdout 2.9842.
+  - Transformer eval 2.7744 / holdout 2.6473.
+- **Note:** Runtime/tokens-per-second logs look anomalous; re-run with `training.log_runtime: true` if runtime comparisons are needed.
+
 ## 2026-01-15 — Training-Step Scaling (MPS)
 - **Setup:** Training step benchmark at seq lengths 128/256/512, batch size 4, 5 steps, 1 warmup.
 - **Outcome:** Transformer is faster per step and higher throughput at these lengths; hybrid uses less memory.
