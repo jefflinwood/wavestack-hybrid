@@ -151,6 +151,14 @@ This file collects experiment outcomes, takeaways, and open questions. Add new e
   - No poly eval 2.9919 / holdout 2.8223.
 - **Interpretation:** CodeSearchNet benefits strongly from a lower LR; adopt 1e‑4 for code runs and re-compare to baselines.
 
+## 2026-01-20 — Wikitext-2 Long-Seq Phase 1 (1k Steps)
+- **Setup:** Long-seq hybrid vs matched transformer, 1k steps, seed 1, 8k samples; `max_seq_len=4096`, batch size 8.
+- **Outcome:** Both models are still high-loss at 1k steps; hybrid is slightly better on eval/holdout and serves as a checkpoint for probes.
+- **Results:**
+  - Hybrid eval 4.5102 / holdout 4.3923.
+  - Transformer eval 4.8949 / holdout 4.7103.
+- **Interpretation:** Early checkpoints are adequate for linguistic probing; do not over-interpret loss gaps at this short horizon.
+
 ## 2026-01-15 — Training-Step Scaling (MPS)
 - **Setup:** Training step benchmark at seq lengths 128/256/512, batch size 4, 5 steps, 1 warmup.
 - **Outcome:** Transformer is faster per step and higher throughput at these lengths; hybrid uses less memory.
