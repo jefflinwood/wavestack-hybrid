@@ -2195,3 +2195,113 @@ December 26, 2025
 - FLOPs total (seq): 1.32e+10
 - FLOPs breakdown (seq): {'embeddings': 0.0, 'transformer_blocks': 1702887424.0, 'lm_head': 11527749632.0, 'total': 13230637056.0}
 - FLOPs lanes (seq): {}
+
+2026-01-19 02:03
+- Study: exp1_expressivity
+- Experiment: hybrid_12m_codesearchnet
+- Config: experiments/exp1_expressivity/config_AM_hybrid_12m_codesearchnet.yaml
+- Dataset: json:train=data/codesearchnet/python_train.jsonl,validation=data/codesearchnet/python_valid.jsonl
+- Device: auto
+- Max steps: 10000
+- Samples: 8000
+- Seed: 1
+- Train loss: 0.3545
+- Eval loss: 3.5486
+- Holdout loss: 3.3495
+- Runtime (s): 17976.00
+- Tokens/s: 9114.38
+- Peak memory (bytes): n/a
+- Params total: 23040195
+- Params breakdown: {'embeddings': 19495296, 'lanes': 2215488, 'mixing': 443907, 'context': 885504, 'total': 23040195}
+- Params lanes: {'poly': 443520, 'trig': 443520, 'wavelet': 1328448}
+- FLOPs total (seq): 2.34e+10
+- FLOPs breakdown (seq): {'lanes': 2264924160.0, 'mixing': 454754304.0, 'context': 905969664.0, 'lm_head': 19761856512.0, 'total': 23387504640.0}
+- FLOPs lanes (seq): {'poly': 452984832.0, 'trig': 452984832.0, 'wavelet': 1358954496.0}
+
+2026-01-19 08:18
+- Study: exp1_expressivity
+- Experiment: hybrid_12m_codesearchnet_lr1e4
+- Config: experiments/exp1_expressivity/config_AP_hybrid_12m_codesearchnet_lr1e4.yaml
+- Dataset: json:train=data/codesearchnet/python_train.jsonl,validation=data/codesearchnet/python_valid.jsonl
+- Device: auto
+- Max steps: 10000
+- Samples: 8000
+- Seed: 1
+- Train loss: 0.7058
+- Eval loss: 2.5838
+- Holdout loss: 2.4565
+- Runtime (s): 17977.57
+- Tokens/s: 9113.58
+- Peak memory (bytes): n/a
+- Params total: 23040195
+- Params breakdown: {'embeddings': 19495296, 'lanes': 2215488, 'mixing': 443907, 'context': 885504, 'total': 23040195}
+- Params lanes: {'poly': 443520, 'trig': 443520, 'wavelet': 1328448}
+- FLOPs total (seq): 2.34e+10
+- FLOPs breakdown (seq): {'lanes': 2264924160.0, 'mixing': 454754304.0, 'context': 905969664.0, 'lm_head': 19761856512.0, 'total': 23387504640.0}
+- FLOPs lanes (seq): {'poly': 452984832.0, 'trig': 452984832.0, 'wavelet': 1358954496.0}
+
+2026-01-19 14:35
+- Study: exp1_expressivity
+- Experiment: hybrid_12m_codesearchnet_recomp_standard
+- Config: experiments/exp1_expressivity/config_AQ_hybrid_12m_codesearchnet_recomp_standard.yaml
+- Dataset: json:train=data/codesearchnet/python_train.jsonl,validation=data/codesearchnet/python_valid.jsonl
+- Device: auto
+- Max steps: 10000
+- Samples: 8000
+- Seed: 1
+- Train loss: 0.6867
+- Eval loss: 2.8696
+- Holdout loss: 2.7237
+- Runtime (s): 18142.06
+- Tokens/s: 9030.95
+- Peak memory (bytes): n/a
+- Params total: 23668227
+- Params breakdown: {'embeddings': 19495296, 'lanes': 2843520, 'mixing': 443907, 'context': 885504, 'total': 23668227}
+- Params lanes: {'poly': 591360, 'trig': 591360, 'wavelet': 1660800}
+- FLOPs total (seq): 2.40e+10
+- FLOPs breakdown (seq): {'lanes': 2906652672.0, 'mixing': 454754304.0, 'context': 905969664.0, 'lm_head': 19761856512.0, 'total': 24029233152.0}
+- FLOPs lanes (seq): {'poly': 603979776.0, 'trig': 603979776.0, 'wavelet': 1698693120.0}
+
+2026-01-19 20:49
+- Study: exp1_expressivity
+- Experiment: hybrid_12m_codesearchnet_lane_caps
+- Config: experiments/exp1_expressivity/config_AR_hybrid_12m_codesearchnet_lane_caps.yaml
+- Dataset: json:train=data/codesearchnet/python_train.jsonl,validation=data/codesearchnet/python_valid.jsonl
+- Device: auto
+- Max steps: 10000
+- Samples: 8000
+- Seed: 1
+- Train loss: 0.4572
+- Eval loss: 3.1510
+- Holdout loss: 2.9800
+- Runtime (s): 17922.42
+- Tokens/s: 9141.62
+- Peak memory (bytes): n/a
+- Params total: 22892547
+- Params breakdown: {'embeddings': 19495296, 'lanes': 2067840, 'mixing': 443907, 'context': 885504, 'total': 22892547}
+- Params lanes: {'poly': 295872, 'trig': 443520, 'wavelet': 1328448}
+- FLOPs total (seq): 2.32e+10
+- FLOPs breakdown (seq): {'lanes': 2113929216.0, 'mixing': 454754304.0, 'context': 905969664.0, 'lm_head': 19761856512.0, 'total': 23236509696.0}
+- FLOPs lanes (seq): {'poly': 301989888.0, 'trig': 452984832.0, 'wavelet': 1358954496.0}
+
+2026-01-20 02:52
+- Study: exp1_expressivity
+- Experiment: hybrid_12m_codesearchnet_no_poly
+- Config: experiments/exp1_expressivity/config_AS_hybrid_12m_codesearchnet_no_poly.yaml
+- Dataset: json:train=data/codesearchnet/python_train.jsonl,validation=data/codesearchnet/python_valid.jsonl
+- Device: auto
+- Max steps: 10000
+- Samples: 8000
+- Seed: 1
+- Train loss: 0.5353
+- Eval loss: 2.9919
+- Holdout loss: 2.8223
+- Runtime (s): 17278.71
+- Tokens/s: 9482.19
+- Peak memory (bytes): n/a
+- Params total: 22448834
+- Params breakdown: {'embeddings': 19495296, 'lanes': 1771968, 'mixing': 296066, 'context': 885504, 'total': 22448834}
+- Params lanes: {'trig': 443520, 'wavelet': 1328448}
+- FLOPs total (seq): 2.28e+10
+- FLOPs breakdown (seq): {'lanes': 1811939328.0, 'mixing': 303169536.0, 'context': 905969664.0, 'lm_head': 19761856512.0, 'total': 22782935040.0}
+- FLOPs lanes (seq): {'trig': 452984832.0, 'wavelet': 1358954496.0}

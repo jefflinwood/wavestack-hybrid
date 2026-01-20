@@ -140,6 +140,17 @@ This file collects experiment outcomes, takeaways, and open questions. Add new e
   - Transformer eval 2.7744 / holdout 2.6473.
 - **Note:** Runtime/tokens-per-second logs look anomalous; re-run with `training.log_runtime: true` if runtime comparisons are needed.
 
+## 2026-01-20 — CodeSearchNet Hybrid Sweep
+- **Setup:** 10k steps, seed 1, 8k samples; swept LR and minor architecture tweaks.
+- **Outcome:** Lowering LR to 1e‑4 is the clear win; other tweaks help less or regress.
+- **Results:**
+  - Baseline eval 3.5486 / holdout 3.3495.
+  - LR 1e‑4 eval 2.5838 / holdout 2.4565.
+  - Recomp standard eval 2.8696 / holdout 2.7237.
+  - Lane caps eval 3.1510 / holdout 2.9800.
+  - No poly eval 2.9919 / holdout 2.8223.
+- **Interpretation:** CodeSearchNet benefits strongly from a lower LR; adopt 1e‑4 for code runs and re-compare to baselines.
+
 ## 2026-01-15 — Training-Step Scaling (MPS)
 - **Setup:** Training step benchmark at seq lengths 128/256/512, batch size 4, 5 steps, 1 warmup.
 - **Outcome:** Transformer is faster per step and higher throughput at these lengths; hybrid uses less memory.
