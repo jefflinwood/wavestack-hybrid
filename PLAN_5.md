@@ -15,7 +15,9 @@ This phase focuses on probing linguistic structure in Wikitext-2 to see whether 
 - **Span-level probes:** Noun-phrase boundary detection or chunking using pooled lane outputs.
 - **Frequency/scale probes:** Correlate trig/wavelet lane activations with token frequency and sentence length.
 - **Ablation probes:** Compare full hybrid vs lane-ablated variants on the same probe tasks.
-- **Extraction:** `uv run python scripts/extract_wikitext2_probe_reprs.py --config experiments/exp1_expressivity/config_AU_hybrid_12m_wikitext2_longseq_phase1.yaml --checkpoint checkpoints/phase5/hybrid/checkpoint_001000.pt --device auto --split validation --seq-len 512 --max-samples 512 --pool mean --output outputs/probes/wikitext2_hybrid_phase1.pt`.
+  - **Extraction:** `uv run python scripts/extract_wikitext2_probe_reprs.py --config experiments/exp1_expressivity/config_AU_hybrid_12m_wikitext2_longseq_phase1.yaml --checkpoint checkpoints/phase5/hybrid/checkpoint_001000.pt --device auto --split validation --seq-len 512 --max-samples 512 --pool mean --output outputs/probes/wikitext2_hybrid_phase1.pt`.
+  - **Probe run:** `uv run python scripts/run_wikitext2_linguistic_probes.py --hybrid outputs/probes/wikitext2_hybrid_phase1.pt --transformer outputs/probes/wikitext2_transformer_phase1.pt`.
+  - **Status:** Completed (results in `outputs/probes/wikitext2_probe_results.jsonl`).
 
 ## Phase 3 – Evaluation + Analysis
 - **Comparisons:** Hybrid vs transformer probes; lane-wise comparisons within hybrid.

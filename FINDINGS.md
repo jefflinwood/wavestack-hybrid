@@ -159,6 +159,18 @@ This file collects experiment outcomes, takeaways, and open questions. Add new e
   - Transformer eval 4.8949 / holdout 4.7103.
 - **Interpretation:** Early checkpoints are adequate for linguistic probing; do not over-interpret loss gaps at this short horizon.
 
+## 2026-01-20 — Wikitext-2 Linguistic Probes (Phase 2)
+- **Setup:** 512 validation samples, pooled mean representations; linear probes on heuristic linguistic tasks.
+- **Outcome:** Hybrid lanes capture strong surface linguistic signals; some lanes slightly outperform the mixed representation on specific tasks.
+- **Representative results (accuracy):**
+  - Token length bin: hybrid lane poly/trig 0.951 vs transformer mixed 0.961.
+  - Word count bin: hybrid lane poly/trig 0.874 vs transformer mixed 0.932.
+  - Avg word length bin: hybrid lane trig 0.903 vs transformer mixed 0.854.
+  - Capitalization ratio bin: hybrid lane wavelet 0.845 vs transformer mixed 0.825.
+  - Punctuation ratio bin: hybrid mixed 0.806 vs transformer mixed 0.796.
+  - Digit presence: hybrid mixed/wavelet 0.922 vs transformer mixed 0.883.
+- **Interpretation:** Hybrid lanes appear to separate different surface cues (trig for word length, wavelet for capitalization/digits). These are heuristic probes, not full POS/dependency tasks; deeper probes still needed.
+
 ## 2026-01-15 — Training-Step Scaling (MPS)
 - **Setup:** Training step benchmark at seq lengths 128/256/512, batch size 4, 5 steps, 1 warmup.
 - **Outcome:** Transformer is faster per step and higher throughput at these lengths; hybrid uses less memory.
