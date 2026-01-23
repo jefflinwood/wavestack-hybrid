@@ -169,6 +169,13 @@ This file collects experiment outcomes, takeaways, and open questions. Add new e
   - Capitalization ratio bin: hybrid lane wavelet 0.845 vs transformer mixed 0.825.
   - Punctuation ratio bin: hybrid mixed 0.806 vs transformer mixed 0.796.
   - Digit presence: hybrid mixed/wavelet 0.922 vs transformer mixed 0.883.
+- **Summary table (best per model):**
+  - `avg_word_len_bin` | hybrid `lane_trig` 0.903 | transformer `mixed` 0.854
+  - `capitalization_ratio_bin` | hybrid `lane_wavelet` 0.845 | transformer `mixed` 0.825
+  - `digit_present` | hybrid `mixed` 0.922 | transformer `mixed` 0.883
+  - `punctuation_ratio_bin` | hybrid `mixed` 0.806 | transformer `mixed` 0.796
+  - `token_length_bin` | hybrid `lane_poly` 0.951 | transformer `mixed` 0.961
+  - `word_count_bin` | hybrid `lane_poly` 0.874 | transformer `mixed` 0.932
 - **Interpretation:** Hybrid lanes appear to separate different surface cues (trig for word length, wavelet for capitalization/digits). These are heuristic probes, not full POS/dependency tasks; deeper probes still needed.
 
 ## 2026-01-15 — Training-Step Scaling (MPS)

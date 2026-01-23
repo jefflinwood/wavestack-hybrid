@@ -24,6 +24,7 @@ This phase focuses on probing linguistic structure in Wikitext-2 to see whether 
 - **Metrics:** Accuracy/F1 on probes; correlation strength for frequency/scale tests.
 - **Interpretation:** Summarize whether any lane consistently aligns with linguistic structure.
 - **Write-up:** Capture findings in `FINDINGS.md` with a short summary table.
+  - **Status:** In progress (heuristic probe summary logged in `FINDINGS.md`).
 
 ## Phase 4 – Follow-ups (If Signals Appear)
 - **Targeted tweaks:** Adjust lane capacities or regularizers to emphasize the strongest linguistic signals.
