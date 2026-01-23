@@ -25,6 +25,8 @@ training:
   learning_rate: 0.0003
   batch_size: 8
   max_steps: 8000
+  save_interval: 1000
 dataset_name: wikitext:wikitext-2-raw-v1
 train_split: train
 val_split: validation
+checkpoint_dir: ./checkpoints/phase5/hybrid

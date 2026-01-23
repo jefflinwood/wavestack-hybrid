@@ -66,7 +66,7 @@ class TransformerBaseline(nn.Module):
         mask = torch.triu(torch.ones(config.max_seq_len, config.max_seq_len), diagonal=1)
         self.register_buffer("causal_mask", mask, persistent=False)
 
-    def forward(self, input_ids: torch.LongTensor) -> torch.Tensor:
+    def _forward_hidden(self, input_ids: torch.LongTensor) -> torch.Tensor:
         seq_len = input_ids.size(1)
         positions = torch.arange(seq_len, device=input_ids.device)
         hidden = self.embeddings(input_ids) + self.positions(positions)
@@ -74,5 +74,12 @@ class TransformerBaseline(nn.Module):
         attn_mask = attn_mask.masked_fill(attn_mask == 1, float("-inf"))
         for block in self.blocks:
             hidden = block(hidden, attn_mask)
-        hidden = self.ln(hidden)
+        return self.ln(hidden)
+
+    def forward_hidden(self, input_ids: torch.LongTensor) -> torch.Tensor:
+        """Return the final hidden states for probing."""
+        return self._forward_hidden(input_ids)
+
+    def forward(self, input_ids: torch.LongTensor) -> torch.Tensor:
+        hidden = self._forward_hidden(input_ids)
         return self.lm_head(hidden)

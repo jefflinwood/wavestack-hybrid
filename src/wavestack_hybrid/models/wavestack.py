@@ -99,6 +99,46 @@ class HybridWaveStack(nn.Module):
             return logits, lane_outputs
         return logits
 
+    def forward_representations(self, input_ids: torch.LongTensor) -> Dict[str, torch.Tensor]:
+        """Return logits plus intermediate representations for probing."""
+
+        hidden = self.embeddings(input_ids)
+        lane_features: Dict[str, torch.Tensor]
+
+        if self.config.use_analytical_decomp:
+            lane_features = {}
+            if "poly" in self.lane_names:
+                lane_features["poly"] = self.chebyshev(hidden)
+            if "trig" in self.lane_names:
+                lane_features["trig"] = self.fourier(hidden)
+            if "wavelet" in self.lane_names:
+                lane_features["wavelet"] = self.wavelet(hidden)
+        else:
+            base = self.neural(hidden)
+            lane_features = {name: base for name in self.lane_names}
+
+        recomposed = self.recomposition(lane_features)
+        if self.pre_context_block is not None:
+            recomposed = {
+                name: self.pre_context_block(recomposed[name]) for name in self.lane_names
+            }
+        lane_outputs = torch.stack([recomposed[name] for name in self.lane_names], dim=0)
+        mixed = self.mixer(lane_outputs)
+        if self.post_context_block is not None:
+            mixed = self.post_context_block(mixed)
+
+        if self.config.use_skip_connections:
+            mixed = mixed + hidden
+
+        mixed = self.ln(mixed)
+        logits = self.lm_head(mixed)
+        return {
+            "hidden": hidden,
+            "lane_outputs": lane_outputs,
+            "mixed": mixed,
+            "logits": logits,
+        }
+
     def update_schedule(self, step: int, total_steps: int) -> None:
         """Update decomposition lane capacities according to schedule settings."""
 
