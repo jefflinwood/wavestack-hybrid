@@ -2437,3 +2437,69 @@ December 26, 2025
 - FLOPs total (seq): 1.32e+11
 - FLOPs breakdown (seq): {'embeddings': 0.0, 'transformer_blocks': 39929774080.0, 'lm_head': 92221997056.0, 'total': 132151771136.0}
 - FLOPs lanes (seq): {}
+
+2026-01-23 23:36
+- Study: exp1_expressivity
+- Experiment: hybrid_12m_wikitext2_longseq_wavelet_capacity
+- Config: experiments/exp1_expressivity/config_AW_hybrid_12m_wikitext2_longseq_wavelet_capacity.yaml
+- Dataset: wikitext:wikitext-2-raw-v1
+- Device: auto
+- Max steps: 1000
+- Samples: 8000
+- Seed: 1
+- Train loss: 4.2039
+- Eval loss: 4.5002
+- Holdout loss: 4.3935
+- Runtime (s): 4765.59
+- Tokens/s: 6875.95
+- Peak memory (bytes): n/a
+- Params total: 24564099
+- Params breakdown: {'embeddings': 20871552, 'lanes': 2363136, 'mixing': 443907, 'context': 885504, 'total': 24564099}
+- Params lanes: {'poly': 443520, 'trig': 443520, 'wavelet': 1476096}
+- FLOPs total (seq): 1.88e+11
+- FLOPs breakdown (seq): {'lanes': 19327352832.0, 'mixing': 3638034432.0, 'context': 7247757312.0, 'lm_head': 158094852096.0, 'total': 188307996672.0}
+- FLOPs lanes (seq): {'poly': 3623878656.0, 'trig': 3623878656.0, 'wavelet': 12079595520.0}
+
+2026-01-24 00:19
+- Study: exp1_expressivity
+- Experiment: hybrid_12m_wikitext2_longseq_wavelet_only
+- Config: experiments/exp1_expressivity/config_AX_hybrid_12m_wikitext2_longseq_wavelet_only.yaml
+- Dataset: wikitext:wikitext-2-raw-v1
+- Device: auto
+- Max steps: 1000
+- Samples: 8000
+- Seed: 1
+- Train loss: 4.2396
+- Eval loss: 4.5274
+- Holdout loss: 4.3997
+- Runtime (s): 23.07
+- Tokens/s: 1420542.71
+- Peak memory (bytes): n/a
+- Params total: 23233729
+- Params breakdown: {'embeddings': 20871552, 'lanes': 1328448, 'mixing': 148225, 'context': 885504, 'total': 23233729}
+- Params lanes: {'wavelet': 1328448}
+- FLOPs total (seq): 1.77e+11
+- FLOPs breakdown (seq): {'lanes': 10871635968.0, 'mixing': 1212678144.0, 'context': 7247757312.0, 'lm_head': 158094852096.0, 'total': 177426923520.0}
+- FLOPs lanes (seq): {'wavelet': 10871635968.0}
+
+2026-01-24 01:54
+- Study: exp1_expressivity
+- Experiment: hybrid_12m_wikitext2_longseq_lane_diversity
+- Config: experiments/exp1_expressivity/config_AY_hybrid_12m_wikitext2_longseq_lane_diversity.yaml
+- Dataset: wikitext:wikitext-2-raw-v1
+- Device: auto
+- Max steps: 1000
+- Samples: 8000
+- Seed: 1
+- Train loss: 4.2143
+- Eval loss: 4.5085
+- Holdout loss: 4.3889
+- Runtime (s): 4731.28
+- Tokens/s: 6925.82
+- Peak memory (bytes): n/a
+- Params total: 24416451
+- Params breakdown: {'embeddings': 20871552, 'lanes': 2215488, 'mixing': 443907, 'context': 885504, 'total': 24416451}
+- Params lanes: {'poly': 443520, 'trig': 443520, 'wavelet': 1328448}
+- FLOPs total (seq): 1.87e+11
+- FLOPs breakdown (seq): {'lanes': 18119393280.0, 'mixing': 3638034432.0, 'context': 7247757312.0, 'lm_head': 158094852096.0, 'total': 187100037120.0}
+- FLOPs lanes (seq): {'poly': 3623878656.0, 'trig': 3623878656.0, 'wavelet': 10871635968.0}

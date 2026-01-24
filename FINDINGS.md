@@ -193,6 +193,16 @@ This file collects experiment outcomes, takeaways, and open questions. Add new e
   - `head_dist_bin` | hybrid `lane_wavelet` 0.538 | transformer `mixed` 0.421
 - **Interpretation:** Linguistic probes suggest wavelet features align most with syntactic structure, while trig/poly lag on POS/dep compared to wavelet and mixed.
 
+## 2026-01-24 — Wikitext-2 Linguistic Follow-ups (Phase 4, 1k Steps)
+- **Setup:** 1k steps, seed 1, 8k samples; wavelet capacity up, wavelet-only, and lane diversity regularizer.
+- **Outcome:** Changes are minor at this short horizon; wavelet capacity up slightly improves eval, wavelet-only and lane diversity are roughly flat to slightly worse.
+- **Results:**
+  - Baseline eval 4.5102 / holdout 4.3923.
+  - Wavelet capacity eval 4.5002 / holdout 4.3935.
+  - Wavelet-only eval 4.5274 / holdout 4.3997.
+  - Lane diversity eval 4.5085 / holdout 4.3889.
+- **Interpretation:** No clear win yet; need probe-level comparisons to see if wavelet capacity changes syntactic signal strength.
+
 ## 2026-01-15 — Training-Step Scaling (MPS)
 - **Setup:** Training step benchmark at seq lengths 128/256/512, batch size 4, 5 steps, 1 warmup.
 - **Outcome:** Transformer is faster per step and higher throughput at these lengths; hybrid uses less memory.

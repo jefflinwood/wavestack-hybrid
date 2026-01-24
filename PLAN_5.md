@@ -24,7 +24,7 @@ This phase focuses on probing linguistic structure in Wikitext-2 to see whether 
 - **Metrics:** Accuracy/F1 on probes; correlation strength for frequency/scale tests.
 - **Interpretation:** Summarize whether any lane consistently aligns with linguistic structure.
 - **Write-up:** Capture findings in `FINDINGS.md` with a short summary table.
-  - **Status:** In progress (heuristic probe summary logged in `FINDINGS.md`).
+  - **Status:** Completed (heuristic + POS/dep probes summarized in `FINDINGS.md`).
   - **POS/Dep extraction:** Re-extract with token-level reps (pool=none), e.g. `uv run python scripts/extract_wikitext2_probe_reprs.py --config experiments/exp1_expressivity/config_AU_hybrid_12m_wikitext2_longseq_phase1.yaml --checkpoint checkpoints/phase5/hybrid/checkpoint_001000.pt --device auto --split validation --seq-len 256 --max-samples 128 --pool none --output outputs/probes/wikitext2_hybrid_phase1_tokens.pt`.
   - **POS/Dep probes:** `uv run python scripts/run_wikitext2_pos_dependency_probes.py --hybrid outputs/probes/wikitext2_hybrid_phase1_tokens.pt --transformer outputs/probes/wikitext2_transformer_phase1_tokens.pt --spacy-model en_core_web_sm`.
   - **Status:** POS/dep probes completed; results summarized in `FINDINGS.md`.
@@ -32,6 +32,12 @@ This phase focuses on probing linguistic structure in Wikitext-2 to see whether 
 ## Phase 4 – Follow-ups (If Signals Appear)
 - **Targeted tweaks:** Adjust lane capacities or regularizers to emphasize the strongest linguistic signals.
 - **Generalization:** Verify on a second corpus slice or different Wikitext-2 seed.
+  - **Experiments:** Wavelet capacity up, wavelet-only, lane-diversity regularizer.
+  - **Runner:** `uv run python scripts/run_wikitext2_linguistic_phase4.py --device auto --max-steps 1000 --samples 8000 --seed 1`.
+  - **Status:** Runs completed; compare probe signals for each variant.
+  - **Probe extraction:** `uv run python scripts/run_wikitext2_phase4_probe_extraction.py --device auto --checkpoint-step 1000`.
+  - **Heuristic probes:** `uv run python scripts/run_wikitext2_multi_linguistic_probes.py --inputs baseline=outputs/probes/phase5/hybrid_12m_wikitext2_longseq_phase1_mean.pt wavelet_capacity=outputs/probes/phase5/hybrid_12m_wikitext2_longseq_wavelet_capacity_mean.pt wavelet_only=outputs/probes/phase5/hybrid_12m_wikitext2_longseq_wavelet_only_mean.pt lane_diversity=outputs/probes/phase5/hybrid_12m_wikitext2_longseq_lane_diversity_mean.pt --output outputs/probes/wikitext2_phase4_probe_results.jsonl`.
+  - **POS/dep probes:** `uv run python scripts/run_wikitext2_multi_pos_dependency_probes.py --inputs baseline=outputs/probes/phase5/hybrid_12m_wikitext2_longseq_phase1_tokens.pt wavelet_capacity=outputs/probes/phase5/hybrid_12m_wikitext2_longseq_wavelet_capacity_tokens.pt wavelet_only=outputs/probes/phase5/hybrid_12m_wikitext2_longseq_wavelet_only_tokens.pt lane_diversity=outputs/probes/phase5/hybrid_12m_wikitext2_longseq_lane_diversity_tokens.pt --spacy-model en_core_web_sm --output outputs/probes/wikitext2_phase4_pos_dep_results.jsonl`.
 
 ## Execution Notes
 - Keep seeds, sample caps, and max steps consistent across probe extractions.
