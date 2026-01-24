@@ -25,6 +25,9 @@ This phase focuses on probing linguistic structure in Wikitext-2 to see whether 
 - **Interpretation:** Summarize whether any lane consistently aligns with linguistic structure.
 - **Write-up:** Capture findings in `FINDINGS.md` with a short summary table.
   - **Status:** In progress (heuristic probe summary logged in `FINDINGS.md`).
+  - **POS/Dep extraction:** Re-extract with token-level reps (pool=none), e.g. `uv run python scripts/extract_wikitext2_probe_reprs.py --config experiments/exp1_expressivity/config_AU_hybrid_12m_wikitext2_longseq_phase1.yaml --checkpoint checkpoints/phase5/hybrid/checkpoint_001000.pt --device auto --split validation --seq-len 256 --max-samples 128 --pool none --output outputs/probes/wikitext2_hybrid_phase1_tokens.pt`.
+  - **POS/Dep probes:** `uv run python scripts/run_wikitext2_pos_dependency_probes.py --hybrid outputs/probes/wikitext2_hybrid_phase1_tokens.pt --transformer outputs/probes/wikitext2_transformer_phase1_tokens.pt --spacy-model en_core_web_sm`.
+  - **Status:** POS/dep probes completed; results summarized in `FINDINGS.md`.
 
 ## Phase 4 – Follow-ups (If Signals Appear)
 - **Targeted tweaks:** Adjust lane capacities or regularizers to emphasize the strongest linguistic signals.

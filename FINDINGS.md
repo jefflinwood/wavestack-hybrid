@@ -178,6 +178,21 @@ This file collects experiment outcomes, takeaways, and open questions. Add new e
   - `word_count_bin` | hybrid `lane_poly` 0.874 | transformer `mixed` 0.932
 - **Interpretation:** Hybrid lanes appear to separate different surface cues (trig for word length, wavelet for capitalization/digits). These are heuristic probes, not full POS/dependency tasks; deeper probes still needed.
 
+## 2026-01-21 — Wikitext-2 POS/Dependency Probes (Phase 3)
+- **Setup:** 128 validation samples, token-level representations with spaCy tags; linear probes on POS, dependency label, head direction, and head distance bins.
+- **Outcome:** Wavelet lane carries the strongest syntactic signal; hybrid mixed also outperforms transformer mixed across POS/dep tasks.
+- **Representative results (accuracy):**
+  - POS: hybrid wavelet 0.804 vs hybrid mixed 0.760 vs transformer mixed 0.625.
+  - Dependency label: hybrid wavelet 0.659 vs hybrid mixed 0.602 vs transformer mixed 0.508.
+  - Head direction: hybrid wavelet 0.768 vs hybrid mixed 0.741 vs transformer mixed 0.667.
+  - Head distance bin: hybrid wavelet 0.538 vs hybrid mixed 0.485 vs transformer mixed 0.421.
+- **Summary table (best per model):**
+  - `pos` | hybrid `lane_wavelet` 0.804 | transformer `mixed` 0.625
+  - `dep` | hybrid `lane_wavelet` 0.659 | transformer `mixed` 0.508
+  - `head_dir` | hybrid `lane_wavelet` 0.768 | transformer `mixed` 0.667
+  - `head_dist_bin` | hybrid `lane_wavelet` 0.538 | transformer `mixed` 0.421
+- **Interpretation:** Linguistic probes suggest wavelet features align most with syntactic structure, while trig/poly lag on POS/dep compared to wavelet and mixed.
+
 ## 2026-01-15 — Training-Step Scaling (MPS)
 - **Setup:** Training step benchmark at seq lengths 128/256/512, batch size 4, 5 steps, 1 warmup.
 - **Outcome:** Transformer is faster per step and higher throughput at these lengths; hybrid uses less memory.
