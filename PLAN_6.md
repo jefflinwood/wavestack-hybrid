@@ -21,6 +21,9 @@ This phase explores how context size affects WaveStack performance and whether t
 - **Protocol:** Synthetic dataset with a key-value phrase early in context, query at end; measure exact match accuracy.
 - **Sweep:** Place the key at multiple offsets (e.g., 64/128/256/512/1024/2048 tokens).
 - **Outputs:** Accuracy vs distance plots for hybrid vs transformer.
+  - **Runner:** `uv run python scripts/run_context_recall_sweep.py --device auto --offsets 64,128,256,512,1024,2048,3072 --samples 128 --seed 1`.
+  - **Note:** Results now include pool-restricted accuracy (`accuracy_pool_top1/top5`) to detect recall even when global top-k is low.
+  - **Status:** Completed (pool-restricted results summarized in `FINDINGS.md`).
 
 ## Phase 3 – Recall Probes on Natural Text
 - **Goal:** Evaluate recall-like behavior on Wikitext-2 without synthetic cues.

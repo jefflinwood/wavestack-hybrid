@@ -214,6 +214,14 @@ This file collects experiment outcomes, takeaways, and open questions. Add new e
   - Transformer: `ctx128 4.9491 / 4.7459`, `ctx512 4.9146 / 4.7108`, `ctx4096 4.8966 / 4.7089`.
 - **Interpretation:** At 1k steps, both models show minimal context-length sensitivity; deeper runs may be needed to reveal dropoff behavior.
 
+## 2026-01-25 — Needle-in-Haystack Recall (Pool-Restricted)
+- **Setup:** Synthetic key/value prompt; accuracy measured among candidate pool at offsets 64–3072 (128 samples each).
+- **Outcome:** Recall accuracies are low and noisy, with no consistent monotonic dropoff across offsets.
+- **Representative results (pool top-1 / top-5):**
+  - Hybrid: `64 0.031/0.102`, `512 0.023/0.125`, `2048 0.031/0.109`, `3072 0.055/0.188`.
+  - Transformer: `64 0.016/0.125`, `512 0.008/0.109`, `2048 0.016/0.125`, `3072 0.055/0.164`.
+- **Interpretation:** Both models show weak recall under this synthetic probe; larger sample sizes or stronger training may be needed to see clear dropoff dynamics.
+
 ## 2026-01-15 — Training-Step Scaling (MPS)
 - **Setup:** Training step benchmark at seq lengths 128/256/512, batch size 4, 5 steps, 1 warmup.
 - **Outcome:** Transformer is faster per step and higher throughput at these lengths; hybrid uses less memory.
