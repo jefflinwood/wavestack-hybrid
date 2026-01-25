@@ -13,6 +13,8 @@ This phase explores how context size affects WaveStack performance and whether t
 - **Suggested lengths:** 128 / 256 / 512 / 1024 / 2048 / 4096 (where feasible).
 - **Comparisons:** Hybrid vs transformer (matched params) on Wikitext-2; include a short-seq baseline (512).
 - **Logging:** Record loss, runtime, tokens/s, and memory in `EXPERIMENT_LOG.md`.
+  - **Runner:** `uv run python scripts/run_context_length_sweep.py --device auto --max-steps 1000 --samples 8000 --seed 1`.
+  - **Status:** Completed (results summarized in `FINDINGS.md`).
 
 ## Phase 2 – Context Dropoff Test (Needle-in-Haystack)
 - **Goal:** Test whether information recall degrades as the needle moves farther back in context.

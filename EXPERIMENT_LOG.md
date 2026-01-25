@@ -2503,3 +2503,267 @@ December 26, 2025
 - FLOPs total (seq): 1.87e+11
 - FLOPs breakdown (seq): {'lanes': 18119393280.0, 'mixing': 3638034432.0, 'context': 7247757312.0, 'lm_head': 158094852096.0, 'total': 187100037120.0}
 - FLOPs lanes (seq): {'poly': 3623878656.0, 'trig': 3623878656.0, 'wavelet': 10871635968.0}
+
+2026-01-24 23:31
+- Study: exp1_expressivity
+- Experiment: hybrid_12m_wikitext2_longseq_phase1_ctx128
+- Config: experiments/exp1_expressivity/config_AU_hybrid_12m_wikitext2_longseq_phase1.yaml
+- Dataset: wikitext:wikitext-2-raw-v1
+- Device: auto
+- Max steps: 1000
+- Samples: 8000
+- Seed: 1
+- Train loss: 4.2740
+- Eval loss: 4.5707
+- Holdout loss: 4.4446
+- Runtime (s): 129.12
+- Tokens/s: 7930.39
+- Peak memory (bytes): n/a
+- Params total: 22892739
+- Params breakdown: {'embeddings': 19347840, 'lanes': 2215488, 'mixing': 443907, 'context': 885504, 'total': 22892739}
+- Params lanes: {'poly': 443520, 'trig': 443520, 'wavelet': 1328448}
+- FLOPs total (seq): 5.85e+09
+- FLOPs breakdown (seq): {'lanes': 566231040.0, 'mixing': 113688576.0, 'context': 226492416.0, 'lm_head': 4940464128.0, 'total': 5846876160.0}
+- FLOPs lanes (seq): {'poly': 113246208.0, 'trig': 113246208.0, 'wavelet': 339738624.0}
+
+2026-01-24 23:36
+- Study: exp1_expressivity
+- Experiment: hybrid_12m_wikitext2_longseq_phase1_ctx256
+- Config: experiments/exp1_expressivity/config_AU_hybrid_12m_wikitext2_longseq_phase1.yaml
+- Dataset: wikitext:wikitext-2-raw-v1
+- Device: auto
+- Max steps: 1000
+- Samples: 8000
+- Seed: 1
+- Train loss: 4.2228
+- Eval loss: 4.5022
+- Holdout loss: 4.4066
+- Runtime (s): 238.27
+- Tokens/s: 8595.12
+- Peak memory (bytes): n/a
+- Params total: 22941891
+- Params breakdown: {'embeddings': 19396992, 'lanes': 2215488, 'mixing': 443907, 'context': 885504, 'total': 22941891}
+- Params lanes: {'poly': 443520, 'trig': 443520, 'wavelet': 1328448}
+- FLOPs total (seq): 1.17e+10
+- FLOPs breakdown (seq): {'lanes': 1132462080.0, 'mixing': 227377152.0, 'context': 452984832.0, 'lm_head': 9880928256.0, 'total': 11693752320.0}
+- FLOPs lanes (seq): {'poly': 226492416.0, 'trig': 226492416.0, 'wavelet': 679477248.0}
+
+2026-01-24 23:47
+- Study: exp1_expressivity
+- Experiment: hybrid_12m_wikitext2_longseq_phase1_ctx512
+- Config: experiments/exp1_expressivity/config_AU_hybrid_12m_wikitext2_longseq_phase1.yaml
+- Dataset: wikitext:wikitext-2-raw-v1
+- Device: auto
+- Max steps: 1000
+- Samples: 8000
+- Seed: 1
+- Train loss: 4.2132
+- Eval loss: 4.4946
+- Holdout loss: 4.4059
+- Runtime (s): 461.93
+- Tokens/s: 8867.12
+- Peak memory (bytes): n/a
+- Params total: 23040195
+- Params breakdown: {'embeddings': 19495296, 'lanes': 2215488, 'mixing': 443907, 'context': 885504, 'total': 23040195}
+- Params lanes: {'poly': 443520, 'trig': 443520, 'wavelet': 1328448}
+- FLOPs total (seq): 2.34e+10
+- FLOPs breakdown (seq): {'lanes': 2264924160.0, 'mixing': 454754304.0, 'context': 905969664.0, 'lm_head': 19761856512.0, 'total': 23387504640.0}
+- FLOPs lanes (seq): {'poly': 452984832.0, 'trig': 452984832.0, 'wavelet': 1358954496.0}
+
+2026-01-25 00:06
+- Study: exp1_expressivity
+- Experiment: hybrid_12m_wikitext2_longseq_phase1_ctx1024
+- Config: experiments/exp1_expressivity/config_AU_hybrid_12m_wikitext2_longseq_phase1.yaml
+- Dataset: wikitext:wikitext-2-raw-v1
+- Device: auto
+- Max steps: 1000
+- Samples: 8000
+- Seed: 1
+- Train loss: 4.2150
+- Eval loss: 4.4976
+- Holdout loss: 4.4139
+- Runtime (s): 868.12
+- Tokens/s: 9436.45
+- Peak memory (bytes): n/a
+- Params total: 23236803
+- Params breakdown: {'embeddings': 19691904, 'lanes': 2215488, 'mixing': 443907, 'context': 885504, 'total': 23236803}
+- Params lanes: {'poly': 443520, 'trig': 443520, 'wavelet': 1328448}
+- FLOPs total (seq): 4.68e+10
+- FLOPs breakdown (seq): {'lanes': 4529848320.0, 'mixing': 909508608.0, 'context': 1811939328.0, 'lm_head': 39523713024.0, 'total': 46775009280.0}
+- FLOPs lanes (seq): {'poly': 905969664.0, 'trig': 905969664.0, 'wavelet': 2717908992.0}
+
+2026-01-25 00:44
+- Study: exp1_expressivity
+- Experiment: hybrid_12m_wikitext2_longseq_phase1_ctx2048
+- Config: experiments/exp1_expressivity/config_AU_hybrid_12m_wikitext2_longseq_phase1.yaml
+- Dataset: wikitext:wikitext-2-raw-v1
+- Device: auto
+- Max steps: 1000
+- Samples: 8000
+- Seed: 1
+- Train loss: 4.2127
+- Eval loss: 4.4943
+- Holdout loss: 4.4157
+- Runtime (s): 1827.53
+- Tokens/s: 8965.13
+- Peak memory (bytes): n/a
+- Params total: 23630019
+- Params breakdown: {'embeddings': 20085120, 'lanes': 2215488, 'mixing': 443907, 'context': 885504, 'total': 23630019}
+- Params lanes: {'poly': 443520, 'trig': 443520, 'wavelet': 1328448}
+- FLOPs total (seq): 9.36e+10
+- FLOPs breakdown (seq): {'lanes': 9059696640.0, 'mixing': 1819017216.0, 'context': 3623878656.0, 'lm_head': 79047426048.0, 'total': 93550018560.0}
+- FLOPs lanes (seq): {'poly': 1811939328.0, 'trig': 1811939328.0, 'wavelet': 5435817984.0}
+
+2026-01-25 02:05
+- Study: exp1_expressivity
+- Experiment: hybrid_12m_wikitext2_longseq_phase1_ctx4096
+- Config: experiments/exp1_expressivity/config_AU_hybrid_12m_wikitext2_longseq_phase1.yaml
+- Dataset: wikitext:wikitext-2-raw-v1
+- Device: auto
+- Max steps: 1000
+- Samples: 8000
+- Seed: 1
+- Train loss: 4.2160
+- Eval loss: 4.5102
+- Holdout loss: 4.3923
+- Runtime (s): 4305.58
+- Tokens/s: 7610.59
+- Peak memory (bytes): n/a
+- Params total: 24416451
+- Params breakdown: {'embeddings': 20871552, 'lanes': 2215488, 'mixing': 443907, 'context': 885504, 'total': 24416451}
+- Params lanes: {'poly': 443520, 'trig': 443520, 'wavelet': 1328448}
+- FLOPs total (seq): 1.87e+11
+- FLOPs breakdown (seq): {'lanes': 18119393280.0, 'mixing': 3638034432.0, 'context': 7247757312.0, 'lm_head': 158094852096.0, 'total': 187100037120.0}
+- FLOPs lanes (seq): {'poly': 3623878656.0, 'trig': 3623878656.0, 'wavelet': 10871635968.0}
+
+2026-01-25 02:07
+- Study: exp1_expressivity
+- Experiment: transformer_12m_wikitext2_longseq_phase1_ctx128
+- Config: experiments/exp1_expressivity/config_AV_transformer_12m_wikitext2_longseq_phase1.yaml
+- Dataset: wikitext:wikitext-2-raw-v1
+- Device: auto
+- Max steps: 1000
+- Samples: 8000
+- Seed: 1
+- Train loss: 4.6627
+- Eval loss: 4.9491
+- Holdout loss: 4.7459
+- Runtime (s): 16.68
+- Tokens/s: 61398.55
+- Peak memory (bytes): n/a
+- Params total: 23753856
+- Params breakdown: {'embeddings': 11286240, 'transformer_blocks': 1210048, 'lm_head': 11257568, 'total': 23753856}
+- Params lanes: {}
+- FLOPs total (seq): 3.22e+09
+- FLOPs breakdown (seq): {'embeddings': 0.0, 'transformer_blocks': 337641472.0, 'lm_head': 2881937408.0, 'total': 3219578880.0}
+- FLOPs lanes (seq): {}
+
+2026-01-25 02:09
+- Study: exp1_expressivity
+- Experiment: transformer_12m_wikitext2_longseq_phase1_ctx256
+- Config: experiments/exp1_expressivity/config_AV_transformer_12m_wikitext2_longseq_phase1.yaml
+- Dataset: wikitext:wikitext-2-raw-v1
+- Device: auto
+- Max steps: 1000
+- Samples: 8000
+- Seed: 1
+- Train loss: 4.6326
+- Eval loss: 4.9034
+- Holdout loss: 4.7024
+- Runtime (s): 16.13
+- Tokens/s: 126961.28
+- Peak memory (bytes): n/a
+- Params total: 23782528
+- Params breakdown: {'embeddings': 11314912, 'transformer_blocks': 1210048, 'lm_head': 11257568, 'total': 23782528}
+- Params lanes: {}
+- FLOPs total (seq): 6.50e+09
+- FLOPs breakdown (seq): {'embeddings': 0.0, 'transformer_blocks': 734003200.0, 'lm_head': 5763874816.0, 'total': 6497878016.0}
+- FLOPs lanes (seq): {}
+
+2026-01-25 02:14
+- Study: exp1_expressivity
+- Experiment: transformer_12m_wikitext2_longseq_phase1_ctx512
+- Config: experiments/exp1_expressivity/config_AV_transformer_12m_wikitext2_longseq_phase1.yaml
+- Dataset: wikitext:wikitext-2-raw-v1
+- Device: auto
+- Max steps: 1000
+- Samples: 8000
+- Seed: 1
+- Train loss: 4.6340
+- Eval loss: 4.9146
+- Holdout loss: 4.7108
+- Runtime (s): 16.59
+- Tokens/s: 246953.97
+- Peak memory (bytes): n/a
+- Params total: 23839872
+- Params breakdown: {'embeddings': 11372256, 'transformer_blocks': 1210048, 'lm_head': 11257568, 'total': 23839872}
+- Params lanes: {}
+- FLOPs total (seq): 1.32e+10
+- FLOPs breakdown (seq): {'embeddings': 0.0, 'transformer_blocks': 1702887424.0, 'lm_head': 11527749632.0, 'total': 13230637056.0}
+- FLOPs lanes (seq): {}
+
+2026-01-25 02:24
+- Study: exp1_expressivity
+- Experiment: transformer_12m_wikitext2_longseq_phase1_ctx1024
+- Config: experiments/exp1_expressivity/config_AV_transformer_12m_wikitext2_longseq_phase1.yaml
+- Dataset: wikitext:wikitext-2-raw-v1
+- Device: auto
+- Max steps: 1000
+- Samples: 8000
+- Seed: 1
+- Train loss: 4.6319
+- Eval loss: 4.9137
+- Holdout loss: 4.7163
+- Runtime (s): 16.64
+- Tokens/s: 492388.64
+- Peak memory (bytes): n/a
+- Params total: 23954560
+- Params breakdown: {'embeddings': 11486944, 'transformer_blocks': 1210048, 'lm_head': 11257568, 'total': 23954560}
+- Params lanes: {}
+- FLOPs total (seq): 2.74e+10
+- FLOPs breakdown (seq): {'embeddings': 0.0, 'transformer_blocks': 4345298944.0, 'lm_head': 23055499264.0, 'total': 27400798208.0}
+- FLOPs lanes (seq): {}
+
+2026-01-25 02:46
+- Study: exp1_expressivity
+- Experiment: transformer_12m_wikitext2_longseq_phase1_ctx2048
+- Config: experiments/exp1_expressivity/config_AV_transformer_12m_wikitext2_longseq_phase1.yaml
+- Dataset: wikitext:wikitext-2-raw-v1
+- Device: auto
+- Max steps: 1000
+- Samples: 8000
+- Seed: 1
+- Train loss: 4.6282
+- Eval loss: 4.9171
+- Holdout loss: 4.7736
+- Runtime (s): 182.41
+- Tokens/s: 89818.50
+- Peak memory (bytes): n/a
+- Params total: 24183936
+- Params breakdown: {'embeddings': 11716320, 'transformer_blocks': 1210048, 'lm_head': 11257568, 'total': 24183936}
+- Params lanes: {}
+- FLOPs total (seq): 5.86e+10
+- FLOPs breakdown (seq): {'embeddings': 0.0, 'transformer_blocks': 12448694272.0, 'lm_head': 46110998528.0, 'total': 58559692800.0}
+- FLOPs lanes (seq): {}
+
+2026-01-25 09:36
+- Study: exp1_expressivity
+- Experiment: transformer_12m_wikitext2_longseq_phase1_ctx4096
+- Config: experiments/exp1_expressivity/config_AV_transformer_12m_wikitext2_longseq_phase1.yaml
+- Dataset: wikitext:wikitext-2-raw-v1
+- Device: auto
+- Max steps: 1000
+- Samples: 8000
+- Seed: 1
+- Train loss: 4.6322
+- Eval loss: 4.8966
+- Holdout loss: 4.7089
+- Runtime (s): 147.01
+- Tokens/s: 222893.29
+- Peak memory (bytes): n/a
+- Params total: 24642688
+- Params breakdown: {'embeddings': 12175072, 'transformer_blocks': 1210048, 'lm_head': 11257568, 'total': 24642688}
+- Params lanes: {}
+- FLOPs total (seq): 1.32e+11
+- FLOPs breakdown (seq): {'embeddings': 0.0, 'transformer_blocks': 39929774080.0, 'lm_head': 92221997056.0, 'total': 132151771136.0}
+- FLOPs lanes (seq): {}

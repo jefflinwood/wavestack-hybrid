@@ -206,6 +206,14 @@ This file collects experiment outcomes, takeaways, and open questions. Add new e
   - POS/dep probes: lane diversity and wavelet capacity show small gains (≈+0.003 to +0.008); wavelet-only drops on POS/head direction (‑0.023/‑0.010).
 - **Interpretation:** Minor probe gains favor wavelet capacity and lane diversity; wavelet-only weakens syntactic signals.
 
+## 2026-01-25 — Context Length Sweep (Wikitext-2, 1k Steps)
+- **Setup:** 1k steps, seed 1, 8k samples; context lengths 128–4096; hybrid vs matched transformer.
+- **Outcome:** Eval/holdout losses are relatively flat across context lengths at this short horizon; no sharp dropoff observed up to 4096.
+- **Representative results (eval / holdout):**
+  - Hybrid: `ctx128 4.5707 / 4.4446`, `ctx512 4.4946 / 4.4059`, `ctx4096 4.5102 / 4.3923`.
+  - Transformer: `ctx128 4.9491 / 4.7459`, `ctx512 4.9146 / 4.7108`, `ctx4096 4.8966 / 4.7089`.
+- **Interpretation:** At 1k steps, both models show minimal context-length sensitivity; deeper runs may be needed to reveal dropoff behavior.
+
 ## 2026-01-15 — Training-Step Scaling (MPS)
 - **Setup:** Training step benchmark at seq lengths 128/256/512, batch size 4, 5 steps, 1 warmup.
 - **Outcome:** Transformer is faster per step and higher throughput at these lengths; hybrid uses less memory.
