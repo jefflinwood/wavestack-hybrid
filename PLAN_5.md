@@ -38,6 +38,7 @@ This phase focuses on probing linguistic structure in Wikitext-2 to see whether 
   - **Probe extraction:** `uv run python scripts/run_wikitext2_phase4_probe_extraction.py --device auto --checkpoint-step 1000`.
   - **Heuristic probes:** `uv run python scripts/run_wikitext2_multi_linguistic_probes.py --inputs baseline=outputs/probes/phase5/hybrid_12m_wikitext2_longseq_phase1_mean.pt wavelet_capacity=outputs/probes/phase5/hybrid_12m_wikitext2_longseq_wavelet_capacity_mean.pt wavelet_only=outputs/probes/phase5/hybrid_12m_wikitext2_longseq_wavelet_only_mean.pt lane_diversity=outputs/probes/phase5/hybrid_12m_wikitext2_longseq_lane_diversity_mean.pt --output outputs/probes/wikitext2_phase4_probe_results.jsonl`.
   - **POS/dep probes:** `uv run python scripts/run_wikitext2_multi_pos_dependency_probes.py --inputs baseline=outputs/probes/phase5/hybrid_12m_wikitext2_longseq_phase1_tokens.pt wavelet_capacity=outputs/probes/phase5/hybrid_12m_wikitext2_longseq_wavelet_capacity_tokens.pt wavelet_only=outputs/probes/phase5/hybrid_12m_wikitext2_longseq_wavelet_only_tokens.pt lane_diversity=outputs/probes/phase5/hybrid_12m_wikitext2_longseq_lane_diversity_tokens.pt --spacy-model en_core_web_sm --output outputs/probes/wikitext2_phase4_pos_dep_results.jsonl`.
+  - **Status:** Probe comparisons completed; summarized in `FINDINGS.md`.
 
 ## Execution Notes
 - Keep seeds, sample caps, and max steps consistent across probe extractions.

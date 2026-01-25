@@ -201,7 +201,10 @@ This file collects experiment outcomes, takeaways, and open questions. Add new e
   - Wavelet capacity eval 4.5002 / holdout 4.3935.
   - Wavelet-only eval 4.5274 / holdout 4.3997.
   - Lane diversity eval 4.5085 / holdout 4.3889.
-- **Interpretation:** No clear win yet; need probe-level comparisons to see if wavelet capacity changes syntactic signal strength.
+- **Probe deltas (best per task vs baseline):**
+  - Heuristic probes: lane diversity improves word count (+0.049), wavelet capacity improves capitalization (+0.039) and punctuation (+0.029), wavelet-only improves digit presence (+0.029) but hurts token length (‑0.068).
+  - POS/dep probes: lane diversity and wavelet capacity show small gains (≈+0.003 to +0.008); wavelet-only drops on POS/head direction (‑0.023/‑0.010).
+- **Interpretation:** Minor probe gains favor wavelet capacity and lane diversity; wavelet-only weakens syntactic signals.
 
 ## 2026-01-15 — Training-Step Scaling (MPS)
 - **Setup:** Training step benchmark at seq lengths 128/256/512, batch size 4, 5 steps, 1 warmup.
