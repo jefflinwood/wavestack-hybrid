@@ -230,6 +230,14 @@ This file collects experiment outcomes, takeaways, and open questions. Add new e
   - Transformer: `64 0.021/0.131`, `512 0.023/0.121`, `2048 0.018/0.119`, `3072 0.031/0.146`.
 - **Interpretation:** Longer sweeps still show shallow recall signals; consider stronger training or alternative prompts.
 
+## 2026-01-25 — Needle-in-Haystack Recall (Explicit Prompt)
+- **Setup:** Same probe with explicit key/value phrasing (`The key is ...`), 512 samples per offset.
+- **Outcome:** Results remain low and noisy; no consistent dropoff across offsets.
+- **Representative results (pool top-1 / top-5):**
+  - Hybrid: `64 0.025/0.139`, `512 0.020/0.111`, `2048 0.031/0.191`, `3072 0.025/0.127`.
+  - Transformer: `64 0.023/0.123`, `512 0.041/0.111`, `2048 0.062/0.162`, `3072 0.029/0.127`.
+- **Interpretation:** Prompting alone does not reveal strong recall; longer training or alternative task design likely needed.
+
 ## 2026-01-15 — Training-Step Scaling (MPS)
 - **Setup:** Training step benchmark at seq lengths 128/256/512, batch size 4, 5 steps, 1 warmup.
 - **Outcome:** Transformer is faster per step and higher throughput at these lengths; hybrid uses less memory.

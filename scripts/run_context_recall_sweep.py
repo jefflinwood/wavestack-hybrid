@@ -45,6 +45,12 @@ def main() -> None:
     parser.add_argument("--batch-size", type=int, default=16, help="Batch size.")
     parser.add_argument("--seed", type=int, default=1, help="Random seed.")
     parser.add_argument(
+        "--template",
+        choices=("simple", "explicit"),
+        default="simple",
+        help="Prompt template for the recall probe.",
+    )
+    parser.add_argument(
         "--output-dir",
         default="outputs/recall",
         help="Output directory for JSONL results.",
@@ -69,6 +75,8 @@ def main() -> None:
         str(args.batch_size),
         "--seed",
         str(args.seed),
+        "--template",
+        args.template,
     ]
 
     _run_command(

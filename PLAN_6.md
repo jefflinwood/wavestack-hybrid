@@ -24,6 +24,7 @@ This phase explores how context size affects WaveStack performance and whether t
   - **Runner:** `uv run python scripts/run_context_recall_sweep.py --device auto --offsets 64,128,256,512,1024,2048,3072 --samples 128 --seed 1`.
   - **Note:** Results now include pool-restricted accuracy (`accuracy_pool_top1/top5`) to detect recall even when global top-k is low.
   - **Status:** Completed (pool-restricted results summarized in `FINDINGS.md`).
+  - **Stronger prompt:** Use `--template explicit` to test a more verbose key/value phrasing.
 
 ## Phase 3 – Recall Probes on Natural Text
 - **Goal:** Evaluate recall-like behavior on Wikitext-2 without synthetic cues.

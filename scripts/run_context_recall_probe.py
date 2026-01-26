@@ -74,7 +74,15 @@ def _token_pool(tokenizer: TokenizerWrapper) -> List[int]:
     return pool
 
 
-def _prompt_tokens(tokenizer: TokenizerWrapper) -> Tuple[List[int], List[int], List[int], List[int]]:
+def _prompt_tokens(
+    tokenizer: TokenizerWrapper, template: str
+) -> Tuple[List[int], List[int], List[int], List[int]]:
+    if template == "explicit":
+        key_prompt = tokenizer.encode(" The key is")
+        value_prompt = tokenizer.encode(" and the value is")
+        query_prompt = tokenizer.encode(" When the key is")
+        answer_prompt = tokenizer.encode(", the value is")
+        return key_prompt, value_prompt, query_prompt, answer_prompt
     key_prompt = tokenizer.encode("Key:")
     value_prompt = tokenizer.encode(" Value:")
     query_prompt = tokenizer.encode(" Query:")
@@ -157,13 +165,19 @@ def main() -> None:
     parser.add_argument("--batch-size", type=int, default=16, help="Batch size.")
     parser.add_argument("--seed", type=int, default=1, help="Random seed.")
     parser.add_argument("--output", required=True, help="Output JSONL path.")
+    parser.add_argument(
+        "--template",
+        choices=("simple", "explicit"),
+        default="simple",
+        help="Prompt template for the key/value recall probe.",
+    )
     args = parser.parse_args()
 
     experiment = ExperimentConfig.from_yaml(args.config)
     device = _resolve_device(args.device)
     tokenizer = TokenizerWrapper()
     pool = _token_pool(tokenizer)
-    prompts = _prompt_tokens(tokenizer)
+    prompts = _prompt_tokens(tokenizer, args.template)
     base_distance = _base_distance(prompts)
     offsets = [int(v.strip()) for v in args.offsets.split(",") if v.strip()]
 
@@ -250,6 +264,7 @@ def main() -> None:
                 "model": experiment.name,
                 "config": args.config,
                 "checkpoint": args.checkpoint,
+                "template": args.template,
                 "offset": offset,
                 "samples": args.samples,
                 "seq_len": max_len,
