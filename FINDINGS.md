@@ -222,6 +222,14 @@ This file collects experiment outcomes, takeaways, and open questions. Add new e
   - Transformer: `64 0.016/0.125`, `512 0.008/0.109`, `2048 0.016/0.125`, `3072 0.055/0.164`.
 - **Interpretation:** Both models show weak recall under this synthetic probe; larger sample sizes or stronger training may be needed to see clear dropoff dynamics.
 
+## 2026-01-25 — Needle-in-Haystack Recall (512 Samples/Offset)
+- **Setup:** Same probe with 512 samples per offset.
+- **Outcome:** Variance reduced but accuracy remains low; no clear monotonic dropoff.
+- **Representative results (pool top-1 / top-5):**
+  - Hybrid: `64 0.025/0.113`, `512 0.029/0.131`, `2048 0.025/0.119`, `3072 0.031/0.156`.
+  - Transformer: `64 0.021/0.131`, `512 0.023/0.121`, `2048 0.018/0.119`, `3072 0.031/0.146`.
+- **Interpretation:** Longer sweeps still show shallow recall signals; consider stronger training or alternative prompts.
+
 ## 2026-01-15 — Training-Step Scaling (MPS)
 - **Setup:** Training step benchmark at seq lengths 128/256/512, batch size 4, 5 steps, 1 warmup.
 - **Outcome:** Transformer is faster per step and higher throughput at these lengths; hybrid uses less memory.
