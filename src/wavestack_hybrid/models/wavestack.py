@@ -11,6 +11,7 @@ from ..config import ModelConfig
 from .decomposition.chebyshev import ChebyshevDecomposition
 from .decomposition.fourier import FourierDecomposition
 from .decomposition.neural import NeuralDecomposition
+from .decomposition.recall import RecallDecomposition
 from .decomposition.wavelet import WaveletDecomposition
 from .embeddings import HybridEmbedding
 from .context_block import ContextBlock
@@ -27,7 +28,7 @@ class HybridWaveStack(nn.Module):
         super().__init__()
         self.config = config
         enabled_lanes = list(config.enabled_lanes)
-        allowed_lanes = {"poly", "trig", "wavelet"}
+        allowed_lanes = {"poly", "trig", "wavelet", "recall"}
         if not enabled_lanes:
             raise ValueError("At least one lane must be enabled.")
         invalid = [lane for lane in enabled_lanes if lane not in allowed_lanes]
@@ -38,6 +39,7 @@ class HybridWaveStack(nn.Module):
         self.chebyshev = ChebyshevDecomposition(config.hidden_dim, config.decomposition)
         self.fourier = FourierDecomposition(config.hidden_dim, config.decomposition)
         self.wavelet = WaveletDecomposition(config.hidden_dim, config.decomposition)
+        self.recall = RecallDecomposition(config.hidden_dim, config.decomposition)
         self.neural = (
             NeuralDecomposition(config.hidden_dim, config.neural_decomp_layers)
             if not config.use_analytical_decomp
@@ -76,6 +78,10 @@ class HybridWaveStack(nn.Module):
                 lane_features["trig"] = self.fourier(hidden)
             if "wavelet" in self.lane_names:
                 lane_features["wavelet"] = self.wavelet(hidden)
+            if "recall" in self.lane_names:
+                lane_features["recall"] = self.recall(hidden)
+            if "recall" in self.lane_names:
+                lane_features["recall"] = self.recall(hidden)
         else:
             base = self.neural(hidden)
             lane_features = {name: base for name in self.lane_names}

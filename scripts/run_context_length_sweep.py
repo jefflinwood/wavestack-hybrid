@@ -197,6 +197,11 @@ def main() -> None:
         help="Hybrid base config path.",
     )
     parser.add_argument(
+        "--recall-config",
+        default="experiments/exp1_expressivity/config_AZ_hybrid_12m_wikitext2_longseq_recall.yaml",
+        help="Hybrid recall config path.",
+    )
+    parser.add_argument(
         "--transformer-config",
         default="experiments/exp1_expressivity/config_AV_transformer_12m_wikitext2_longseq_phase1.yaml",
         help="Transformer base config path.",
@@ -223,6 +228,17 @@ def main() -> None:
     for seq_len in seq_lens:
         _run_experiment(
             args.hybrid_config,
+            seq_len=seq_len,
+            device=args.device,
+            max_steps=args.max_steps,
+            samples=args.samples,
+            seed=args.seed,
+            batch_size=args.batch_size,
+        )
+
+    for seq_len in seq_lens:
+        _run_experiment(
+            args.recall_config,
             seq_len=seq_len,
             device=args.device,
             max_steps=args.max_steps,

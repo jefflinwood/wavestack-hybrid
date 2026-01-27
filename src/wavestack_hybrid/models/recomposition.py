@@ -48,6 +48,7 @@ class RecompositionBundle(nn.Module):
             "poly": LaneRecompositionNetwork(hidden_dim, config, config.poly_capacity),
             "trig": LaneRecompositionNetwork(hidden_dim, config, config.trig_capacity),
             "wavelet": LaneRecompositionNetwork(hidden_dim, config, config.wavelet_capacity),
+            "recall": LaneRecompositionNetwork(hidden_dim, config, config.recall_capacity),
         }
         lane_list = list(lanes) if lanes is not None else list(available.keys())
         missing = [lane for lane in lane_list if lane not in available]

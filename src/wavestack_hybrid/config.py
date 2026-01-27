@@ -31,6 +31,11 @@ class DecompositionConfig:
     wavelet_levels: int = 3
     scale_selection: Literal["learnable", "fixed"] = "learnable"
 
+    # Recall settings
+    recall_features: int = 64
+    recall_decay: float = 1.0
+    recall_epsilon: float = 1e-6
+
 
 @dataclass
 class RecompositionConfig:
@@ -40,6 +45,7 @@ class RecompositionConfig:
     poly_capacity: float = 1.0
     trig_capacity: float = 1.0
     wavelet_capacity: float = 1.5
+    recall_capacity: float = 1.0
     dropout: float = 0.1
     activation: Literal["gelu", "relu", "swish"] = "gelu"
 
@@ -181,6 +187,7 @@ class ModelConfig:
             "poly": self.recomposition.poly_capacity,
             "trig": self.recomposition.trig_capacity,
             "wavelet": self.recomposition.wavelet_capacity,
+            "recall": self.recomposition.recall_capacity,
         }
         lane_params: Dict[str, int] = {}
         for lane_name in self.enabled_lanes:
@@ -188,6 +195,12 @@ class ModelConfig:
             recomposition_params = self._recomposition_param_count(width)
             if lane_name == "wavelet":
                 decomp_params = (self.hidden_dim * (self.hidden_dim * 2 * self.decomposition.wavelet_levels)) + self.hidden_dim
+            elif lane_name == "recall":
+                feature_dim = max(8, int(self.decomposition.recall_features))
+                decomp_params = (
+                    2 * (self.hidden_dim * feature_dim + feature_dim)
+                    + (self.hidden_dim * self.hidden_dim + self.hidden_dim)
+                )
             else:
                 decomp_params = (self.hidden_dim * self.hidden_dim) + self.hidden_dim
             lane_params[lane_name] = recomposition_params + decomp_params
@@ -246,6 +259,7 @@ class ModelConfig:
             "poly": self.recomposition.poly_capacity,
             "trig": self.recomposition.trig_capacity,
             "wavelet": self.recomposition.wavelet_capacity,
+            "recall": self.recomposition.recall_capacity,
         }
         flops: Dict[str, float] = {}
         for lane_name in self.enabled_lanes:
@@ -256,6 +270,12 @@ class ModelConfig:
                 if lane_name == "wavelet":
                     decomp_flops = 2.0 * self.hidden_dim * (
                         self.hidden_dim * 2 * self.decomposition.wavelet_levels
+                    )
+                elif lane_name == "recall":
+                    feature_dim = max(8, int(self.decomposition.recall_features))
+                    decomp_flops = (
+                        2.0 * self.hidden_dim * feature_dim * 2.0
+                        + 2.0 * self.hidden_dim * self.hidden_dim
                     )
                 else:
                     decomp_flops = 2.0 * self.hidden_dim * self.hidden_dim
