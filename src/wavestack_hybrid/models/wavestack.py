@@ -39,7 +39,11 @@ class HybridWaveStack(nn.Module):
         self.chebyshev = ChebyshevDecomposition(config.hidden_dim, config.decomposition)
         self.fourier = FourierDecomposition(config.hidden_dim, config.decomposition)
         self.wavelet = WaveletDecomposition(config.hidden_dim, config.decomposition)
-        self.recall = RecallDecomposition(config.hidden_dim, config.decomposition)
+        self.recall = (
+            RecallDecomposition(config.hidden_dim, config.decomposition)
+            if "recall" in enabled_lanes
+            else None
+        )
         self.neural = (
             NeuralDecomposition(config.hidden_dim, config.neural_decomp_layers)
             if not config.use_analytical_decomp
@@ -78,9 +82,9 @@ class HybridWaveStack(nn.Module):
                 lane_features["trig"] = self.fourier(hidden)
             if "wavelet" in self.lane_names:
                 lane_features["wavelet"] = self.wavelet(hidden)
-            if "recall" in self.lane_names:
+            if "recall" in self.lane_names and self.recall is not None:
                 lane_features["recall"] = self.recall(hidden)
-            if "recall" in self.lane_names:
+            if "recall" in self.lane_names and self.recall is not None:
                 lane_features["recall"] = self.recall(hidden)
         else:
             base = self.neural(hidden)

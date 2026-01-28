@@ -253,6 +253,14 @@ This file collects experiment outcomes, takeaways, and open questions. Add new e
 - **Interpretation:** Loss is stable but recall lane adds heavy overhead; investigate implementation cost before further tuning.
 - **Update:** Vectorized recall reduced runtime overhead; tokens/s improved to 5449.99 on re-run.
 
+## 2026-01-28 — Recall Probe (Baseline vs Recall-Light)
+- **Setup:** Explicit prompt, 512 samples per offset; baseline hybrid vs recall-light checkpoint.
+- **Outcome:** Recall-light shows mixed gains at some mid offsets (256–512) but no consistent improvement overall.
+- **Representative results (pool top-1 / top-5):**
+  - Baseline: `64 0.025/0.139`, `512 0.020/0.111`, `1024 0.041/0.158`, `3072 0.025/0.127`.
+  - Recall-light: `64 0.021/0.135`, `512 0.031/0.119`, `1024 0.031/0.137`, `3072 0.023/0.111`.
+- **Interpretation:** Recall lane does not yet deliver a clear recall boost; may need stronger training or adjusted recall hyperparameters.
+
 ## 2026-01-15 — Training-Step Scaling (MPS)
 - **Setup:** Training step benchmark at seq lengths 128/256/512, batch size 4, 5 steps, 1 warmup.
 - **Outcome:** Transformer is faster per step and higher throughput at these lengths; hybrid uses less memory.
