@@ -1,0 +1,36 @@
+name: hybrid_12m_wikitext2_longseq_recall_light
+model:
+  use_analytical_decomp: true
+  enabled_lanes:
+    - poly
+    - trig
+    - wavelet
+    - recall
+  num_lanes: 4
+  hidden_dim: 384
+  max_seq_len: 4096
+  decomposition:
+    causal: true
+    poly_order: 4
+    recall_features: 32
+    recall_decay: 0.98
+  recomposition:
+    depth: shallow
+    recall_capacity: 0.5
+  context_block:
+    enabled: true
+    position: both
+    block_type: conv
+    depth: 1
+    kernel_size: 3
+    dropout: 0.1
+    causal: true
+training:
+  learning_rate: 0.0003
+  batch_size: 8
+  max_steps: 8000
+  save_interval: 1000
+dataset_name: wikitext:wikitext-2-raw-v1
+train_split: train
+val_split: validation
+checkpoint_dir: ./checkpoints/phase6/recall_light

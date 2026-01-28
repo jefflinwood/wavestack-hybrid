@@ -32,22 +32,23 @@ class RecallDecomposition(nn.Module):
         q_phi = self._phi(q)
         k_phi = self._phi(k)
 
-        if self.decay >= 1.0:
+        decay = float(self.decay)
+        if decay <= 0.0:
+            kv_cum = k_phi.unsqueeze(-1) * v.unsqueeze(2)
+            k_cum = k_phi
+        elif decay >= 0.999:
             kv = torch.einsum("bsf,bsd->bsfd", k_phi, v)
             kv_cum = torch.cumsum(kv, dim=1)
             k_cum = torch.cumsum(k_phi, dim=1)
         else:
-            batch, seq_len, feat_dim = k_phi.size()
-            kv_cum = torch.zeros(batch, seq_len, feat_dim, v.size(-1), device=v.device, dtype=v.dtype)
-            k_cum = torch.zeros(batch, seq_len, feat_dim, device=v.device, dtype=v.dtype)
-            kv_prev = torch.zeros(batch, feat_dim, v.size(-1), device=v.device, dtype=v.dtype)
-            k_prev = torch.zeros(batch, feat_dim, device=v.device, dtype=v.dtype)
-            decay = self.decay
-            for t in range(seq_len):
-                kv_prev = decay * kv_prev + k_phi[:, t, :].unsqueeze(-1) * v[:, t, :].unsqueeze(1)
-                k_prev = decay * k_prev + k_phi[:, t, :]
-                kv_cum[:, t, :, :] = kv_prev
-                k_cum[:, t, :] = k_prev
+            seq_len = k_phi.size(1)
+            steps = torch.arange(seq_len, device=k_phi.device, dtype=k_phi.dtype)
+            powers = torch.pow(torch.tensor(decay, device=k_phi.device, dtype=k_phi.dtype), steps)
+            inv_powers = powers.reciprocal()
+            k_scaled = k_phi * inv_powers.view(1, seq_len, 1)
+            k_cum = torch.cumsum(k_scaled, dim=1) * powers.view(1, seq_len, 1)
+            kv_scaled = k_scaled.unsqueeze(-1) * v.unsqueeze(2)
+            kv_cum = torch.cumsum(kv_scaled, dim=1) * powers.view(1, seq_len, 1, 1)
 
         numerator = torch.einsum("bsf,bsfd->bsd", q_phi, kv_cum)
         denom = torch.einsum("bsf,bsf->bs", q_phi, k_cum).unsqueeze(-1)

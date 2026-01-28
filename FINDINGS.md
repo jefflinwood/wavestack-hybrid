@@ -246,6 +246,13 @@ This file collects experiment outcomes, takeaways, and open questions. Add new e
   - Transformer: `64 0.016/0.125`, `512 0.014/0.121`, `2048 0.062/0.182`, `3072 0.021/0.139`.
 - **Interpretation:** Longer training does not clearly improve recall in this probe; consider alternative recall tasks or larger models.
 
+## 2026-01-28 — Recall Lane (Lightweight Config)
+- **Setup:** 1k steps, seed 1, 8k samples; recall lane with `recall_features=32`, `recall_capacity=0.5`.
+- **Outcome:** Eval/holdout roughly match baseline; throughput dropped sharply on this run.
+- **Results:** Eval 4.4829 / holdout 4.3945; tokens/s 708.8.
+- **Interpretation:** Loss is stable but recall lane adds heavy overhead; investigate implementation cost before further tuning.
+- **Update:** Vectorized recall reduced runtime overhead; tokens/s improved to 5449.99 on re-run.
+
 ## 2026-01-15 — Training-Step Scaling (MPS)
 - **Setup:** Training step benchmark at seq lengths 128/256/512, batch size 4, 5 steps, 1 warmup.
 - **Outcome:** Transformer is faster per step and higher throughput at these lengths; hybrid uses less memory.

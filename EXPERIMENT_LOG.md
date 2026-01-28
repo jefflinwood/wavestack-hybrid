@@ -2877,3 +2877,47 @@ December 26, 2025
 - FLOPs total (seq): 1.32e+10
 - FLOPs breakdown (seq): {'embeddings': 0.0, 'transformer_blocks': 1702887424.0, 'lm_head': 11527749632.0, 'total': 13230637056.0}
 - FLOPs lanes (seq): {}
+
+2026-01-28 07:13
+- Study: exp1_expressivity
+- Experiment: hybrid_12m_wikitext2_longseq_recall_light
+- Config: experiments/exp1_expressivity/config_BA_hybrid_12m_wikitext2_longseq_recall_light.yaml
+- Dataset: wikitext:wikitext-2-raw-v1
+- Device: mps
+- Max steps: 1000
+- Samples: 8000
+- Seed: 1
+- Train loss: 4.2150
+- Eval loss: 4.4829
+- Holdout loss: 4.3945
+- Runtime (s): 46233.37
+- Tokens/s: 708.75
+- Peak memory (bytes): n/a
+- Params total: 24884804
+- Params breakdown: {'embeddings': 20871552, 'lanes': 2536000, 'mixing': 591748, 'context': 885504, 'total': 24884804}
+- Params lanes: {'poly': 443520, 'trig': 443520, 'wavelet': 1328448, 'recall': 320512}
+- FLOPs total (seq): 1.91e+11
+- FLOPs breakdown (seq): {'lanes': 20736638976.0, 'mixing': 4850712576.0, 'context': 7247757312.0, 'lm_head': 158094852096.0, 'total': 190929960960.0}
+- FLOPs lanes (seq): {'poly': 3623878656.0, 'trig': 3623878656.0, 'wavelet': 10871635968.0, 'recall': 2617245696.0}
+
+2026-01-28 10:33
+- Study: exp1_expressivity
+- Experiment: hybrid_12m_wikitext2_longseq_recall_light
+- Config: experiments/exp1_expressivity/config_BA_hybrid_12m_wikitext2_longseq_recall_light.yaml
+- Dataset: wikitext:wikitext-2-raw-v1
+- Device: mps
+- Max steps: 1000
+- Samples: 8000
+- Seed: 1
+- Train loss: 4.2150
+- Eval loss: 4.4829
+- Holdout loss: 4.3945
+- Runtime (s): 6012.49
+- Tokens/s: 5449.99
+- Peak memory (bytes): n/a
+- Params total: 24884804
+- Params breakdown: {'embeddings': 20871552, 'lanes': 2536000, 'mixing': 591748, 'context': 885504, 'total': 24884804}
+- Params lanes: {'poly': 443520, 'trig': 443520, 'wavelet': 1328448, 'recall': 320512}
+- FLOPs total (seq): 1.91e+11
+- FLOPs breakdown (seq): {'lanes': 20736638976.0, 'mixing': 4850712576.0, 'context': 7247757312.0, 'lm_head': 158094852096.0, 'total': 190929960960.0}
+- FLOPs lanes (seq): {'poly': 3623878656.0, 'trig': 3623878656.0, 'wavelet': 10871635968.0, 'recall': 2617245696.0}

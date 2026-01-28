@@ -15,6 +15,7 @@ This phase explores how context size affects WaveStack performance and whether t
 - **Logging:** Record loss, runtime, tokens/s, and memory in `EXPERIMENT_LOG.md`.
   - **Runner:** `uv run python scripts/run_context_length_sweep.py --device auto --max-steps 1000 --samples 8000 --seed 1`.
   - **Status:** Completed (results summarized in `FINDINGS.md`).
+  - **Recall-lite test:** `uv run python experiments/exp1_expressivity/run_experiment.py --config experiments/exp1_expressivity/config_BA_hybrid_12m_wikitext2_longseq_recall_light.yaml --device mps --max-steps 1000 --samples 8000 --seed 1`.
 
 ## Phase 2 – Context Dropoff Test (Needle-in-Haystack)
 - **Goal:** Test whether information recall degrades as the needle moves farther back in context.
